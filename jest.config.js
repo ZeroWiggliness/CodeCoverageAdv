@@ -32,9 +32,13 @@ export default {
       'ts-jest',
       {
         tsconfig: 'tsconfig.eslint.json',
-        useESM: true
+        useESM: true,
+        tsconfig: {
+          module: 'ESNext'
+        }
       }
     ]
   },
+  silent: false,
   verbose: true
 }

@@ -9,10 +9,28 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
+  cobertura-file:
+    description: Path to the Cobertura XML input file
     required: true
-    default: '1000'
+    default: 'coverage/cobertura-coverage.xml'
+  output-file:
+    description: Path to save the filtered coverage output file
+    required: true
+    default: 'coverage/cobertura-changed-only.xml'
+  main-branch:
+    description: Name of the main branch to compare against
+    required: true
+    default: 'main'
+  current-branch:
+    description: Name of the current branch
+    required: true
+    default: ''
+  file-filters:
+    description:
+      Comma-separated list of file patterns to include/exclude (e.g.,
+      "src/**/*.ts,!**/*.test.ts")
+    required: false
+    default: '**/*.*'
 
 # Define your outputs here.
 outputs:

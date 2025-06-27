@@ -25,7 +25,7 @@ inputs:
     description: GitHub token for accessing the repository
     required: true
     default: '${{ secrets.GITHUB_TOKEN }}'
-  # Add a current branch input to specify the branch being processed  
+  # Add a current branch input to specify the branch being processed
   current-branch:
     description: Name of the current branch
     required: false

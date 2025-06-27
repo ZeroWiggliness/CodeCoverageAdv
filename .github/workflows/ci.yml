@@ -20,6 +20,8 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+      #  with:
+      #      fetch-depth: 0
 
       - name: Setup Node.js
         id: setup-node
@@ -45,9 +47,9 @@ jobs:
         run: npm run ci-test
 
       - name: Run Cobertura Filter Action
-        id: cobertura-filter  
+        id: cobertura-filter
         # only run this step if the previous step was successful
-        if: ${{ success() }}        
+        if: ${{ success() }}
         uses: ./
         with:
           cobertura-file: coverage/cobertura-coverage.xml

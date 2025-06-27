@@ -80,7 +80,7 @@ export async function run(): Promise<void> {
         // Get the current HEAD SHA
         const headSha = context.sha;
         core.info(`headSha ${headSha}`);
-        
+
         // Get the master/main branch SHA
         const { data: masterBranch } = await octokit.rest.repos.getBranch({
           owner,
@@ -88,6 +88,9 @@ export async function run(): Promise<void> {
           branch: mainBranch || 'master'
         });
         const masterSha = masterBranch.commit.sha;
+
+        core.info(`masterSha ${masterSha}`);
+        core.info(`data ${JSON.stringify(masterBranch)}`);
 
         // Find the merge base (equivalent to git merge-base HEAD origin/master)
         const { data: mergeBase } = await octokit.rest.repos.compareCommits({
@@ -97,8 +100,10 @@ export async function run(): Promise<void> {
           head: headSha
         });
 
+        core.info(`mergeBase ${JSON.stringify(mergeBase)}`);
         // Get the actual merge base SHA
         const mergeBaseSha = mergeBase.merge_base_commit.sha;
+        core.info(`mergeBaseSha ${mergeBaseSha}`);
 
         // Now compare from merge base to HEAD (equivalent to git diff --name-only)
         const { data: comparison } = await octokit.rest.repos.compareCommits({
@@ -107,6 +112,8 @@ export async function run(): Promise<void> {
           base: mergeBaseSha,
           head: headSha
         });
+
+        core.info(`comparison ${JSON.stringify(comparison)}`);
 
         // Extract just the file names
         changedFiles = comparison.files?.map(file => file.filename) || [];

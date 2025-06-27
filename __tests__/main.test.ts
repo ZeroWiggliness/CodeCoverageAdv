@@ -25,6 +25,8 @@ describe('main.ts', () => {
       switch (name) {
         case 'cobertura-file':
           return '__tests__/cobertura.xml'
+        case 'output-file':
+          return 'coverage/cobertura.out.xml'
         default:
           return ''
       }

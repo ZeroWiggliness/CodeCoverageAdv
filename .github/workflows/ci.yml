@@ -44,6 +44,19 @@ jobs:
         id: npm-ci-test
         run: npm run ci-test
 
+      - name: Run Cobertura Filter Action
+        id: cobertura-filter  
+        # only run this step if the previous step was successful
+        if: ${{ success() }}        
+        uses: ./
+        with:
+          cobertura-file: coverage/cobertura-coverage.xml
+          output-file: coverage/cobertura-changed-only.xml
+          main-branch: ${{ github.event.repository.default_branch }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          current-branch: ${{ github.ref_name }}
+          file-filters: '**/*.*'
+
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest

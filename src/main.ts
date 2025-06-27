@@ -20,7 +20,10 @@ export async function run(): Promise<void> {
     const fileFilters: string = core.getInput('file-filters')
 
     const { context } = github
+    // For production code
     const { owner, repo } = context.repo
+
+ 
 
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
     core.debug(`Reading Cobertura file: ${coberturaFile}`)
@@ -31,9 +34,9 @@ export async function run(): Promise<void> {
 
     // List all files in the current directory
     const files = fs.readdirSync('.')
-    console.log(`Files in current directory: ${files.join(', ')}`)
-    console.log(`Current working directory: ${process.cwd()}`)
-    console.log(`Cobertura file: ${coberturaFile}`)
+  //  console.log(`Files in current directory: ${files.join(', ')}`)
+ //   console.log(`Current working directory: ${process.cwd()}`)
+  //  console.log(`Cobertura file: ${coberturaFile}`)
     core.debug(`Files in current directory: ${files.join(', ')}`)
 
     // list current directory
@@ -62,8 +65,8 @@ export async function run(): Promise<void> {
       throw new Error(`XML parsing error`)
     }
 
-    console.log(`Parsed XML:`)
-    console.log(xmlDoc)
+   // console.log(`Parsed XML:`)
+    //console.log(xmlDoc)
 
     const myToken = core.getInput('github-token', { required: true })
 
@@ -83,7 +86,7 @@ export async function run(): Promise<void> {
         const { data: masterBranch } = await octokit.rest.repos.getBranch({
           owner,
           repo,
-          branch: mainBranch || 'master'
+          branch: mainBranch
         })
         const masterSha = masterBranch.commit.sha
 
@@ -122,6 +125,8 @@ export async function run(): Promise<void> {
         core.info(`Changed files: ${changedFiles.join(', ')}`)
       } catch (error) {
         core.warning(`Failed to get changed files: ${error}`)
+        console.log(`Failed to get changed files: ${error}`)
+
         // Fallback to empty array or handle differently
         changedFiles = []
       }

@@ -23,8 +23,6 @@ export async function run(): Promise<void> {
     // For production code
     const { owner, repo } = context.repo
 
- 
-
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
     core.debug(`Reading Cobertura file: ${coberturaFile}`)
     core.debug(`Output file: ${outputFile}`)
@@ -34,9 +32,9 @@ export async function run(): Promise<void> {
 
     // List all files in the current directory
     const files = fs.readdirSync('.')
-  //  console.log(`Files in current directory: ${files.join(', ')}`)
- //   console.log(`Current working directory: ${process.cwd()}`)
-  //  console.log(`Cobertura file: ${coberturaFile}`)
+    //  console.log(`Files in current directory: ${files.join(', ')}`)
+    //   console.log(`Current working directory: ${process.cwd()}`)
+    //  console.log(`Cobertura file: ${coberturaFile}`)
     core.debug(`Files in current directory: ${files.join(', ')}`)
 
     // list current directory
@@ -65,7 +63,7 @@ export async function run(): Promise<void> {
       throw new Error(`XML parsing error`)
     }
 
-   // console.log(`Parsed XML:`)
+    // console.log(`Parsed XML:`)
     //console.log(xmlDoc)
 
     const myToken = core.getInput('github-token', { required: true })

@@ -10,4 +10,4 @@ export const context = {
   },
   eventName: 'pull_request',
   sha: 'test-sha'
-} as unknown as github.Context  // mock the context object      
+} as unknown as github.Context // mock the context object

@@ -49,7 +49,7 @@ jobs:
       - name: Run Cobertura Filter Action
         id: cobertura-filter
         # only run this step if the previous step was successful
-        if: ${{ success() }}
+        if: ${{ always() }}
         # uses: ./
         uses: ZeroWiggliness/CoberturaChangeOnly@feature/firstimplementation
         with:

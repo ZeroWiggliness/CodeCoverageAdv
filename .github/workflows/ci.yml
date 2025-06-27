@@ -53,7 +53,7 @@ jobs:
           cobertura-file: coverage/cobertura-coverage.xml
           output-file: coverage/cobertura-changed-only.xml
           main-branch: ${{ github.event.repository.default_branch }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
           current-branch: ${{ github.ref_name }}
           file-filters: '**/*.*'
 

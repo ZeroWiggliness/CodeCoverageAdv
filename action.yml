@@ -19,12 +19,18 @@ inputs:
     default: 'coverage/cobertura-changed-only.xml'
   main-branch:
     description: Name of the main branch to compare against
+    required: false
+    default: ${{ github.repository_default_branch }}
+  github-token:
+    description: GitHub token for accessing the repository
     required: true
-    default: 'main'
+    default: '${{ secrets.GITHUB_TOKEN }}'
+  # Add a current branch input to specify the branch being processed  
   current-branch:
     description: Name of the current branch
-    required: true
-    default: ''
+    required: false
+    # set default to the current branch using GitHub context
+    default: '${{ github.ref_name }}'
   file-filters:
     description:
       Comma-separated list of file patterns to include/exclude (e.g.,

@@ -3,6 +3,8 @@ import * as fs from 'fs'
 import { XMLParser, XMLBuilder } from 'fast-xml-parser'
 import { CoberturaParser } from './cobertura.js'
 
+import * as github from '@actions/github';
+
 /**
  * The main function for the action.
  *
@@ -16,6 +18,9 @@ export async function run(): Promise<void> {
     const mainBranch: string = core.getInput('main-branch')
     const currentBranch: string = core.getInput('current-branch')
     const fileFilters: string = core.getInput('file-filters')
+
+    const { context } = github;
+    const { owner, repo } = context.repo;
 
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
     core.debug(`Reading Cobertura file: ${coberturaFile}`)
@@ -60,9 +65,65 @@ export async function run(): Promise<void> {
     console.log(`Parsed XML:`)
     console.log(xmlDoc)
 
-    // Log the root element
+
+    const myToken = core.getInput('github-token', { required: true });
+
+    const octokit = github.getOctokit(myToken)
+
+    // You can also pass in additional options as a second parameter to getOctokit
+    // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
+
+    if (context.eventName === 'pull_request') {
+
+      let changedFiles: string[] = [];
+      try {
+        // Get the current HEAD SHA
+        const headSha = context.sha;
+        core.info(`headSha ${headSha}`);
+        
+        // Get the master/main branch SHA
+        const { data: masterBranch } = await octokit.rest.repos.getBranch({
+          owner,
+          repo,
+          branch: mainBranch || 'master'
+        });
+        const masterSha = masterBranch.commit.sha;
+
+        // Find the merge base (equivalent to git merge-base HEAD origin/master)
+        const { data: mergeBase } = await octokit.rest.repos.compareCommits({
+          owner,
+          repo,
+          base: masterSha,
+          head: headSha
+        });
+
+        // Get the actual merge base SHA
+        const mergeBaseSha = mergeBase.merge_base_commit.sha;
+
+        // Now compare from merge base to HEAD (equivalent to git diff --name-only)
+        const { data: comparison } = await octokit.rest.repos.compareCommits({
+          owner,
+          repo,
+          base: mergeBaseSha,
+          head: headSha
+        });
+
+        // Extract just the file names
+        changedFiles = comparison.files?.map(file => file.filename) || [];
+        
+        core.info(`Found ${changedFiles.length} changed files since merge base with ${mainBranch || 'master'}`);
+        core.info(`Changed files: ${changedFiles.join(', ')}`);
+
+      } catch (error) {
+        core.warning(`Failed to get changed files: ${error}`);
+        // Fallback to empty array or handle differently
+        changedFiles = [];
+      }
+    }
+
+        // Log the root element
     const modifiedCoverage = new CoberturaParser(xmlDoc)
-    const reducedCoverage = modifiedCoverage.parse()
+    const reducedCoverage = modifiedCoverage.parse([], "*.*")
 
     const builder = new XMLBuilder({
       arrayNodeName: 'car'

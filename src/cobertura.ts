@@ -46,13 +46,27 @@ export class CoberturaParser {
     this.xmlObject = xmlObject
   }
 
-  public parse(): CoverageData {
+  public parse(changedFiles : String[], fileRegEx : String): CoverageData {
     const coverage = this.xmlObject.coverage
 
     if (!coverage) {
       throw new Error('Invalid Cobertura XML: missing coverage element')
     }
 
+    // Loop through the pacakges
+    let packages : PackageData[] = []  
+    for (const pkg of coverage.packages?.[0]?.package || []) {
+      const newPkg: PackageData = {
+        name: pkg.$?.name || '',
+        lineRate: parseFloat(pkg.$?.['line-rate'] || '0'),
+        branchRate: parseFloat(pkg.$?.['branch-rate'] || '0'),
+        complexity: parseInt(pkg.$?.complexity || '0', 10),
+        classes: []   
+      };
+
+      newPkg.classes = this.parseClasses(pkg.classes?.[0]?.class || []);
+      packages.push(newPkg);
+    }
     return {
       lineRate: parseFloat(coverage.$?.['line-rate'] || '0'),
       branchRate: parseFloat(coverage.$?.['branch-rate'] || '0'),
@@ -80,6 +94,9 @@ export class CoberturaParser {
     if (!Array.isArray(classes)) {
       classes = [classes]
     }
+
+
+
 
     return classes.map((cls) => ({
       name: cls.$?.name || '',

@@ -1,42 +1,60 @@
-export interface CoverageData {
-  lineRate: number
-  branchRate: number
-  complexity: number
-  timestamp: string
-  packages: PackageData[]
+export interface CoberturaCoverageData { 
+  _lineRate: number
+  _branchRate: number
+  _complexity: number
+  _timestamp: string
+  sources: any[]
+  packages: PackagesData
+}
+
+export interface PackagesData {
+  package: PackageData[]
 }
 
 export interface PackageData {
-  name: string
-  lineRate: number
-  branchRate: number
-  complexity: number
-  classes: ClassData[]
+  _name: string
+  _lineRate: number
+  _branchRate: number
+  _complexity: number
+  classes: ClassesData
+}
+
+export interface ClassesData {
+  class: ClassData[]
 }
 
 export interface ClassData {
-  name: string
-  filename: string
-  lineRate: number
-  branchRate: number
-  complexity: number
-  methods: MethodData[]
-  lines: LineData[]
+  _name: string
+  _filename: string
+  _lineRate: number
+  _branchRate: number
+  _complexity: number
+  methods: MethodsData
+  lines: LinesData
+}
+
+export interface MethodsData {
+  method: MethodData[]
 }
 
 export interface MethodData {
-  name: string
-  signature: string
-  lineRate: number
-  branchRate: number
-  complexity: number
+  _name: string
+  _signature: string
+  _lineRate: number
+  _branchRate: number
+  _complexity: number
+  lines: LinesData
+}
+
+export interface LinesData {
+  line: LineData[]
 }
 
 export interface LineData {
-  number: number
-  hits: number
-  branch: boolean
-  conditionCoverage?: string
+  _number: number
+  _hits: number
+  _branch: string
+  _conditionCoverage: string | undefined
 }
 
 export class CoberturaParser {
@@ -46,94 +64,194 @@ export class CoberturaParser {
     this.xmlObject = xmlObject
   }
 
-  public parse(changedFiles: string[], fileRegEx: string): CoverageData {
-    const coverage = this.xmlObject.coverage
+  private toArrayIfNot(array: any,): any[] {
+    if (array === undefined || array === null) {
+      return []
+    }
+    return Array.isArray(array) ? array : [array]
+  }
 
+  private convertToCoberturaCoverageData(xmlObject: any): CoberturaCoverageData {
+    const newData: CoberturaCoverageData = {
+      _lineRate: 0,
+      _branchRate: 0,
+      _complexity: 0,
+      _timestamp: "",
+      packages: this.convertToPackagesData(this.toArrayIfNot(xmlObject.packages.package))
+    }
+      
+    return newData;
+  }
+
+  private convertToPackagesData(packages: any[]): PackagesData {
+    
+    return {
+      package: packages.map(pkg => ({
+                                _name: pkg?._name || '',
+                                _lineRate: parseFloat(pkg['_line-rate'] || '0'),
+                                _branchRate: parseFloat(pkg['_branch-rate'] || '0'),
+                                _complexity: parseInt(pkg?._complexity || '0', 10),
+                                classes: this.convertToClassesData(this.toArrayIfNot(pkg.classes.class))
+                              }))
+    }
+  }
+  
+  private convertToClassesData(classes: any[]): ClassesData {
+
+    const coberturaClasses = classes.map(cls => ({
+        _name: cls.name || '',
+        _filename: cls._filename || '',
+        _lineRate: parseFloat(cls?.['_line-rate'] || '0'),
+        _branchRate: parseFloat(cls?.['_branch-rate'] || '0'),
+        _complexity: parseInt(cls?._complexity || '0', 10),
+        methods: this.convertToMethodsData(this.toArrayIfNot(cls.methods.method)),
+        lines: this.convertToLinesData(this.toArrayIfNot(cls.lines.line))
+      }))
+
+    return {
+      class: coberturaClasses
+    }
+  }
+
+  private convertToMethodsData(methods: any[]): MethodsData {
+    return {
+      method: methods.map(meth => ({
+        _name: meth._name || '',
+        _signature: meth?._signature || '',
+        _lineRate: parseFloat(meth['_line-rate'] || '0'),
+        _branchRate: parseFloat(meth['_branch-rate'] || '0'),
+        complexity: parseInt(meth?._complexity || '0', 10),
+        lines: this.convertToLinesData(this.toArrayIfNot(meth.lines.line))
+      }))
+    }
+  }
+  
+  private convertToLinesData(lines: any[]): LinesData {
+
+    return {
+      line: lines.map(line => ({
+        _number: parseInt(line?._number || '0', 10),
+        _hits: parseInt(line?._hits || '0', 10),
+        _branch: line._branch === undefined ? "false" : (line._branch == "true" ? "true" : "false"),
+        _conditionCoverage: line['_condition-coverage']
+        }))
+    }
+
+  }
+
+  public parse(changedFiles: string[]): CoberturaCoverageData {
+    const coverage = this.xmlObject.coverage
     if (!coverage) {
       throw new Error('Invalid Cobertura XML: missing coverage element')
     }
 
-    console.log(`Regex files: ${fileRegEx}`)
-    changedFiles = changedFiles.map((file) => file.replace(/\\/g, '/'))
-    console.log(`Changed files: ${changedFiles}`)
+    let coberuraCoverage = this.convertToCoberturaCoverageData(coverage);   
+    coberuraCoverage.packages.package.forEach(pkg => {
+      pkg.classes.class = pkg.classes.class.filter(cls => {
+        const filename = cls._filename || '';
+        return changedFiles.some((file) => {
+          
+          const consitantFilename = filename.replace(/\\/g, '/')
+          return consitantFilename.includes(file)                
+        });
+      });
+    });   
 
-    // Loop through the pacakges
-    const packages: PackageData[] = []
-    for (const pkg of coverage.packages?.[0]?.package || []) {
-      const newPkg: PackageData = {
-        name: pkg.$?.name || '',
-        lineRate: parseFloat(pkg.$?.['line-rate'] || '0'),
-        branchRate: parseFloat(pkg.$?.['branch-rate'] || '0'),
-        complexity: parseInt(pkg.$?.complexity || '0', 10),
-        classes: []
-      }
+    // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
+    let coberturaLinesCount = 0;
+    let coberturaHitsCount = 0;
+    let coberturaBranchCount = 0
+    let coberturaBranchHitsCount = 0
+    coberuraCoverage.packages.package.forEach(pkg => {
+      let pkgLinesCount = 0;
+      let pkgHitsCount = 0;
+      let pkgBranchCount = 0
+      let pkgBranchHitsCount = 0
 
-      newPkg.classes = this.parseClasses(pkg.classes?.[0]?.class || [])
-      packages.push(newPkg)
-    }
-    return {
-      lineRate: parseFloat(coverage.$?.['line-rate'] || '0'),
-      branchRate: parseFloat(coverage.$?.['branch-rate'] || '0'),
-      complexity: parseInt(coverage.$?.complexity || '0', 10),
-      timestamp: coverage.$?.timestamp || '',
-      packages: this.parsePackages(coverage.packages?.[0]?.package || [])
-    }
-  }
+      pkg.classes.class.forEach(cls => {
 
-  private parsePackages(packages: any[]): PackageData[] {
-    if (!Array.isArray(packages)) {
-      packages = [packages]
-    }
+        let classBranchAllFalse = cls.lines.line.every(line => line._branch == "false");
 
-    return packages.map((pkg) => ({
-      name: pkg.$?.name || '',
-      lineRate: parseFloat(pkg.$?.['line-rate'] || '0'),
-      branchRate: parseFloat(pkg.$?.['branch-rate'] || '0'),
-      complexity: parseInt(pkg.$?.complexity || '0', 10),
-      classes: this.parseClasses(pkg.classes?.[0]?.class || [])
-    }))
-  }
+        let classLinesCount = cls.lines.line.length;
+        let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+        let classBranchCount = classLinesCount;
+        let classBranchHitsCount = classLinesCount
+        
+        if(!classBranchAllFalse) {
+          classBranchCount = 0;
+          classBranchHitsCount = 0;
 
-  private parseClasses(classes: any[]): ClassData[] {
-    if (!Array.isArray(classes)) {
-      classes = [classes]
-    }
+          cls.lines.line.forEach(line => {
+            if (line._branch == "true" && line._conditionCoverage) {
+              const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
+              if (match) {
+                classBranchHitsCount += parseInt(match[1], 10);
+                classBranchCount += parseInt(match[2], 10);
+              }
+            }
+          });
+        }
 
-    return classes.map((cls) => ({
-      name: cls.$?.name || '',
-      filename: cls.$?.filename || '',
-      lineRate: parseFloat(cls.$?.['line-rate'] || '0'),
-      branchRate: parseFloat(cls.$?.['branch-rate'] || '0'),
-      complexity: parseInt(cls.$?.complexity || '0', 10),
-      methods: this.parseMethods(cls.methods?.[0]?.method || []),
-      lines: this.parseLines(cls.lines?.[0]?.line || [])
-    }))
-  }
+        // Set methods lineRate, branchRate, and complexity
+        cls.methods.method.forEach(meth => {
+          let methodBranchAllFalse = meth.lines.line.every(line => line._branch == "false");
 
-  private parseMethods(methods: any[]): MethodData[] {
-    if (!Array.isArray(methods)) {
-      methods = [methods]
-    }
+          let methodLinesCount = meth.lines.line.length;
+          let methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
 
-    return methods.map((method) => ({
-      name: method.$?.name || '',
-      signature: method.$?.signature || '',
-      lineRate: parseFloat(method.$?.['line-rate'] || '0'),
-      branchRate: parseFloat(method.$?.['branch-rate'] || '0'),
-      complexity: parseInt(method.$?.complexity || '0', 10)
-    }))
-  }
+          let methodBranchCount = methodLinesCount;
+          let methodBranchHitsCount = methodLinesCount
 
-  private parseLines(lines: any[]): LineData[] {
-    if (!Array.isArray(lines)) {
-      lines = [lines]
-    }
+          if(!methodBranchAllFalse) {
+            methodBranchCount = 0;
+            methodBranchHitsCount = 0;
 
-    return lines.map((line) => ({
-      number: parseInt(line.$?.number || '0', 10),
-      hits: parseInt(line.$?.hits || '0', 10),
-      branch: line.$?.branch === 'true',
-      conditionCoverage: line.$?.['condition-coverage']
-    }))
-  }
+            meth.lines.line.forEach(line => {
+              if (line._branch == "true" && line._conditionCoverage) {
+                const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
+                if (match) {
+                  classBranchHitsCount += parseInt(match[1], 10);
+                  classBranchCount += parseInt(match[2], 10);
+                }
+              }
+            });
+          }
+
+          meth._lineRate = methodHitsCount / methodLinesCount;
+          meth._branchRate = methodBranchHitsCount / methodBranchCount;
+          meth._complexity = Number.NaN
+
+          classLinesCount += methodLinesCount;
+          classHitsCount += methodHitsCount;
+          classBranchCount += methodLinesCount;
+          classBranchHitsCount += methodHitsCount;
+        });
+
+        cls._lineRate = classHitsCount / classLinesCount;
+        cls._branchRate = classBranchHitsCount / classBranchCount;
+        cls._complexity = Number.NaN
+
+        pkgLinesCount += classLinesCount;
+        pkgHitsCount += classHitsCount;
+        pkgBranchCount += classBranchCount;
+        pkgBranchHitsCount += classBranchHitsCount;
+      });
+
+      pkg._lineRate = pkgHitsCount / pkgLinesCount;
+      pkg._branchRate = pkgBranchHitsCount / pkgBranchCount;
+      pkg._complexity = Number.NaN
+
+      coberturaLinesCount += pkgLinesCount;
+      coberturaHitsCount += pkgHitsCount;
+      coberturaBranchCount += pkgBranchCount;
+      coberturaBranchHitsCount += pkgBranchHitsCount;
+    });
+
+    coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount;
+    coberuraCoverage._branchRate = coberturaBranchHitsCount / coberturaBranchCount;
+    coberuraCoverage._complexity = Number.NaN
+          
+    return coberuraCoverage;
+  }  
 }
+

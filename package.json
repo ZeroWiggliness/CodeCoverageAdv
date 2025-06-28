@@ -41,6 +41,7 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "fast-xml-parser": "^5.2.5",
+    "micromatch": "^4.0.8",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {

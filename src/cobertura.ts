@@ -1,8 +1,13 @@
 export interface CoberturaCoverageData {
+  _lineValid: number
+  _lineCovered: number
   _lineRate: number
+  _branchesValid: number
+  _branchesCovered: number
   _branchRate: number
   _complexity: number
   _timestamp: string
+  _version: string
   sources: any[]
   packages: PackagesData
 }
@@ -75,13 +80,19 @@ export class CoberturaParser {
     xmlObject: any
   ): CoberturaCoverageData {
     const newData: CoberturaCoverageData = {
+      _lineValid: 0,
+      _lineCovered: 0,
       _lineRate: 0,
+      _branchesCovered: 0,
+      _branchesValid: 0,
       _branchRate: 0,
       _complexity: 0,
-      _timestamp: '',
+      _version: xmlObject._version,
+      _timestamp: xmlObject._timestamp,
       packages: this.convertToPackagesData(
         this.toArrayIfNot(xmlObject.packages.package)
-      )
+      ),
+      sources: []
     }
 
     return newData
@@ -122,7 +133,7 @@ export class CoberturaParser {
         _signature: meth?._signature || '',
         _lineRate: parseFloat(meth['_line-rate'] || '0'),
         _branchRate: parseFloat(meth['_branch-rate'] || '0'),
-        complexity: parseInt(meth?._complexity || '0', 10),
+        _complexity: parseFloat(meth?._complexity || '0'),
         lines: this.convertToLinesData(this.toArrayIfNot(meth.lines.line))
       }))
     }
@@ -163,6 +174,8 @@ export class CoberturaParser {
 
     // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
     let coberturaLinesCount = 0
+    let coberturaBranchesCovered = 0
+    let coberturaBranchesValid = 0
     let coberturaHitsCount = 0
     let coberturaBranchCount = 0
     let coberturaBranchHitsCount = 0
@@ -195,6 +208,9 @@ export class CoberturaParser {
               if (match) {
                 classBranchHitsCount += parseInt(match[1], 10)
                 classBranchCount += parseInt(match[2], 10)
+
+                coberturaBranchesCovered += parseInt(match[1], 10)
+                coberturaBranchesValid += parseInt(match[2], 10)
               }
             }
           })
@@ -225,6 +241,9 @@ export class CoberturaParser {
                 if (match) {
                   classBranchHitsCount += parseInt(match[1], 10)
                   classBranchCount += parseInt(match[2], 10)
+
+                  coberturaBranchesCovered += parseInt(match[1], 10)
+                  coberturaBranchesValid += parseInt(match[2], 10)
                 }
               }
             })
@@ -261,8 +280,12 @@ export class CoberturaParser {
     })
 
     coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount
+    coberuraCoverage._lineCovered = coberturaHitsCount
+    coberuraCoverage._lineValid = coberturaLinesCount
     coberuraCoverage._branchRate =
       coberturaBranchHitsCount / coberturaBranchCount
+    coberuraCoverage._branchesCovered = coberturaBranchesCovered
+    coberuraCoverage._branchesValid = coberturaBranchesValid
     coberuraCoverage._complexity = Number.NaN
 
     return coberuraCoverage

@@ -161,7 +161,7 @@ export class CoberturaParser {
       throw new Error('Invalid Cobertura XML: missing coverage element')
     }
 
-    let coberuraCoverage = this.convertToCoberturaCoverageData(coverage)
+    const coberuraCoverage = this.convertToCoberturaCoverageData(coverage)
     coberuraCoverage.packages.package.forEach((pkg) => {
       pkg.classes.class = pkg.classes.class.filter((cls) => {
         const filename = cls._filename || ''
@@ -186,7 +186,7 @@ export class CoberturaParser {
       let pkgBranchHitsCount = 0
 
       pkg.classes.class.forEach((cls) => {
-        let classBranchAllFalse = cls.lines.line.every(
+        const classBranchAllFalse = cls.lines.line.every(
           (line) => line._branch == 'false'
         )
 
@@ -218,12 +218,12 @@ export class CoberturaParser {
 
         // Set methods lineRate, branchRate, and complexity
         cls.methods.method.forEach((meth) => {
-          let methodBranchAllFalse = meth.lines.line.every(
+          const methodBranchAllFalse = meth.lines.line.every(
             (line) => line._branch == 'false'
           )
 
-          let methodLinesCount = meth.lines.line.length
-          let methodHitsCount = meth.lines.line.reduce(
+          const methodLinesCount = meth.lines.line.length
+          const methodHitsCount = meth.lines.line.reduce(
             (acc, line) => acc + (line._hits > 0 ? 1 : 0),
             0
           )

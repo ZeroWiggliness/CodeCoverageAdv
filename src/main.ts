@@ -125,7 +125,7 @@ export async function run(): Promise<void> {
           }) || []
 
         // Get a listt of filtered files based on a regex pattern
-        let filterMap = fileFilters.split(',').map((f) => f.trim())
+        const filterMap = fileFilters.split(',').map((f) => f.trim())
         changedFiles = micromatch(changedFiles, filterMap)
 
         core.info(

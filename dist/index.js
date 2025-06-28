@@ -29437,7 +29437,7 @@ class CoberturaParser {
                 _name: pkg?._name || '',
                 _lineRate: parseFloat(pkg['_line-rate'] || '0'),
                 _branchRate: parseFloat(pkg['_branch-rate'] || '0'),
-                _complexity: parseInt(pkg?._complexity || '0', 10),
+                _complexity: parseFloat(pkg?._complexity || '0'),
                 classes: this.convertToClassesData(this.toArrayIfNot(pkg.classes.class))
             }))
         };
@@ -29448,7 +29448,7 @@ class CoberturaParser {
             _filename: cls._filename || '',
             _lineRate: parseFloat(cls?.['_line-rate'] || '0'),
             _branchRate: parseFloat(cls?.['_branch-rate'] || '0'),
-            _complexity: parseInt(cls?._complexity || '0', 10),
+            _complexity: parseFloat(cls?._complexity || '0'),
             methods: this.convertToMethodsData(this.toArrayIfNot(cls.methods.method)),
             lines: this.convertToLinesData(this.toArrayIfNot(cls.lines.line))
         }));
@@ -29473,11 +29473,7 @@ class CoberturaParser {
             line: lines.map((line) => ({
                 _number: parseInt(line?._number || '0', 10),
                 _hits: parseInt(line?._hits || '0', 10),
-                _branch: line._branch === undefined
-                    ? 'false'
-                    : line._branch == 'true'
-                        ? 'true'
-                        : 'false',
+                _branch: line._branch,
                 _conditionCoverage: line['_condition-coverage']
             }))
         };
@@ -29487,7 +29483,7 @@ class CoberturaParser {
         if (!coverage) {
             throw new Error('Invalid Cobertura XML: missing coverage element');
         }
-        let coberuraCoverage = this.convertToCoberturaCoverageData(coverage);
+        const coberuraCoverage = this.convertToCoberturaCoverageData(coverage);
         coberuraCoverage.packages.package.forEach((pkg) => {
             pkg.classes.class = pkg.classes.class.filter((cls) => {
                 const filename = cls._filename || '';
@@ -29510,7 +29506,7 @@ class CoberturaParser {
             let pkgBranchCount = 0;
             let pkgBranchHitsCount = 0;
             pkg.classes.class.forEach((cls) => {
-                let classBranchAllFalse = cls.lines.line.every((line) => line._branch == 'false');
+                const classBranchAllFalse = cls.lines.line.every((line) => line._branch == 'false');
                 let classLinesCount = cls.lines.line.length;
                 let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
                 let classBranchCount = classLinesCount;
@@ -29532,9 +29528,9 @@ class CoberturaParser {
                 }
                 // Set methods lineRate, branchRate, and complexity
                 cls.methods.method.forEach((meth) => {
-                    let methodBranchAllFalse = meth.lines.line.every((line) => line._branch == 'false');
-                    let methodLinesCount = meth.lines.line.length;
-                    let methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                    const methodBranchAllFalse = meth.lines.line.every((line) => line._branch == 'false');
+                    const methodLinesCount = meth.lines.line.length;
+                    const methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
                     let methodBranchCount = methodLinesCount;
                     let methodBranchHitsCount = methodLinesCount;
                     if (!methodBranchAllFalse) {
@@ -37775,7 +37771,7 @@ async function run() {
                         return file.filename;
                     }) || [];
                 // Get a listt of filtered files based on a regex pattern
-                let filterMap = fileFilters.split(',').map((f) => f.trim());
+                const filterMap = fileFilters.split(',').map((f) => f.trim());
                 changedFiles = micromatch(changedFiles, filterMap);
                 coreExports.info(`Found ${changedFiles.length} changed files since merge base with ${mainBranch || 'master'}`);
                 coreExports.info(`Changed files: ${changedFiles.join(', ')}`);

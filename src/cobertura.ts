@@ -104,7 +104,7 @@ export class CoberturaParser {
         _name: pkg?._name || '',
         _lineRate: parseFloat(pkg['_line-rate'] || '0'),
         _branchRate: parseFloat(pkg['_branch-rate'] || '0'),
-        _complexity: parseInt(pkg?._complexity || '0', 10),
+        _complexity: parseFloat(pkg?._complexity || '0'),
         classes: this.convertToClassesData(this.toArrayIfNot(pkg.classes.class))
       }))
     }
@@ -116,7 +116,7 @@ export class CoberturaParser {
       _filename: cls._filename || '',
       _lineRate: parseFloat(cls?.['_line-rate'] || '0'),
       _branchRate: parseFloat(cls?.['_branch-rate'] || '0'),
-      _complexity: parseInt(cls?._complexity || '0', 10),
+      _complexity: parseFloat(cls?._complexity || '0'),
       methods: this.convertToMethodsData(this.toArrayIfNot(cls.methods.method)),
       lines: this.convertToLinesData(this.toArrayIfNot(cls.lines.line))
     }))
@@ -144,12 +144,7 @@ export class CoberturaParser {
       line: lines.map((line) => ({
         _number: parseInt(line?._number || '0', 10),
         _hits: parseInt(line?._hits || '0', 10),
-        _branch:
-          line._branch === undefined
-            ? 'false'
-            : line._branch == 'true'
-              ? 'true'
-              : 'false',
+        _branch: line._branch,
         _conditionCoverage: line['_condition-coverage']
       }))
     }

@@ -1,4 +1,4 @@
-export interface CoberturaCoverageData { 
+export interface CoberturaCoverageData {
   _lineRate: number
   _branchRate: number
   _complexity: number
@@ -64,49 +64,51 @@ export class CoberturaParser {
     this.xmlObject = xmlObject
   }
 
-  private toArrayIfNot(array: any,): any[] {
+  private toArrayIfNot(array: any): any[] {
     if (array === undefined || array === null) {
       return []
     }
     return Array.isArray(array) ? array : [array]
   }
 
-  private convertToCoberturaCoverageData(xmlObject: any): CoberturaCoverageData {
+  private convertToCoberturaCoverageData(
+    xmlObject: any
+  ): CoberturaCoverageData {
     const newData: CoberturaCoverageData = {
       _lineRate: 0,
       _branchRate: 0,
       _complexity: 0,
-      _timestamp: "",
-      packages: this.convertToPackagesData(this.toArrayIfNot(xmlObject.packages.package))
+      _timestamp: '',
+      packages: this.convertToPackagesData(
+        this.toArrayIfNot(xmlObject.packages.package)
+      )
     }
-      
-    return newData;
+
+    return newData
   }
 
   private convertToPackagesData(packages: any[]): PackagesData {
-    
     return {
-      package: packages.map(pkg => ({
-                                _name: pkg?._name || '',
-                                _lineRate: parseFloat(pkg['_line-rate'] || '0'),
-                                _branchRate: parseFloat(pkg['_branch-rate'] || '0'),
-                                _complexity: parseInt(pkg?._complexity || '0', 10),
-                                classes: this.convertToClassesData(this.toArrayIfNot(pkg.classes.class))
-                              }))
+      package: packages.map((pkg) => ({
+        _name: pkg?._name || '',
+        _lineRate: parseFloat(pkg['_line-rate'] || '0'),
+        _branchRate: parseFloat(pkg['_branch-rate'] || '0'),
+        _complexity: parseInt(pkg?._complexity || '0', 10),
+        classes: this.convertToClassesData(this.toArrayIfNot(pkg.classes.class))
+      }))
     }
   }
-  
-  private convertToClassesData(classes: any[]): ClassesData {
 
-    const coberturaClasses = classes.map(cls => ({
-        _name: cls.name || '',
-        _filename: cls._filename || '',
-        _lineRate: parseFloat(cls?.['_line-rate'] || '0'),
-        _branchRate: parseFloat(cls?.['_branch-rate'] || '0'),
-        _complexity: parseInt(cls?._complexity || '0', 10),
-        methods: this.convertToMethodsData(this.toArrayIfNot(cls.methods.method)),
-        lines: this.convertToLinesData(this.toArrayIfNot(cls.lines.line))
-      }))
+  private convertToClassesData(classes: any[]): ClassesData {
+    const coberturaClasses = classes.map((cls) => ({
+      _name: cls.name || '',
+      _filename: cls._filename || '',
+      _lineRate: parseFloat(cls?.['_line-rate'] || '0'),
+      _branchRate: parseFloat(cls?.['_branch-rate'] || '0'),
+      _complexity: parseInt(cls?._complexity || '0', 10),
+      methods: this.convertToMethodsData(this.toArrayIfNot(cls.methods.method)),
+      lines: this.convertToLinesData(this.toArrayIfNot(cls.lines.line))
+    }))
 
     return {
       class: coberturaClasses
@@ -115,7 +117,7 @@ export class CoberturaParser {
 
   private convertToMethodsData(methods: any[]): MethodsData {
     return {
-      method: methods.map(meth => ({
+      method: methods.map((meth) => ({
         _name: meth._name || '',
         _signature: meth?._signature || '',
         _lineRate: parseFloat(meth['_line-rate'] || '0'),
@@ -125,18 +127,21 @@ export class CoberturaParser {
       }))
     }
   }
-  
-  private convertToLinesData(lines: any[]): LinesData {
 
+  private convertToLinesData(lines: any[]): LinesData {
     return {
-      line: lines.map(line => ({
+      line: lines.map((line) => ({
         _number: parseInt(line?._number || '0', 10),
         _hits: parseInt(line?._hits || '0', 10),
-        _branch: line._branch === undefined ? "false" : (line._branch == "true" ? "true" : "false"),
+        _branch:
+          line._branch === undefined
+            ? 'false'
+            : line._branch == 'true'
+              ? 'true'
+              : 'false',
         _conditionCoverage: line['_condition-coverage']
-        }))
+      }))
     }
-
   }
 
   public parse(changedFiles: string[]): CoberturaCoverageData {
@@ -145,113 +150,121 @@ export class CoberturaParser {
       throw new Error('Invalid Cobertura XML: missing coverage element')
     }
 
-    let coberuraCoverage = this.convertToCoberturaCoverageData(coverage);   
-    coberuraCoverage.packages.package.forEach(pkg => {
-      pkg.classes.class = pkg.classes.class.filter(cls => {
-        const filename = cls._filename || '';
+    let coberuraCoverage = this.convertToCoberturaCoverageData(coverage)
+    coberuraCoverage.packages.package.forEach((pkg) => {
+      pkg.classes.class = pkg.classes.class.filter((cls) => {
+        const filename = cls._filename || ''
         return changedFiles.some((file) => {
-          
           const consitantFilename = filename.replace(/\\/g, '/')
-          return consitantFilename.includes(file)                
-        });
-      });
-    });   
+          return consitantFilename.includes(file)
+        })
+      })
+    })
 
     // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
-    let coberturaLinesCount = 0;
-    let coberturaHitsCount = 0;
+    let coberturaLinesCount = 0
+    let coberturaHitsCount = 0
     let coberturaBranchCount = 0
     let coberturaBranchHitsCount = 0
-    coberuraCoverage.packages.package.forEach(pkg => {
-      let pkgLinesCount = 0;
-      let pkgHitsCount = 0;
+    coberuraCoverage.packages.package.forEach((pkg) => {
+      let pkgLinesCount = 0
+      let pkgHitsCount = 0
       let pkgBranchCount = 0
       let pkgBranchHitsCount = 0
 
-      pkg.classes.class.forEach(cls => {
+      pkg.classes.class.forEach((cls) => {
+        let classBranchAllFalse = cls.lines.line.every(
+          (line) => line._branch == 'false'
+        )
 
-        let classBranchAllFalse = cls.lines.line.every(line => line._branch == "false");
-
-        let classLinesCount = cls.lines.line.length;
-        let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
-        let classBranchCount = classLinesCount;
+        let classLinesCount = cls.lines.line.length
+        let classHitsCount = cls.lines.line.reduce(
+          (acc, line) => acc + (line._hits > 0 ? 1 : 0),
+          0
+        )
+        let classBranchCount = classLinesCount
         let classBranchHitsCount = classLinesCount
-        
-        if(!classBranchAllFalse) {
-          classBranchCount = 0;
-          classBranchHitsCount = 0;
 
-          cls.lines.line.forEach(line => {
-            if (line._branch == "true" && line._conditionCoverage) {
-              const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
+        if (!classBranchAllFalse) {
+          classBranchCount = 0
+          classBranchHitsCount = 0
+
+          cls.lines.line.forEach((line) => {
+            if (line._branch == 'true' && line._conditionCoverage) {
+              const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/)
               if (match) {
-                classBranchHitsCount += parseInt(match[1], 10);
-                classBranchCount += parseInt(match[2], 10);
+                classBranchHitsCount += parseInt(match[1], 10)
+                classBranchCount += parseInt(match[2], 10)
               }
             }
-          });
+          })
         }
 
         // Set methods lineRate, branchRate, and complexity
-        cls.methods.method.forEach(meth => {
-          let methodBranchAllFalse = meth.lines.line.every(line => line._branch == "false");
+        cls.methods.method.forEach((meth) => {
+          let methodBranchAllFalse = meth.lines.line.every(
+            (line) => line._branch == 'false'
+          )
 
-          let methodLinesCount = meth.lines.line.length;
-          let methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+          let methodLinesCount = meth.lines.line.length
+          let methodHitsCount = meth.lines.line.reduce(
+            (acc, line) => acc + (line._hits > 0 ? 1 : 0),
+            0
+          )
 
-          let methodBranchCount = methodLinesCount;
+          let methodBranchCount = methodLinesCount
           let methodBranchHitsCount = methodLinesCount
 
-          if(!methodBranchAllFalse) {
-            methodBranchCount = 0;
-            methodBranchHitsCount = 0;
+          if (!methodBranchAllFalse) {
+            methodBranchCount = 0
+            methodBranchHitsCount = 0
 
-            meth.lines.line.forEach(line => {
-              if (line._branch == "true" && line._conditionCoverage) {
-                const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
+            meth.lines.line.forEach((line) => {
+              if (line._branch == 'true' && line._conditionCoverage) {
+                const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/)
                 if (match) {
-                  classBranchHitsCount += parseInt(match[1], 10);
-                  classBranchCount += parseInt(match[2], 10);
+                  classBranchHitsCount += parseInt(match[1], 10)
+                  classBranchCount += parseInt(match[2], 10)
                 }
               }
-            });
+            })
           }
 
-          meth._lineRate = methodHitsCount / methodLinesCount;
-          meth._branchRate = methodBranchHitsCount / methodBranchCount;
+          meth._lineRate = methodHitsCount / methodLinesCount
+          meth._branchRate = methodBranchHitsCount / methodBranchCount
           meth._complexity = Number.NaN
 
-          classLinesCount += methodLinesCount;
-          classHitsCount += methodHitsCount;
-          classBranchCount += methodLinesCount;
-          classBranchHitsCount += methodHitsCount;
-        });
+          classLinesCount += methodLinesCount
+          classHitsCount += methodHitsCount
+          classBranchCount += methodLinesCount
+          classBranchHitsCount += methodHitsCount
+        })
 
-        cls._lineRate = classHitsCount / classLinesCount;
-        cls._branchRate = classBranchHitsCount / classBranchCount;
+        cls._lineRate = classHitsCount / classLinesCount
+        cls._branchRate = classBranchHitsCount / classBranchCount
         cls._complexity = Number.NaN
 
-        pkgLinesCount += classLinesCount;
-        pkgHitsCount += classHitsCount;
-        pkgBranchCount += classBranchCount;
-        pkgBranchHitsCount += classBranchHitsCount;
-      });
+        pkgLinesCount += classLinesCount
+        pkgHitsCount += classHitsCount
+        pkgBranchCount += classBranchCount
+        pkgBranchHitsCount += classBranchHitsCount
+      })
 
-      pkg._lineRate = pkgHitsCount / pkgLinesCount;
-      pkg._branchRate = pkgBranchHitsCount / pkgBranchCount;
+      pkg._lineRate = pkgHitsCount / pkgLinesCount
+      pkg._branchRate = pkgBranchHitsCount / pkgBranchCount
       pkg._complexity = Number.NaN
 
-      coberturaLinesCount += pkgLinesCount;
-      coberturaHitsCount += pkgHitsCount;
-      coberturaBranchCount += pkgBranchCount;
-      coberturaBranchHitsCount += pkgBranchHitsCount;
-    });
+      coberturaLinesCount += pkgLinesCount
+      coberturaHitsCount += pkgHitsCount
+      coberturaBranchCount += pkgBranchCount
+      coberturaBranchHitsCount += pkgBranchHitsCount
+    })
 
-    coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount;
-    coberuraCoverage._branchRate = coberturaBranchHitsCount / coberturaBranchCount;
+    coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount
+    coberuraCoverage._branchRate =
+      coberturaBranchHitsCount / coberturaBranchCount
     coberuraCoverage._complexity = Number.NaN
-          
-    return coberuraCoverage;
-  }  
-}
 
+    return coberuraCoverage
+  }
+}

@@ -57,7 +57,7 @@ export async function run(): Promise<void> {
     const parser = new XMLParser({
       allowBooleanAttributes: true,
       ignoreAttributes: false,
-      attributeNamePrefix: '_',
+      attributeNamePrefix: '_'
     })
     let xmlDoc: any = null
     try {
@@ -76,7 +76,7 @@ export async function run(): Promise<void> {
     // You can also pass in additional options as a second parameter to getOctokit
     // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
     let changedFiles = [] as string[]
-    if (context.eventName === 'pull_request') {     
+    if (context.eventName === 'pull_request') {
       try {
         // Get the current HEAD SHA
         const headSha = context.sha
@@ -117,17 +117,16 @@ export async function run(): Promise<void> {
         core.info(`comparison ${JSON.stringify(comparison)}`)
 
         // Extract just the file names
-        changedFiles = comparison.files?.map((file) => { 
-
-          // Change \ to / for consistency
-          file.filename = file.filename.replace(/\\/g, '/')
-          return file.filename
-        }) || []
+        changedFiles =
+          comparison.files?.map((file) => {
+            // Change \ to / for consistency
+            file.filename = file.filename.replace(/\\/g, '/')
+            return file.filename
+          }) || []
 
         // Get a listt of filtered files based on a regex pattern
-        let filterMap = fileFilters.split(',').map((f) => f.trim());
-        changedFiles = micromatch(changedFiles, filterMap);
-         
+        let filterMap = fileFilters.split(',').map((f) => f.trim())
+        changedFiles = micromatch(changedFiles, filterMap)
 
         core.info(
           `Found ${changedFiles.length} changed files since merge base with ${mainBranch || 'master'}`
@@ -138,7 +137,7 @@ export async function run(): Promise<void> {
         console.log(`Failed to get changed files: ${error}`)
 
         // Fallback to empty array or handle differently
-        changedFiles = [] as string[];
+        changedFiles = [] as string[]
       }
     }
 
@@ -146,24 +145,23 @@ export async function run(): Promise<void> {
     const modifiedCoverage = new CoberturaParser(xmlDoc)
     const reducedCoverage = modifiedCoverage.parse(changedFiles)
 
-    
-
     const builder = new XMLBuilder({
-      suppressBooleanAttributes: false,  
+      suppressBooleanAttributes: false,
       arrayNodeName: 'coverage',
       ignoreAttributes: false,
       attributeNamePrefix: '_',
-      format: true,
- //     preserveOrder: true
+      format: true
+      //     preserveOrder: true
     })
-    const outputXml = 
-    {
+    const outputXml = {
       coverage: reducedCoverage
     }
     outputXml.coverage.sources = xmlDoc.coverage.sources || []
-    
+
     let output = builder.build(outputXml)
-    output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n" + output
+    output =
+      '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
+      output
     // Write the modified XML to the output file
     const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'))
     if (outputDir && !fs.existsSync(outputDir)) {
@@ -177,7 +175,6 @@ export async function run(): Promise<void> {
     //core.setOutput('time', new Date().toTimeString())
   } catch (error) {
     // Fail the workflow run if an error occurs
-    if (error instanceof Error) 
-      core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message)
   }
 }

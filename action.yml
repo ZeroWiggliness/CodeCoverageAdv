@@ -39,11 +39,15 @@ inputs:
   current-branch:
     description: Name of the current branch
     required: false
-    default: '${{ github.ref_name }}'
+    default: '${{ github.head_ref || github.ref_name }}'
   file-filters:
     description: Comma-separated list of file patterns to include/exclude (e.g., "src/**/*.ts,!**/*.test.ts")
     required: false
     default: '**/*.*'
+  fail-action:
+    description: Whether to fail the action if coverage is below the threshold. Defaults to true.
+    required: false
+    default: 'true'
 
 # Define your outputs here.
 outputs:

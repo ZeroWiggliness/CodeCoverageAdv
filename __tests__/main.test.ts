@@ -131,6 +131,8 @@ describe('main.ts', () => {
           return 'feature/branch'
         case 'file-filters':
           return 'src/**,lib/**'
+        case 'fail-action':
+          return 'true'
         default:
           return ''
       }

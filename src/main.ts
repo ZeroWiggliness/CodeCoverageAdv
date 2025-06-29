@@ -199,7 +199,7 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
   const branchRate = coberuraCoverage._branchRate || 0
 
   // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
-  const healthColor = lineRate >= thresholds[1] ? 'success' : lineRate >= thresholds[0] ? 'warning' : 'danger'
+  const healthColor = lineRate >= thresholds[1] * 100 ? 'success' : lineRate >= thresholds[0] * 100 ? 'warning' : 'danger'
 
   core.setOutput(`coverage${changes ? '-changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`)
 
@@ -212,19 +212,26 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
   for (const pkg of coberuraCoverage.packages.package) {
     const pkgLineRate = pkg._lineRate ?? 0
     const pkgBranchRate = pkg._branchRate ?? 0
-    const pkgHealthIcon = pkgLineRate >= thresholds[1] * 100 ? '✔' : pkgLineRate >= thresholds[0] * 100 ? '🔶' : '☠'
+    const pkgHealthIcon = pkgLineRate * 100 >= thresholds[1] ? '✔' : pkgLineRate * 100 >= thresholds[0] ? '🔶' : '☠'
 
     markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`
   }
 
   // Summary row
-  const healthIcon = lineRate >= thresholds[1] * 100 ? '✔' : lineRate >= thresholds[1] * 0 ? '🔶' : '☠'
+  const healthIcon = lineRate * 100 >= thresholds[1] ? '✔' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠'
   markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`
   markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`
 
   core.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown)
   core.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`)
-  core.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0]}`)
+  core.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0] * 100}`)
+
+  const failAction = core.getInput('fail-action') === 'true'
+  if (failAction && lineRate * 100 < thresholds[0]) {
+    core.setFailed(`${changes ? 'Changed ' : ''}Code coverage is below the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`)
+  } else {
+    core.info(`Code coverage is above the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`)
+  }
 }
 
 /*

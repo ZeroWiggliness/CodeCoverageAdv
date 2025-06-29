@@ -72,7 +72,7 @@ export async function run(): Promise<void> {
     const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage()
     createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false)
 
-    core.info(`Original coverage line rate: ${coberuraOriginalCoverage._lineRate}`)
+    core.info(`Original coverage line rate: ${((coberuraOriginalCoverage._lineRate || 0) * 100).toFixed(1)}%`)
 
     const myToken = core.getInput('github-token', { required: true })
     const octokit = github.getOctokit(myToken)
@@ -144,7 +144,7 @@ export async function run(): Promise<void> {
 
       // Parse the Cobertura XML and filter based on changed files
       const reducedCoverage = modifiedCoverage.parse(changedFiles)
-      core.info(`Reduced coverage line rate: ${reducedCoverage._lineRate}`)
+      core.info(`Reduced coverage line rate: ${((reducedCoverage._lineRate || 0) * 100).toFixed(1)}%`)
 
       createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true)
 
@@ -201,7 +201,7 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
   // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
   const healthColor = lineRate >= thresholds[1] ? 'success' : lineRate >= thresholds[0] ? 'warning' : 'danger'
 
-  core.setOutput(`coverage${changes ? 'Changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`)
+  core.setOutput(`coverage${changes ? '-changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`)
 
   // Markdown table header
   let markdown = `## Code Coverage Summary\n\n`
@@ -222,9 +222,9 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
   markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`
   markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`
 
-  core.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown)
+  core.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown)
   core.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`)
-  core.setOutput(`coverage${changes ? 'Changes' : ''}-failed`, `${lineRate < thresholds[0]}`)
+  core.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0]}`)
 }
 
 /*

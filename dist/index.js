@@ -37734,7 +37734,7 @@ async function run() {
         const modifiedCoverage = new CoberturaParser(xmlDoc);
         const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage();
         createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false);
-        coreExports.info(`Original coverage line rate: ${coberuraOriginalCoverage._lineRate}`);
+        coreExports.info(`Original coverage line rate: ${((coberuraOriginalCoverage._lineRate || 0) * 100).toFixed(1)}%`);
         const myToken = coreExports.getInput('github-token', { required: true });
         const octokit = githubExports.getOctokit(myToken);
         // You can also pass in additional options as a second parameter to getOctokit
@@ -37794,7 +37794,7 @@ async function run() {
             }
             // Parse the Cobertura XML and filter based on changed files
             const reducedCoverage = modifiedCoverage.parse(changedFiles);
-            coreExports.info(`Reduced coverage line rate: ${reducedCoverage._lineRate}`);
+            coreExports.info(`Reduced coverage line rate: ${((reducedCoverage._lineRate || 0) * 100).toFixed(1)}%`);
             createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true);
             if (outputFile != null && outputFile !== '') {
                 writeOutputFile(outputFile, reducedCoverage);
@@ -37844,7 +37844,7 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
     const branchRate = coberuraCoverage._branchRate || 0;
     // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
     const healthColor = lineRate >= thresholds[1] ? 'success' : lineRate >= thresholds[0] ? 'warning' : 'danger';
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
     // Markdown table header
     let markdown = `## Code Coverage Summary\n\n`;
     markdown += `| Package | Line Rate | Branch Rate | Health |\n`;
@@ -37860,9 +37860,9 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
     const healthIcon = lineRate >= thresholds[1] * 100 ? '✔' : lineRate >= thresholds[1] * 0 ? '🔶' : '☠';
     markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`;
     markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`;
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown);
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown);
     coreExports.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-failed`, `${lineRate < thresholds[0]}`);
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0]}`);
 }
 /*
 

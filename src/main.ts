@@ -251,7 +251,7 @@ function createMarkdownAndBadges(
         ? '🔶'
         : '☠'
   markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`
-  markdown += `_Minimum pass threshold is \`${(thresholds[0] * 100).toFixed(1)}%\`_`
+  markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`
 
   core.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown)
   core.setOutput(

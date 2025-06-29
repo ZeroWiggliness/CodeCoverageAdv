@@ -133,6 +133,10 @@ describe('main.ts', () => {
           return 'src/**,lib/**'
         case 'fail-action':
           return 'true'
+        case 'coverage-threshold':
+          return '75 90'
+        case 'coverage-changes-threshold':
+          return '75 90'
         default:
           return ''
       }

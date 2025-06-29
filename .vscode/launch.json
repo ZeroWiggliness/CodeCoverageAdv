@@ -13,13 +13,7 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
-      "args": [
-        "${fileBasenameNoExtension}",
-        "--runInBand",
-        "--watch",
-        "--coverage=false",
-        "--no-cache"
-      ],
+      "args": ["${fileBasenameNoExtension}", "--runInBand", "--watch", "--coverage=false", "--no-cache"],
       "cwd": "${workspaceRoot}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -32,11 +26,7 @@
       "name": "Debug Jest Tests",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": [
-        "--inspect-brk",
-        "${workspaceRoot}/node_modules/.bin/jest",
-        "--runInBand"
-      ],
+      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -44,13 +34,7 @@
       "name": "Debug Jest Tests (Windows)",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": [
-        "--inspect-brk",
-        "${workspaceRoot}/node_modules/jest/bin/jest.js",
-        "--runInBand",
-        "--config",
-        "${workspaceRoot}/jest.config.js"
-      ],
+      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/jest/bin/jest.js", "--runInBand", "--config", "${workspaceRoot}/jest.config.js"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "env": {

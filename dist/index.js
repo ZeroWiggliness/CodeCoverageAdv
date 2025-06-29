@@ -29414,8 +29414,7 @@ class CoberturaParser {
         if (!coverage) {
             throw new Error('Invalid Cobertura XML: missing coverage element');
         }
-        this.coberuraOriginalCoverage =
-            this.convertToCoberturaCoverageData(coverage);
+        this.coberuraOriginalCoverage = this.convertToCoberturaCoverageData(coverage);
         this.coberuraCoverage = this.convertToCoberturaCoverageData(coverage);
     }
     getOriginalCoverage() {
@@ -29488,10 +29487,7 @@ class CoberturaParser {
                         });
                     }
                     meth._lineRate = methodHitsCount / methodLinesCount;
-                    meth._branchRate =
-                        methodBranchHitsCount == 0 && methodBranchCount == 0
-                            ? undefined
-                            : methodBranchHitsCount / methodBranchCount;
+                    meth._branchRate = methodBranchHitsCount == 0 && methodBranchCount == 0 ? undefined : methodBranchHitsCount / methodBranchCount;
                     meth._complexity = Number.NaN;
                     classLinesCount += methodLinesCount;
                     classHitsCount += methodHitsCount;
@@ -29517,8 +29513,7 @@ class CoberturaParser {
         this.coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount;
         this.coberuraCoverage._linesCovered = coberturaHitsCount;
         this.coberuraCoverage._linesValid = coberturaLinesCount;
-        this.coberuraCoverage._branchRate =
-            coberturaBranchHitsCount / coberturaBranchCount;
+        this.coberuraCoverage._branchRate = coberturaBranchHitsCount / coberturaBranchCount;
         this.coberuraCoverage._branchesCovered = coberturaBranchesCovered;
         this.coberuraCoverage._branchesValid = coberturaBranchesValid;
         this.coberuraCoverage._complexity = Number.NaN;
@@ -29532,27 +29527,13 @@ class CoberturaParser {
     }
     convertToCoberturaCoverageData(xmlObject) {
         const newData = {
-            _linesValid: xmlObject['_lines-valid'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_lines-valid']),
-            _linesCovered: xmlObject['_lines-covered'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_lines-covered']),
-            _lineRate: xmlObject['_line-rate'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_line-rate']),
-            _branchesCovered: xmlObject['_branches-covered'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_branches-covered']),
-            _branchesValid: xmlObject['_branches-valid'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_branches-valid']),
-            _branchRate: xmlObject['_branch-rate'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_branch-rate']),
-            _complexity: xmlObject['_complexity'] == undefined
-                ? undefined
-                : parseFloat(xmlObject['_complexity']),
+            _linesValid: xmlObject['_lines-valid'] == undefined ? undefined : parseFloat(xmlObject['_lines-valid']),
+            _linesCovered: xmlObject['_lines-covered'] == undefined ? undefined : parseFloat(xmlObject['_lines-covered']),
+            _lineRate: xmlObject['_line-rate'] == undefined ? undefined : parseFloat(xmlObject['_line-rate']),
+            _branchesCovered: xmlObject['_branches-covered'] == undefined ? undefined : parseFloat(xmlObject['_branches-covered']),
+            _branchesValid: xmlObject['_branches-valid'] == undefined ? undefined : parseFloat(xmlObject['_branches-valid']),
+            _branchRate: xmlObject['_branch-rate'] == undefined ? undefined : parseFloat(xmlObject['_branch-rate']),
+            _complexity: xmlObject['_complexity'] == undefined ? undefined : parseFloat(xmlObject['_complexity']),
             _version: xmlObject._version,
             _timestamp: xmlObject._timestamp,
             packages: this.convertToPackagesData(this.toArrayIfNot(xmlObject.packages.package)),
@@ -37729,7 +37710,7 @@ async function run() {
         // list current directory
         coreExports.debug(`Current working directory: ${process.cwd()}`);
         // output to jest output
-        coreExports.info(`Cobertura file: ${coberturaFile}`);
+        coreExports.debug(`Cobertura file: ${coberturaFile}`);
         // Check if the Cobertura file exists
         if (!fs.existsSync(coberturaFile)) {
             throw new Error(`Cobertura file not found: ${coberturaFile}`);
@@ -37759,11 +37740,12 @@ async function run() {
         // You can also pass in additional options as a second parameter to getOctokit
         // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
         let changedFiles = [];
+        coreExports.info(`Context ${context.eventName}`);
         if (context.eventName === 'pull_request') {
             try {
                 // Get the current HEAD SHA
                 const headSha = context.sha;
-                coreExports.info(`headSha ${headSha}`);
+                coreExports.debug(`headSha ${headSha}`);
                 // Get the master/main branch SHA
                 const { data: masterBranch } = await octokit.rest.repos.getBranch({
                     owner,
@@ -37771,8 +37753,8 @@ async function run() {
                     branch: mainBranch
                 });
                 const masterSha = masterBranch.commit.sha;
-                coreExports.info(`masterSha ${masterSha}`);
-                coreExports.info(`data ${JSON.stringify(masterBranch)}`);
+                coreExports.debug(`masterSha ${masterSha}`);
+                coreExports.debug(`data ${JSON.stringify(masterBranch)}`);
                 // Find the merge base (equivalent to git merge-base HEAD origin/master)
                 const { data: mergeBase } = await octokit.rest.repos.compareCommits({
                     owner,
@@ -37780,10 +37762,10 @@ async function run() {
                     base: masterSha,
                     head: headSha
                 });
-                coreExports.info(`mergeBase ${JSON.stringify(mergeBase)}`);
+                coreExports.debug(`mergeBase ${JSON.stringify(mergeBase)}`);
                 // Get the actual merge base SHA
                 const mergeBaseSha = mergeBase.merge_base_commit.sha;
-                coreExports.info(`mergeBaseSha ${mergeBaseSha}`);
+                coreExports.debug(`mergeBaseSha ${mergeBaseSha}`);
                 // Now compare from merge base to HEAD (equivalent to git diff --name-only)
                 const { data: comparison } = await octokit.rest.repos.compareCommits({
                     owner,
@@ -37791,7 +37773,7 @@ async function run() {
                     base: mergeBaseSha,
                     head: headSha
                 });
-                coreExports.info(`comparison ${JSON.stringify(comparison)}`);
+                coreExports.debug(`comparison ${JSON.stringify(comparison)}`);
                 // Extract just the file names
                 changedFiles =
                     comparison.files?.map((file) => {
@@ -37802,7 +37784,7 @@ async function run() {
                 // Get a listt of filtered files based on a regex pattern
                 const filterMap = fileFilters.split(',').map((f) => f.trim());
                 changedFiles = micromatch(changedFiles, filterMap);
-                coreExports.info(`Found ${changedFiles.length} changed files since merge base with ${mainBranch || 'master'}`);
+                coreExports.info(`Found ${changedFiles.length} changed files since branch creation with ${mainBranch}`);
                 coreExports.info(`Changed files: ${changedFiles.join(', ')}`);
             }
             catch (error) {
@@ -37846,9 +37828,7 @@ const writeOutputFile = (outputFile, reducedCoverage) => {
     };
     outputXml.coverage.sources = reducedCoverage.sources || [];
     let output = builder.build(outputXml);
-    output =
-        '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
-            output;
+    output = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' + output;
     // Write the modified XML to the output file
     const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'));
     if (outputDir && !fs.existsSync(outputDir)) {
@@ -37863,11 +37843,7 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
     const lineRate = coberuraCoverage._lineRate || 0;
     const branchRate = coberuraCoverage._branchRate || 0;
     // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
-    const healthColor = lineRate >= thresholds[1]
-        ? 'success'
-        : lineRate >= thresholds[0]
-            ? 'warning'
-            : 'danger';
+    const healthColor = lineRate >= thresholds[1] ? 'success' : lineRate >= thresholds[0] ? 'warning' : 'danger';
     coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
     // Markdown table header
     let markdown = `## Code Coverage Summary\n\n`;
@@ -37877,19 +37853,11 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
     for (const pkg of coberuraCoverage.packages.package) {
         const pkgLineRate = pkg._lineRate ?? 0;
         const pkgBranchRate = pkg._branchRate ?? 0;
-        const pkgHealthIcon = pkgLineRate >= thresholds[1] * 100
-            ? '✔'
-            : pkgLineRate >= thresholds[0] * 100
-                ? '🔶'
-                : '☠';
+        const pkgHealthIcon = pkgLineRate >= thresholds[1] * 100 ? '✔' : pkgLineRate >= thresholds[0] * 100 ? '🔶' : '☠';
         markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`;
     }
     // Summary row
-    const healthIcon = lineRate >= thresholds[1] * 100
-        ? '✔'
-        : lineRate >= thresholds[1] * 0
-            ? '🔶'
-            : '☠';
+    const healthIcon = lineRate >= thresholds[1] * 100 ? '✔' : lineRate >= thresholds[1] * 0 ? '🔶' : '☠';
     markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`;
     markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`;
     coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown);

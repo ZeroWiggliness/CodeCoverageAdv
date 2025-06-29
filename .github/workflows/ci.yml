@@ -71,10 +71,7 @@ jobs:
           # The comment will be added to the PR, and will be updated on each run
           # of the workflow.
           header: 'Cobertura Coverage Report'
-          message: |
-            '${{ steps.cobertura-filter.outputs.coverage-markdown }}\n\n
-            ${{steps.cobertura-filter.outputs.coverage-changes-markdown }}'
-
+          message: '${{ steps.cobertura-filter.outputs.coverage-markdown}}\n\n${{steps.cobertura-filter.outputs.coverage-changes-markdown }}'
 #  test-action:
 #    name: GitHub Actions Test
 #    runs-on: ubuntu-latest

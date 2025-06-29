@@ -75,8 +75,7 @@ export class CoberturaParser {
       throw new Error('Invalid Cobertura XML: missing coverage element')
     }
 
-    this.coberuraOriginalCoverage =
-      this.convertToCoberturaCoverageData(coverage)
+    this.coberuraOriginalCoverage = this.convertToCoberturaCoverageData(coverage)
     this.coberuraCoverage = this.convertToCoberturaCoverageData(coverage)
   }
 
@@ -111,15 +110,10 @@ export class CoberturaParser {
       let pkgBranchHitsCount = 0
 
       pkg.classes.class.forEach((cls) => {
-        const classBranchAllFalse = cls.lines.line.every(
-          (line) => line._branch == 'false'
-        )
+        const classBranchAllFalse = cls.lines.line.every((line) => line._branch == 'false')
 
         let classLinesCount = cls.lines.line.length
-        let classHitsCount = cls.lines.line.reduce(
-          (acc, line) => acc + (line._hits > 0 ? 1 : 0),
-          0
-        )
+        let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0)
         let classBranchCount = classLinesCount
         let classBranchHitsCount = classLinesCount
 
@@ -143,15 +137,10 @@ export class CoberturaParser {
 
         // Set methods lineRate, branchRate, and complexity
         cls.methods.method.forEach((meth) => {
-          const methodBranchAllFalse = meth.lines.line.every(
-            (line) => line._branch == 'false'
-          )
+          const methodBranchAllFalse = meth.lines.line.every((line) => line._branch == 'false')
 
           const methodLinesCount = meth.lines.line.length
-          const methodHitsCount = meth.lines.line.reduce(
-            (acc, line) => acc + (line._hits > 0 ? 1 : 0),
-            0
-          )
+          const methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0)
 
           let methodBranchCount = methodLinesCount
           let methodBranchHitsCount = methodLinesCount
@@ -175,10 +164,7 @@ export class CoberturaParser {
           }
 
           meth._lineRate = methodHitsCount / methodLinesCount
-          meth._branchRate =
-            methodBranchHitsCount == 0 && methodBranchCount == 0
-              ? undefined
-              : methodBranchHitsCount / methodBranchCount
+          meth._branchRate = methodBranchHitsCount == 0 && methodBranchCount == 0 ? undefined : methodBranchHitsCount / methodBranchCount
           meth._complexity = Number.NaN
 
           classLinesCount += methodLinesCount
@@ -210,8 +196,7 @@ export class CoberturaParser {
     this.coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount
     this.coberuraCoverage._linesCovered = coberturaHitsCount
     this.coberuraCoverage._linesValid = coberturaLinesCount
-    this.coberuraCoverage._branchRate =
-      coberturaBranchHitsCount / coberturaBranchCount
+    this.coberuraCoverage._branchRate = coberturaBranchHitsCount / coberturaBranchCount
     this.coberuraCoverage._branchesCovered = coberturaBranchesCovered
     this.coberuraCoverage._branchesValid = coberturaBranchesValid
     this.coberuraCoverage._complexity = Number.NaN
@@ -226,43 +211,18 @@ export class CoberturaParser {
     return Array.isArray(array) ? array : [array]
   }
 
-  private convertToCoberturaCoverageData(
-    xmlObject: any
-  ): CoberturaCoverageData {
+  private convertToCoberturaCoverageData(xmlObject: any): CoberturaCoverageData {
     const newData: CoberturaCoverageData = {
-      _linesValid:
-        xmlObject['_lines-valid'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_lines-valid']),
-      _linesCovered:
-        xmlObject['_lines-covered'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_lines-covered']),
-      _lineRate:
-        xmlObject['_line-rate'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_line-rate']),
-      _branchesCovered:
-        xmlObject['_branches-covered'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_branches-covered']),
-      _branchesValid:
-        xmlObject['_branches-valid'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_branches-valid']),
-      _branchRate:
-        xmlObject['_branch-rate'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_branch-rate']),
-      _complexity:
-        xmlObject['_complexity'] == undefined
-          ? undefined
-          : parseFloat(xmlObject['_complexity']),
+      _linesValid: xmlObject['_lines-valid'] == undefined ? undefined : parseFloat(xmlObject['_lines-valid']),
+      _linesCovered: xmlObject['_lines-covered'] == undefined ? undefined : parseFloat(xmlObject['_lines-covered']),
+      _lineRate: xmlObject['_line-rate'] == undefined ? undefined : parseFloat(xmlObject['_line-rate']),
+      _branchesCovered: xmlObject['_branches-covered'] == undefined ? undefined : parseFloat(xmlObject['_branches-covered']),
+      _branchesValid: xmlObject['_branches-valid'] == undefined ? undefined : parseFloat(xmlObject['_branches-valid']),
+      _branchRate: xmlObject['_branch-rate'] == undefined ? undefined : parseFloat(xmlObject['_branch-rate']),
+      _complexity: xmlObject['_complexity'] == undefined ? undefined : parseFloat(xmlObject['_complexity']),
       _version: xmlObject._version,
       _timestamp: xmlObject._timestamp,
-      packages: this.convertToPackagesData(
-        this.toArrayIfNot(xmlObject.packages.package)
-      ),
+      packages: this.convertToPackagesData(this.toArrayIfNot(xmlObject.packages.package)),
       sources: xmlObject.sources?.source
     }
 

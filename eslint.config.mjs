@@ -24,13 +24,7 @@ export default [
   {
     ignores: ['**/coverage', '**/dist', '**/linter', '**/node_modules']
   },
-  ...compat.extends(
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:jest/recommended',
-    'plugin:prettier/recommended'
-  ),
+  ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:@typescript-eslint/recommended', 'plugin:jest/recommended', 'plugin:prettier/recommended'),
   {
     plugins: {
       import: fixupPluginRules(_import),

@@ -20,9 +20,7 @@ export async function run(): Promise<void> {
     const currentBranch: string = core.getInput('current-branch')
     const fileFilters: string = core.getInput('file-filters')
     const coverageThresholds: string = core.getInput('coverage-threshold')
-    const coverageChangeThresholds: string = core.getInput(
-      'coverage-changes-threshold'
-    )
+    const coverageChangeThresholds: string = core.getInput('coverage-changes-threshold')
 
     const { context } = github
     // For production code
@@ -46,7 +44,7 @@ export async function run(): Promise<void> {
     core.debug(`Current working directory: ${process.cwd()}`)
 
     // output to jest output
-    core.info(`Cobertura file: ${coberturaFile}`)
+    core.debug(`Cobertura file: ${coberturaFile}`)
 
     // Check if the Cobertura file exists
     if (!fs.existsSync(coberturaFile)) {
@@ -74,9 +72,7 @@ export async function run(): Promise<void> {
     const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage()
     createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false)
 
-    core.info(
-      `Original coverage line rate: ${coberuraOriginalCoverage._lineRate}`
-    )
+    core.info(`Original coverage line rate: ${coberuraOriginalCoverage._lineRate}`)
 
     const myToken = core.getInput('github-token', { required: true })
     const octokit = github.getOctokit(myToken)
@@ -84,11 +80,12 @@ export async function run(): Promise<void> {
     // You can also pass in additional options as a second parameter to getOctokit
     // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
     let changedFiles = [] as string[]
+    core.info(`Context ${context.eventName}`)
     if (context.eventName === 'pull_request') {
       try {
         // Get the current HEAD SHA
         const headSha = context.sha
-        core.info(`headSha ${headSha}`)
+        core.debug(`headSha ${headSha}`)
 
         // Get the master/main branch SHA
         const { data: masterBranch } = await octokit.rest.repos.getBranch({
@@ -98,8 +95,8 @@ export async function run(): Promise<void> {
         })
         const masterSha = masterBranch.commit.sha
 
-        core.info(`masterSha ${masterSha}`)
-        core.info(`data ${JSON.stringify(masterBranch)}`)
+        core.debug(`masterSha ${masterSha}`)
+        core.debug(`data ${JSON.stringify(masterBranch)}`)
 
         // Find the merge base (equivalent to git merge-base HEAD origin/master)
         const { data: mergeBase } = await octokit.rest.repos.compareCommits({
@@ -109,10 +106,10 @@ export async function run(): Promise<void> {
           head: headSha
         })
 
-        core.info(`mergeBase ${JSON.stringify(mergeBase)}`)
+        core.debug(`mergeBase ${JSON.stringify(mergeBase)}`)
         // Get the actual merge base SHA
         const mergeBaseSha = mergeBase.merge_base_commit.sha
-        core.info(`mergeBaseSha ${mergeBaseSha}`)
+        core.debug(`mergeBaseSha ${mergeBaseSha}`)
 
         // Now compare from merge base to HEAD (equivalent to git diff --name-only)
         const { data: comparison } = await octokit.rest.repos.compareCommits({
@@ -122,7 +119,7 @@ export async function run(): Promise<void> {
           head: headSha
         })
 
-        core.info(`comparison ${JSON.stringify(comparison)}`)
+        core.debug(`comparison ${JSON.stringify(comparison)}`)
 
         // Extract just the file names
         changedFiles =
@@ -136,9 +133,7 @@ export async function run(): Promise<void> {
         const filterMap = fileFilters.split(',').map((f) => f.trim())
         changedFiles = micromatch(changedFiles, filterMap)
 
-        core.info(
-          `Found ${changedFiles.length} changed files since merge base with ${mainBranch || 'master'}`
-        )
+        core.info(`Found ${changedFiles.length} changed files since branch creation with ${mainBranch}`)
         core.info(`Changed files: ${changedFiles.join(', ')}`)
       } catch (error) {
         core.warning(`Failed to get changed files: ${error}`)
@@ -158,9 +153,7 @@ export async function run(): Promise<void> {
       }
     } else {
       if (outputFile !== '') {
-        core.warning(
-          `No change coverage file will be generated. Push request not detected.`
-        )
+        core.warning(`No change coverage file will be generated. Push request not detected.`)
         outputFile = null
       }
     }
@@ -187,9 +180,7 @@ const writeOutputFile = (outputFile: string, reducedCoverage: any): void => {
   outputXml.coverage.sources = reducedCoverage.sources || []
 
   let output = builder.build(outputXml)
-  output =
-    '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
-    output
+  output = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' + output
 
   // Write the modified XML to the output file
   const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'))
@@ -201,28 +192,16 @@ const writeOutputFile = (outputFile: string, reducedCoverage: any): void => {
   core.info(`Filtered Cobertura file saved to: ${outputFile}`)
 }
 
-function createMarkdownAndBadges(
-  coberuraCoverage: CoberturaCoverageData,
-  coverageThresholds: string,
-  changes: boolean
-): void {
+function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, coverageThresholds: string, changes: boolean): void {
   // split thresholes by space in to 2 numbers
   const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t))
   const lineRate = coberuraCoverage._lineRate || 0
   const branchRate = coberuraCoverage._branchRate || 0
 
   // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
-  const healthColor =
-    lineRate >= thresholds[1]
-      ? 'success'
-      : lineRate >= thresholds[0]
-        ? 'warning'
-        : 'danger'
+  const healthColor = lineRate >= thresholds[1] ? 'success' : lineRate >= thresholds[0] ? 'warning' : 'danger'
 
-  core.setOutput(
-    `coverage${changes ? 'Changes' : ''}-badge`,
-    `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`
-  )
+  core.setOutput(`coverage${changes ? 'Changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`)
 
   // Markdown table header
   let markdown = `## Code Coverage Summary\n\n`
@@ -233,35 +212,19 @@ function createMarkdownAndBadges(
   for (const pkg of coberuraCoverage.packages.package) {
     const pkgLineRate = pkg._lineRate ?? 0
     const pkgBranchRate = pkg._branchRate ?? 0
-    const pkgHealthIcon =
-      pkgLineRate >= thresholds[1] * 100
-        ? '✔'
-        : pkgLineRate >= thresholds[0] * 100
-          ? '🔶'
-          : '☠'
+    const pkgHealthIcon = pkgLineRate >= thresholds[1] * 100 ? '✔' : pkgLineRate >= thresholds[0] * 100 ? '🔶' : '☠'
 
     markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`
   }
 
   // Summary row
-  const healthIcon =
-    lineRate >= thresholds[1] * 100
-      ? '✔'
-      : lineRate >= thresholds[1] * 0
-        ? '🔶'
-        : '☠'
+  const healthIcon = lineRate >= thresholds[1] * 100 ? '✔' : lineRate >= thresholds[1] * 0 ? '🔶' : '☠'
   markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`
   markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`
 
   core.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown)
-  core.setOutput(
-    `coverage${changes ? '-changes' : ''}-passrate`,
-    `${(lineRate * 100).toFixed(1)}%`
-  )
-  core.setOutput(
-    `coverage${changes ? 'Changes' : ''}-failed`,
-    `${lineRate < thresholds[0]}`
-  )
+  core.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`)
+  core.setOutput(`coverage${changes ? 'Changes' : ''}-failed`, `${lineRate < thresholds[0]}`)
 }
 
 /*

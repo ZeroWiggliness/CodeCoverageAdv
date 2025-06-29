@@ -29406,8 +29406,113 @@ function isAttribute(name /*, options*/) {
 
 class CoberturaParser {
     xmlObject;
+    coberuraOriginalCoverage;
+    coberuraCoverage;
     constructor(xmlObject) {
         this.xmlObject = xmlObject;
+        const coverage = this.xmlObject.coverage;
+        if (!coverage) {
+            throw new Error('Invalid Cobertura XML: missing coverage element');
+        }
+        this.coberuraOriginalCoverage =
+            this.convertToCoberturaCoverageData(coverage);
+        this.coberuraCoverage = this.convertToCoberturaCoverageData(coverage);
+    }
+    getOriginalCoverage() {
+        return this.coberuraOriginalCoverage;
+    }
+    parse(changedFiles) {
+        // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
+        let coberturaLinesCount = 0;
+        let coberturaBranchesCovered = 0;
+        let coberturaBranchesValid = 0;
+        let coberturaHitsCount = 0;
+        let coberturaBranchCount = 0;
+        let coberturaBranchHitsCount = 0;
+        this.coberuraCoverage.packages.package.forEach((pkg) => {
+            let pkgLinesCount = 0;
+            let pkgHitsCount = 0;
+            let pkgBranchCount = 0;
+            let pkgBranchHitsCount = 0;
+            pkg.classes.class.forEach((cls) => {
+                const classBranchAllFalse = cls.lines.line.every((line) => line._branch == 'false');
+                let classLinesCount = cls.lines.line.length;
+                let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                let classBranchCount = classLinesCount;
+                let classBranchHitsCount = classLinesCount;
+                if (!classBranchAllFalse) {
+                    classBranchCount = 0;
+                    classBranchHitsCount = 0;
+                    cls.lines.line.forEach((line) => {
+                        if (line._branch == 'true' && line._conditionCoverage) {
+                            const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
+                            if (match) {
+                                classBranchHitsCount += parseInt(match[1], 10);
+                                classBranchCount += parseInt(match[2], 10);
+                                coberturaBranchesCovered += parseInt(match[1], 10);
+                                coberturaBranchesValid += parseInt(match[2], 10);
+                            }
+                        }
+                    });
+                }
+                // Set methods lineRate, branchRate, and complexity
+                cls.methods.method.forEach((meth) => {
+                    const methodBranchAllFalse = meth.lines.line.every((line) => line._branch == 'false');
+                    const methodLinesCount = meth.lines.line.length;
+                    const methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                    let methodBranchCount = methodLinesCount;
+                    let methodBranchHitsCount = methodLinesCount;
+                    if (!methodBranchAllFalse) {
+                        methodBranchCount = 0;
+                        methodBranchHitsCount = 0;
+                        meth.lines.line.forEach((line) => {
+                            if (line._branch == 'true' && line._conditionCoverage) {
+                                const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
+                                if (match) {
+                                    classBranchHitsCount += parseInt(match[1], 10);
+                                    classBranchCount += parseInt(match[2], 10);
+                                    coberturaBranchesCovered += parseInt(match[1], 10);
+                                    coberturaBranchesValid += parseInt(match[2], 10);
+                                }
+                            }
+                        });
+                    }
+                    meth._lineRate = methodHitsCount / methodLinesCount;
+                    meth._branchRate =
+                        methodBranchHitsCount == 0 && methodBranchCount == 0
+                            ? undefined
+                            : methodBranchHitsCount / methodBranchCount;
+                    meth._complexity = Number.NaN;
+                    classLinesCount += methodLinesCount;
+                    classHitsCount += methodHitsCount;
+                    classBranchCount += methodLinesCount;
+                    classBranchHitsCount += methodHitsCount;
+                });
+                cls._lineRate = classHitsCount / classLinesCount;
+                cls._branchRate = classBranchHitsCount / classBranchCount;
+                cls._complexity = Number.NaN;
+                pkgLinesCount += classLinesCount;
+                pkgHitsCount += classHitsCount;
+                pkgBranchCount += classBranchCount;
+                pkgBranchHitsCount += classBranchHitsCount;
+            });
+            pkg._lineRate = pkgHitsCount / pkgLinesCount;
+            pkg._branchRate = pkgBranchHitsCount / pkgBranchCount;
+            pkg._complexity = Number.NaN;
+            coberturaLinesCount += pkgLinesCount;
+            coberturaHitsCount += pkgHitsCount;
+            coberturaBranchCount += pkgBranchCount;
+            coberturaBranchHitsCount += pkgBranchHitsCount;
+        });
+        this.coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount;
+        this.coberuraCoverage._linesCovered = coberturaHitsCount;
+        this.coberuraCoverage._linesValid = coberturaLinesCount;
+        this.coberuraCoverage._branchRate =
+            coberturaBranchHitsCount / coberturaBranchCount;
+        this.coberuraCoverage._branchesCovered = coberturaBranchesCovered;
+        this.coberuraCoverage._branchesValid = coberturaBranchesValid;
+        this.coberuraCoverage._complexity = Number.NaN;
+        return this.coberuraCoverage;
     }
     toArrayIfNot(array) {
         if (array === undefined || array === null) {
@@ -29417,17 +29522,31 @@ class CoberturaParser {
     }
     convertToCoberturaCoverageData(xmlObject) {
         const newData = {
-            _lineValid: 0,
-            _lineCovered: 0,
-            _lineRate: 0,
-            _branchesCovered: 0,
-            _branchesValid: 0,
-            _branchRate: 0,
-            _complexity: 0,
+            _linesValid: xmlObject['_lines-valid'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_lines-valid']),
+            _linesCovered: xmlObject['_lines-covered'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_lines-covered']),
+            _lineRate: xmlObject['_line-rate'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_line-rate']),
+            _branchesCovered: xmlObject['_branches-covered'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_branches-covered']),
+            _branchesValid: xmlObject['_branches-valid'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_branches-valid']),
+            _branchRate: xmlObject['_branch-rate'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_branch-rate']),
+            _complexity: xmlObject['_complexity'] == undefined
+                ? undefined
+                : parseFloat(xmlObject['_complexity']),
             _version: xmlObject._version,
             _timestamp: xmlObject._timestamp,
             packages: this.convertToPackagesData(this.toArrayIfNot(xmlObject.packages.package)),
-            sources: []
+            sources: xmlObject.sources?.source
         };
         return newData;
     }
@@ -29477,110 +29596,6 @@ class CoberturaParser {
                 _conditionCoverage: line['_condition-coverage']
             }))
         };
-    }
-    parse(changedFiles) {
-        const coverage = this.xmlObject.coverage;
-        if (!coverage) {
-            throw new Error('Invalid Cobertura XML: missing coverage element');
-        }
-        const coberuraCoverage = this.convertToCoberturaCoverageData(coverage);
-        coberuraCoverage.packages.package.forEach((pkg) => {
-            pkg.classes.class = pkg.classes.class.filter((cls) => {
-                const filename = cls._filename || '';
-                return changedFiles.some((file) => {
-                    const consitantFilename = filename.replace(/\\/g, '/');
-                    return consitantFilename.includes(file);
-                });
-            });
-        });
-        // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
-        let coberturaLinesCount = 0;
-        let coberturaBranchesCovered = 0;
-        let coberturaBranchesValid = 0;
-        let coberturaHitsCount = 0;
-        let coberturaBranchCount = 0;
-        let coberturaBranchHitsCount = 0;
-        coberuraCoverage.packages.package.forEach((pkg) => {
-            let pkgLinesCount = 0;
-            let pkgHitsCount = 0;
-            let pkgBranchCount = 0;
-            let pkgBranchHitsCount = 0;
-            pkg.classes.class.forEach((cls) => {
-                const classBranchAllFalse = cls.lines.line.every((line) => line._branch == 'false');
-                let classLinesCount = cls.lines.line.length;
-                let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
-                let classBranchCount = classLinesCount;
-                let classBranchHitsCount = classLinesCount;
-                if (!classBranchAllFalse) {
-                    classBranchCount = 0;
-                    classBranchHitsCount = 0;
-                    cls.lines.line.forEach((line) => {
-                        if (line._branch == 'true' && line._conditionCoverage) {
-                            const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
-                            if (match) {
-                                classBranchHitsCount += parseInt(match[1], 10);
-                                classBranchCount += parseInt(match[2], 10);
-                                coberturaBranchesCovered += parseInt(match[1], 10);
-                                coberturaBranchesValid += parseInt(match[2], 10);
-                            }
-                        }
-                    });
-                }
-                // Set methods lineRate, branchRate, and complexity
-                cls.methods.method.forEach((meth) => {
-                    const methodBranchAllFalse = meth.lines.line.every((line) => line._branch == 'false');
-                    const methodLinesCount = meth.lines.line.length;
-                    const methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
-                    let methodBranchCount = methodLinesCount;
-                    let methodBranchHitsCount = methodLinesCount;
-                    if (!methodBranchAllFalse) {
-                        methodBranchCount = 0;
-                        methodBranchHitsCount = 0;
-                        meth.lines.line.forEach((line) => {
-                            if (line._branch == 'true' && line._conditionCoverage) {
-                                const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/);
-                                if (match) {
-                                    classBranchHitsCount += parseInt(match[1], 10);
-                                    classBranchCount += parseInt(match[2], 10);
-                                    coberturaBranchesCovered += parseInt(match[1], 10);
-                                    coberturaBranchesValid += parseInt(match[2], 10);
-                                }
-                            }
-                        });
-                    }
-                    meth._lineRate = methodHitsCount / methodLinesCount;
-                    meth._branchRate = methodBranchHitsCount / methodBranchCount;
-                    meth._complexity = Number.NaN;
-                    classLinesCount += methodLinesCount;
-                    classHitsCount += methodHitsCount;
-                    classBranchCount += methodLinesCount;
-                    classBranchHitsCount += methodHitsCount;
-                });
-                cls._lineRate = classHitsCount / classLinesCount;
-                cls._branchRate = classBranchHitsCount / classBranchCount;
-                cls._complexity = Number.NaN;
-                pkgLinesCount += classLinesCount;
-                pkgHitsCount += classHitsCount;
-                pkgBranchCount += classBranchCount;
-                pkgBranchHitsCount += classBranchHitsCount;
-            });
-            pkg._lineRate = pkgHitsCount / pkgLinesCount;
-            pkg._branchRate = pkgBranchHitsCount / pkgBranchCount;
-            pkg._complexity = Number.NaN;
-            coberturaLinesCount += pkgLinesCount;
-            coberturaHitsCount += pkgHitsCount;
-            coberturaBranchCount += pkgBranchCount;
-            coberturaBranchHitsCount += pkgBranchHitsCount;
-        });
-        coberuraCoverage._lineRate = coberturaHitsCount / coberturaLinesCount;
-        coberuraCoverage._lineCovered = coberturaHitsCount;
-        coberuraCoverage._lineValid = coberturaLinesCount;
-        coberuraCoverage._branchRate =
-            coberturaBranchHitsCount / coberturaBranchCount;
-        coberuraCoverage._branchesCovered = coberturaBranchesCovered;
-        coberuraCoverage._branchesValid = coberturaBranchesValid;
-        coberuraCoverage._complexity = Number.NaN;
-        return coberuraCoverage;
     }
 }
 
@@ -37680,10 +37695,12 @@ async function run() {
     try {
         // Get inputs from action.yml
         const coberturaFile = coreExports.getInput('cobertura-file');
-        const outputFile = coreExports.getInput('output-file');
+        let outputFile = coreExports.getInput('output-file');
         const mainBranch = coreExports.getInput('main-branch');
         const currentBranch = coreExports.getInput('current-branch');
         const fileFilters = coreExports.getInput('file-filters');
+        const coverageThresholds = coreExports.getInput('coverage-threshold');
+        const coverageChangeThresholds = coreExports.getInput('coverage-changes-threshold');
         const { context } = github$1;
         // For production code
         const { owner, repo } = context.repo;
@@ -37723,8 +37740,10 @@ async function run() {
         catch {
             throw new Error(`XML parsing error`);
         }
-        // console.log(`Parsed XML:`)
-        //console.log(xmlDoc)
+        const modifiedCoverage = new CoberturaParser(xmlDoc);
+        const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage();
+        createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false);
+        coreExports.info(`Original coverage line rate: ${coberuraOriginalCoverage._lineRate}`);
         const myToken = coreExports.getInput('github-token', { required: true });
         const octokit = githubExports.getOctokit(myToken);
         // You can also pass in additional options as a second parameter to getOctokit
@@ -37778,37 +37797,23 @@ async function run() {
             }
             catch (error) {
                 coreExports.warning(`Failed to get changed files: ${error}`);
-                console.log(`Failed to get changed files: ${error}`);
                 // Fallback to empty array or handle differently
                 changedFiles = [];
             }
+            // Parse the Cobertura XML and filter based on changed files
+            const reducedCoverage = modifiedCoverage.parse(changedFiles);
+            coreExports.info(`Reduced coverage line rate: ${reducedCoverage._lineRate}`);
+            createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true);
+            if (outputFile != null && outputFile !== '') {
+                writeOutputFile(outputFile, reducedCoverage);
+            }
         }
-        // Log the root element
-        const modifiedCoverage = new CoberturaParser(xmlDoc);
-        const reducedCoverage = modifiedCoverage.parse(changedFiles);
-        const builder = new Builder({
-            suppressBooleanAttributes: false,
-            arrayNodeName: 'coverage',
-            ignoreAttributes: false,
-            attributeNamePrefix: '_',
-            format: true
-            //     preserveOrder: true
-        });
-        const outputXml = {
-            coverage: reducedCoverage
-        };
-        outputXml.coverage.sources = xmlDoc.coverage.sources || [];
-        let output = builder.build(outputXml);
-        output =
-            '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
-                output;
-        // Write the modified XML to the output file
-        const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'));
-        if (outputDir && !fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir, { recursive: true });
+        else {
+            if (outputFile !== '') {
+                coreExports.warning(`No change coverage file will be generated. Push request not detected.`);
+                outputFile = null;
+            }
         }
-        fs.writeFileSync(outputFile, output, 'utf-8');
-        coreExports.info(`Filtered Cobertura file saved to: ${outputFile}`);
         // Set outputs for other workflow steps to use
         //core.setOutput('time', new Date().toTimeString())
     }
@@ -37818,6 +37823,80 @@ async function run() {
             coreExports.setFailed(error.message);
     }
 }
+const writeOutputFile = (outputFile, reducedCoverage) => {
+    const builder = new Builder({
+        suppressBooleanAttributes: false,
+        arrayNodeName: 'coverage',
+        ignoreAttributes: false,
+        attributeNamePrefix: '_',
+        format: true
+    });
+    const outputXml = {
+        coverage: reducedCoverage
+    };
+    outputXml.coverage.sources = reducedCoverage.sources || [];
+    let output = builder.build(outputXml);
+    output =
+        '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
+            output;
+    // Write the modified XML to the output file
+    const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'));
+    if (outputDir && !fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+    fs.writeFileSync(outputFile, output, 'utf-8');
+    coreExports.info(`Filtered Cobertura file saved to: ${outputFile}`);
+};
+function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) {
+    // split thresholes by space in to 2 numbers
+    const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t));
+    const lineRate = coberuraCoverage._lineRate || 0;
+    const branchRate = coberuraCoverage._branchRate || 0;
+    // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
+    const healthColor = lineRate >= thresholds[1]
+        ? 'success'
+        : lineRate >= thresholds[0]
+            ? 'warning'
+            : 'danger';
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}Badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
+    // Markdown table header
+    let markdown = `## Code Coverage Summary\n\n`;
+    markdown += `| Package | Line Rate | Branch Rate | Health |\n`;
+    markdown += `| ------- | --------- | ----------- | ------ |\n`;
+    // Always assume packages is an array
+    for (const pkg of coberuraCoverage.packages.package) {
+        const pkgLineRate = pkg._lineRate ?? 0;
+        const pkgBranchRate = pkg._branchRate ?? 0;
+        const pkgHealthIcon = pkgLineRate >= thresholds[1] * 100
+            ? '✔'
+            : pkgLineRate >= thresholds[0] * 100
+                ? '🔶'
+                : '☠';
+        markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`;
+    }
+    // Summary row
+    const healthIcon = lineRate >= thresholds[1] * 100
+        ? '✔'
+        : lineRate >= thresholds[1] * 0
+            ? '🔶'
+            : '☠';
+    markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`;
+    markdown += `_Minimum pass threshold is \`${(thresholds[0] * 100).toFixed(1)}%\`_`;
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}Markdown`, markdown);
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}PassRate`, `${(lineRate * 100).toFixed(1)}%`);
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}Failed`, `${lineRate < thresholds[0]}`);
+}
+/*
+
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-89%25-success?style=flat)
+
+Package | Line Rate | Branch Rate | Complexity | Health
+-------- | --------- | ----------- | ---------- | ------
+Api | 89% | 100% | NaN | ✔
+**Summary** | **89%** (5217 / 5860) | **100%** (0 / 0) | **NaN** | ✔
+
+_Minimum allowed line rate is `75%`_
+*/
 
 /**
  * The entrypoint for the action. This file simply imports and runs the action's

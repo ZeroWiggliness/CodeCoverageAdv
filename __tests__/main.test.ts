@@ -118,13 +118,38 @@ describe('main.ts', () => {
     })) */
   })
 
-  it('should process coverage file successfully', async () => {
+  it('should not write a file when not specified', async () => {
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'cobertura-file':
+          return '__tests__/cobertura.xml'
+        case 'output-file':
+          return null
+        case 'main-branch':
+          return 'main'
+        case 'current-branch':
+          return 'feature/branch'
+        case 'file-filters':
+          return 'src/**,lib/**'
+        default:
+          return ''
+      }
+    })
+
+    await run()
+
+    // Verify outputs were set
+    //expect(core.setOutput).toHaveBeenCalled()
+    expect(core.setFailed).not.toHaveBeenCalled()
+  })
+
+  /* it('should process coverage file successfully', async () => {
     await run()
 
     // Verify outputs were set
     // expect(core.setOutput).toHaveBeenCalled()
     expect(core.setFailed).not.toHaveBeenCalled()
-  })
+  })*/
   /*
   it('should handle missing coverage file', async () => {
     core.getInput.mockImplementation((name: string) =>

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import { XMLParser, XMLBuilder } from 'fast-xml-parser'
-import { CoberturaParser } from './cobertura.js'
+import { CoberturaCoverageData, CoberturaParser } from './cobertura.js'
 import micromatch from 'micromatch'
 
 import * as github from '@actions/github'
@@ -15,10 +15,14 @@ export async function run(): Promise<void> {
   try {
     // Get inputs from action.yml
     const coberturaFile: string = core.getInput('cobertura-file')
-    const outputFile: string = core.getInput('output-file')
+    let outputFile: string | null = core.getInput('output-file')
     const mainBranch: string = core.getInput('main-branch')
     const currentBranch: string = core.getInput('current-branch')
     const fileFilters: string = core.getInput('file-filters')
+    const coverageThresholds: string = core.getInput('coverage-threshold')
+    const coverageChangeThresholds: string = core.getInput(
+      'coverage-changes-threshold'
+    )
 
     const { context } = github
     // For production code
@@ -66,11 +70,15 @@ export async function run(): Promise<void> {
       throw new Error(`XML parsing error`)
     }
 
-    // console.log(`Parsed XML:`)
-    //console.log(xmlDoc)
+    const modifiedCoverage = new CoberturaParser(xmlDoc)
+    const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage()
+    createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false)
+
+    core.info(
+      `Original coverage line rate: ${coberuraOriginalCoverage._lineRate}`
+    )
 
     const myToken = core.getInput('github-token', { required: true })
-
     const octokit = github.getOctokit(myToken)
 
     // You can also pass in additional options as a second parameter to getOctokit
@@ -134,42 +142,28 @@ export async function run(): Promise<void> {
         core.info(`Changed files: ${changedFiles.join(', ')}`)
       } catch (error) {
         core.warning(`Failed to get changed files: ${error}`)
-        console.log(`Failed to get changed files: ${error}`)
 
         // Fallback to empty array or handle differently
         changedFiles = [] as string[]
       }
+
+      // Parse the Cobertura XML and filter based on changed files
+      const reducedCoverage = modifiedCoverage.parse(changedFiles)
+      core.info(`Reduced coverage line rate: ${reducedCoverage._lineRate}`)
+
+      createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true)
+
+      if (outputFile != null && outputFile !== '') {
+        writeOutputFile(outputFile, reducedCoverage)
+      }
+    } else {
+      if (outputFile !== '') {
+        core.warning(
+          `No change coverage file will be generated. Push request not detected.`
+        )
+        outputFile = null
+      }
     }
-
-    // Log the root element
-    const modifiedCoverage = new CoberturaParser(xmlDoc)
-    const reducedCoverage = modifiedCoverage.parse(changedFiles)
-
-    const builder = new XMLBuilder({
-      suppressBooleanAttributes: false,
-      arrayNodeName: 'coverage',
-      ignoreAttributes: false,
-      attributeNamePrefix: '_',
-      format: true
-      //     preserveOrder: true
-    })
-    const outputXml = {
-      coverage: reducedCoverage
-    }
-    outputXml.coverage.sources = xmlDoc.coverage.sources || []
-
-    let output = builder.build(outputXml)
-    output =
-      '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
-      output
-    // Write the modified XML to the output file
-    const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'))
-    if (outputDir && !fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true })
-    }
-
-    fs.writeFileSync(outputFile, output, 'utf-8')
-    core.info(`Filtered Cobertura file saved to: ${outputFile}`)
 
     // Set outputs for other workflow steps to use
     //core.setOutput('time', new Date().toTimeString())
@@ -178,3 +172,106 @@ export async function run(): Promise<void> {
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
+
+const writeOutputFile = (outputFile: string, reducedCoverage: any): void => {
+  const builder = new XMLBuilder({
+    suppressBooleanAttributes: false,
+    arrayNodeName: 'coverage',
+    ignoreAttributes: false,
+    attributeNamePrefix: '_',
+    format: true
+  })
+  const outputXml = {
+    coverage: reducedCoverage
+  }
+  outputXml.coverage.sources = reducedCoverage.sources || []
+
+  let output = builder.build(outputXml)
+  output =
+    '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' +
+    output
+
+  // Write the modified XML to the output file
+  const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'))
+  if (outputDir && !fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true })
+  }
+
+  fs.writeFileSync(outputFile, output, 'utf-8')
+  core.info(`Filtered Cobertura file saved to: ${outputFile}`)
+}
+
+function createMarkdownAndBadges(
+  coberuraCoverage: CoberturaCoverageData,
+  coverageThresholds: string,
+  changes: boolean
+): void {
+  // split thresholes by space in to 2 numbers
+  const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t))
+  const lineRate = coberuraCoverage._lineRate || 0
+  const branchRate = coberuraCoverage._branchRate || 0
+
+  // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
+  const healthColor =
+    lineRate >= thresholds[1]
+      ? 'success'
+      : lineRate >= thresholds[0]
+        ? 'warning'
+        : 'danger'
+
+  core.setOutput(
+    `coverage${changes ? 'Changes' : ''}Badge`,
+    `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`
+  )
+
+  // Markdown table header
+  let markdown = `## Code Coverage Summary\n\n`
+  markdown += `| Package | Line Rate | Branch Rate | Health |\n`
+  markdown += `| ------- | --------- | ----------- | ------ |\n`
+
+  // Always assume packages is an array
+  for (const pkg of coberuraCoverage.packages.package) {
+    const pkgLineRate = pkg._lineRate ?? 0
+    const pkgBranchRate = pkg._branchRate ?? 0
+    const pkgHealthIcon =
+      pkgLineRate >= thresholds[1] * 100
+        ? '✔'
+        : pkgLineRate >= thresholds[0] * 100
+          ? '🔶'
+          : '☠'
+
+    markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`
+  }
+
+  // Summary row
+  const healthIcon =
+    lineRate >= thresholds[1] * 100
+      ? '✔'
+      : lineRate >= thresholds[1] * 0
+        ? '🔶'
+        : '☠'
+  markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`
+  markdown += `_Minimum pass threshold is \`${(thresholds[0] * 100).toFixed(1)}%\`_`
+
+  core.setOutput(`coverage${changes ? 'Changes' : ''}Markdown`, markdown)
+  core.setOutput(
+    `coverage${changes ? 'Changes' : ''}PassRate`,
+    `${(lineRate * 100).toFixed(1)}%`
+  )
+  core.setOutput(
+    `coverage${changes ? 'Changes' : ''}Failed`,
+    `${lineRate < thresholds[0]}`
+  )
+}
+
+/*
+
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-89%25-success?style=flat)
+
+Package | Line Rate | Branch Rate | Complexity | Health
+-------- | --------- | ----------- | ---------- | ------
+Api | 89% | 100% | NaN | ✔
+**Summary** | **89%** (5217 / 5860) | **100%** (0 / 0) | **NaN** | ✔
+
+_Minimum allowed line rate is `75%`_
+*/

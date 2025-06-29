@@ -29422,6 +29422,16 @@ class CoberturaParser {
         return this.coberuraOriginalCoverage;
     }
     parse(changedFiles) {
+        // Filter out packages that do not match the changed files
+        this.coberuraCoverage.packages.package.forEach((pkg) => {
+            pkg.classes.class = pkg.classes.class.filter((cls) => {
+                const filename = cls._filename || '';
+                return changedFiles.some((file) => {
+                    const consitantFilename = filename.replace(/\\/g, '/');
+                    return consitantFilename.includes(file);
+                });
+            });
+        });
         // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
         let coberturaLinesCount = 0;
         let coberturaBranchesCovered = 0;

@@ -37891,7 +37891,7 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
             ? '🔶'
             : '☠';
     markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`;
-    markdown += `_Minimum pass threshold is \`${(thresholds[0] * 100).toFixed(1)}%\`_`;
+    markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`;
     coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown);
     coreExports.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);
     coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-failed`, `${lineRate < thresholds[0]}`);

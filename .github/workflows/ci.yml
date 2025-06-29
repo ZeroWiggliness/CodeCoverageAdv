@@ -72,7 +72,7 @@ jobs:
           # of the workflow.
           recreate: true
           header: 'Cobertura Coverage Report'
-          message: '${{ steps.cobertura-filter.outputs.coverage-markdown}}\n\n${{steps.cobertura-filter.outputs.coverage-changes-markdown }}'
+          message: '${{ steps.cobertura-filter.outputs.coverage-badge}} ${{ steps.cobertura-filter.outputs.coverage-badge}} /n ${{ steps.cobertura-filter.outputs.coverage-markdown}}/n/n ${{steps.cobertura-filter.outputs.coverage-changes-markdown }}'
 #  test-action:
 #    name: GitHub Actions Test
 #    runs-on: ubuntu-latest

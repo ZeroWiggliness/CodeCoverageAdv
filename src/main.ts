@@ -220,7 +220,7 @@ function createMarkdownAndBadges(
         : 'danger'
 
   core.setOutput(
-    `coverage${changes ? 'Changes' : ''}Badge`,
+    `coverage${changes ? 'Changes' : ''}-badge`,
     `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${core.getInput('badge-style')})`
   )
 
@@ -253,13 +253,13 @@ function createMarkdownAndBadges(
   markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`
   markdown += `_Minimum pass threshold is \`${(thresholds[0] * 100).toFixed(1)}%\`_`
 
-  core.setOutput(`coverage${changes ? 'Changes' : ''}Markdown`, markdown)
+  core.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown)
   core.setOutput(
-    `coverage${changes ? 'Changes' : ''}PassRate`,
+    `coverage${changes ? '-changes' : ''}-passrate`,
     `${(lineRate * 100).toFixed(1)}%`
   )
   core.setOutput(
-    `coverage${changes ? 'Changes' : ''}Failed`,
+    `coverage${changes ? 'Changes' : ''}-failed`,
     `${lineRate < thresholds[0]}`
   )
 }

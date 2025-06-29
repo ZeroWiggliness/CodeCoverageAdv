@@ -37858,7 +37858,7 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
         : lineRate >= thresholds[0]
             ? 'warning'
             : 'danger';
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}Badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage: ${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
     // Markdown table header
     let markdown = `## Code Coverage Summary\n\n`;
     markdown += `| Package | Line Rate | Branch Rate | Health |\n`;
@@ -37882,9 +37882,9 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
             : '☠';
     markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage._linesCovered} / ${coberuraCoverage._linesValid}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage._branchesCovered} / ${coberuraCoverage._branchesValid}) | **${healthIcon}** |\n\n`;
     markdown += `_Minimum pass threshold is \`${(thresholds[0] * 100).toFixed(1)}%\`_`;
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}Markdown`, markdown);
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}PassRate`, `${(lineRate * 100).toFixed(1)}%`);
-    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}Failed`, `${lineRate < thresholds[0]}`);
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-markdown`, markdown);
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);
+    coreExports.setOutput(`coverage${changes ? 'Changes' : ''}-failed`, `${lineRate < thresholds[0]}`);
 }
 /*
 

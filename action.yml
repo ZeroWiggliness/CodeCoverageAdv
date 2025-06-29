@@ -58,8 +58,22 @@ inputs:
 
 # Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  coverage-markdown:
+    description: Markdown formatted coverage report
+  coverage-changes-markdown:
+    description: Markdown formatted coverage of changes only report
+  coverage-passrate:
+    description: Markdown formatted coverage report
+  coverage-changes-passrate:
+    description: Markdown formatted coverage of changes only report
+  coverage-badge:
+    description: The badge markdown
+  coverage-changes-badge:
+    description: The changed code badge markdown
+  coverage-failed:
+    description: True if coverage is below the threshold, false otherwise
+  coverage-changes-failed:
+    description: True if change coverage is below the threshold, false otherwise
 
 runs:
   using: node20

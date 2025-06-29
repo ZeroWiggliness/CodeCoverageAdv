@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 env:
   ACTIONS_STEP_DEBUG: true
@@ -62,6 +63,15 @@ jobs:
           github-token: ${{ github.token }}
           current-branch: ${{ github.ref_name }}
           file-filters: '**/*.*'
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: always()
+        with:
+          # The comment will be added to the PR, and will be updated on each run
+          # of the workflow.
+          header: 'Cobertura Coverage Report'
+          message: '${{ steps.cobertura-filter.outputs.coverage-markdown }}\n\n${{ steps.cobertura-filter.outputs.coverage-changes-markdown }}'     
 
   test-action:
     name: GitHub Actions Test

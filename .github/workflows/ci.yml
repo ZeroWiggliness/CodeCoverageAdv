@@ -70,6 +70,7 @@ jobs:
         with:
           # The comment will be added to the PR, and will be updated on each run
           # of the workflow.
+          recreate: true
           header: 'Cobertura Coverage Report'
           message: '${{ steps.cobertura-filter.outputs.coverage-markdown}}\n\n${{steps.cobertura-filter.outputs.coverage-changes-markdown }}'
 #  test-action:

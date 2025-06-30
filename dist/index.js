@@ -29444,8 +29444,8 @@ class CoberturaParser {
             let pkgBranchCount = 0;
             let pkgBranchHitsCount = 0;
             pkg.classes.class.forEach((cls) => {
-                let classLinesCount = cls.lines.line.length;
-                let classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                const classLinesCount = cls.lines.line.length;
+                const classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
                 let classBranchCount = 0;
                 let classBranchHitsCount = 0;
                 cls.lines.line.forEach((line) => {
@@ -29479,12 +29479,8 @@ class CoberturaParser {
                     meth['_line-rate'] = methodHitsCount / methodLinesCount;
                     meth['_branch-rate'] = methodBranchHitsCount == 0 && methodBranchCount == 0 ? 1 : methodBranchHitsCount / methodBranchCount;
                     meth._complexity = Number.NaN;
-                    classLinesCount += methodLinesCount;
-                    classHitsCount += methodHitsCount;
-                    classBranchCount += methodLinesCount;
-                    classBranchHitsCount += methodHitsCount;
                 });
-                cls['_lineRate'] = classHitsCount / classLinesCount;
+                cls['_line-rate'] = classHitsCount / classLinesCount;
                 cls['_branch-rate'] = classBranchHitsCount == 0 && classBranchCount == 0 ? 1 : classBranchHitsCount / classBranchCount;
                 cls._complexity = Number.NaN;
                 pkgLinesCount += classLinesCount;
@@ -29492,7 +29488,7 @@ class CoberturaParser {
                 pkgBranchCount += classBranchCount;
                 pkgBranchHitsCount += classBranchHitsCount;
             });
-            pkg['_lineRate'] = pkgHitsCount / pkgLinesCount;
+            pkg['_line-rate'] = pkgHitsCount / pkgLinesCount;
             pkg['_branch-rate'] = pkgBranchHitsCount == 0 && pkgBranchCount == 0 ? 1 : pkgBranchHitsCount / pkgBranchCount;
             pkg._complexity = Number.NaN;
             coberturaLinesCount += pkgLinesCount;
@@ -29500,10 +29496,10 @@ class CoberturaParser {
             coberturaBranchCount += pkgBranchCount;
             coberturaBranchHitsCount += pkgBranchHitsCount;
         });
-        this.coberuraCoverage['_line-rate'] = coberturaHitsCount / coberturaLinesCount;
+        this.coberuraCoverage['_line-rate'] = coberturaHitsCount == 0 && coberturaLinesCount == 0 ? 0 : coberturaHitsCount / coberturaLinesCount;
         this.coberuraCoverage['_lines-covered'] = coberturaHitsCount;
         this.coberuraCoverage['_lines-valid'] = coberturaLinesCount;
-        this.coberuraCoverage['_branch-rate'] = coberturaBranchHitsCount / coberturaBranchCount;
+        this.coberuraCoverage['_branch-rate'] = coberturaBranchHitsCount == 0 && coberturaBranchCount == 0 ? 1 : coberturaBranchHitsCount / coberturaBranchCount;
         this.coberuraCoverage['_branches-covered'] = coberturaBranchesCovered;
         this.coberuraCoverage['_branches-valid'] = coberturaBranchesValid;
         this.coberuraCoverage._complexity = Number.NaN;

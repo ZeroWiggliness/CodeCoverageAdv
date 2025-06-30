@@ -74,17 +74,16 @@ jobs:
           header: 'Cobertura Coverage Report'
           message: |
             ## Coverage Report
-            
+
             ${{ steps.coverage.outputs.coverage-markdown }}
-            
+
             ## Changed Files Coverage
-            
+
             ${{ steps.coverage.outputs.coverage-changes-markdown }}
-            
+
             ${{ steps.coverage.outputs.coverage-badge }}
             ${{ steps.coverage.outputs.coverage-changes-badge }}
-            
-            
+
 #  test-action:
 #    name: GitHub Actions Test
 #    runs-on: ubuntu-latest

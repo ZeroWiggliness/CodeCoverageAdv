@@ -37871,17 +37871,6 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
         coreExports.info(`Code coverage is above the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
     }
 }
-/*
-
-![Code Coverage](https://img.shields.io/badge/Code%20Coverage-89%25-success?style=flat)
-
-Package | Line Rate | Branch Rate | Complexity | Health
--------- | --------- | ----------- | ---------- | ------
-Api | 89% | 100% | NaN | ✔
-**Summary** | **89%** (5217 / 5860) | **100%** (0 / 0) | **NaN** | ✔
-
-_Minimum allowed line rate is `75%`_
-*/
 
 /**
  * The entrypoint for the action. This file simply imports and runs the action's

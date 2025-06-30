@@ -134,7 +134,7 @@ export async function run(): Promise<void> {
         changedFiles = micromatch(changedFiles, filterMap)
 
         core.info(`Found ${changedFiles.length} changed files since branch creation with ${mainBranch}`)
-        core.info(`Changed files: ${changedFiles.join(', ')}`)
+        core.debug(`Changed files: ${changedFiles.join(', ')}`)
       } catch (error) {
         core.warning(`Failed to get changed files: ${error}`)
 
@@ -220,7 +220,7 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
 
   // Summary row
   const healthIcon = lineRate * 100 >= thresholds[1] ? '✅' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠'
-  markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`
+  markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['_lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`
   markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`
 
   core.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown)

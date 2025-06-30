@@ -37775,7 +37775,7 @@ async function run() {
                 const filterMap = fileFilters.split(',').map((f) => f.trim());
                 changedFiles = micromatch(changedFiles, filterMap);
                 coreExports.info(`Found ${changedFiles.length} changed files since branch creation with ${mainBranch}`);
-                coreExports.info(`Changed files: ${changedFiles.join(', ')}`);
+                coreExports.debug(`Changed files: ${changedFiles.join(', ')}`);
             }
             catch (error) {
                 coreExports.warning(`Failed to get changed files: ${error}`);
@@ -37849,7 +37849,7 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
     }
     // Summary row
     const healthIcon = lineRate * 100 >= thresholds[1] ? '✅' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠';
-    markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`;
+    markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['_lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`;
     markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`;
     coreExports.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown);
     coreExports.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);

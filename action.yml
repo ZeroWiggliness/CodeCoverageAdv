@@ -9,15 +9,64 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
+  cobertura-file:
+    description: Path to the Cobertura XML input file
     required: true
-    default: '1000'
+    default: 'coverage/cobertura-coverage.xml'
+  output-file:
+    description: Path to save the filtered coverage output file. i.e 'coverage/cobertura-changed-coverage.xml'. Will only be written if it is tun within a push request. Leave empty to disable writing the file.
+    required: false
+  main-branch:
+    description: Name of the main branch to compare against
+    required: false
+    default: ${{ github.repository_default_branch }}
+  coverage-threshold:
+    description: Threasholds for coverage percentage health "<warning% <success%" i.e "50 75"
+    required: false
+    default: '50 75'
+  coverage-changes-threshold:
+    description: Threasholds for coverage percentage health "<warning% <success%" i.e "50 75". This relates to changed file coverage only.
+    required: false
+    default: '50 75'
+  badge-style:
+    description: Github badge style to use for the coverage badge. Options are 'flat', 'flat-square', 'plastic', 'for-the-badge', 'social'.
+    required: false
+    default: 'flat'
+  github-token:
+    description: GitHub token for accessing the repository
+    required: true
+    default: '${{ github.token }}'
+  current-branch:
+    description: Name of the current branch
+    required: false
+    default: '${{ github.head_ref || github.ref_name }}'
+  file-filters:
+    description: Comma-separated list of file patterns to include/exclude (e.g., "src/**/*.ts,!**/*.test.ts")
+    required: false
+    default: '**/*.*'
+  fail-action:
+    description: Whether to fail the action if coverage is below the threshold. Defaults to true.
+    required: false
+    default: 'true'
 
 # Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  coverage-markdown:
+    description: Markdown formatted coverage report
+  coverage-changes-markdown:
+    description: Markdown formatted coverage of changes only report
+  coverage-passrate:
+    description: Markdown formatted coverage report
+  coverage-changes-passrate:
+    description: Markdown formatted coverage of changes only report
+  coverage-badge:
+    description: The badge markdown
+  coverage-changes-badge:
+    description: The changed code badge markdown
+  coverage-failed:
+    description: True if coverage is below the threshold, false otherwise
+  coverage-changes-failed:
+    description: True if change coverage is below the threshold, false otherwise
 
 runs:
   using: node20

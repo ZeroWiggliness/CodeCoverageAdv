@@ -7,56 +7,158 @@
  */
 import { jest } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
-import { wait } from '../__fixtures__/wait.js'
+import * as github from '../__fixtures__/github.js'
+import mockCompareCommitsResponse from './mockCompareCommitsResponse.js'
+import mockCompareCommitsResponseDiff from './mockCompareCommitsResponseDiff.js'
 
-// Mocks should be declared before the module being tested is imported.
+// Mock modules before importing
 jest.unstable_mockModule('@actions/core', () => core)
-jest.unstable_mockModule('../src/wait.js', () => ({ wait }))
+jest.unstable_mockModule('@actions/github', () => github)
 
-// The module being tested should be imported dynamically. This ensures that the
-// mocks are used in place of any actual dependencies.
 const { run } = await import('../src/main.js')
 
 describe('main.ts', () => {
   beforeEach(() => {
-    // Set the action's inputs as return values from core.getInput().
-    core.getInput.mockImplementation(() => '500')
+    // Reset all mocks
+    jest.clearAllMocks()
 
-    // Mock the wait function so that it does not actually wait.
-    wait.mockImplementation(() => Promise.resolve('done!'))
+    // Set default input values
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'cobertura-file':
+          return '__tests__/cobertura.xml'
+        case 'output-file':
+          return 'coverage/cobertura.out.xml'
+        case 'main-branch':
+          return 'main'
+        case 'current-branch':
+          return 'feature-branch'
+        case 'file-filters':
+          return 'src/**,lib/**'
+        default:
+          return ''
+      }
+    })
+
+    // mocck all 3 octokit.rest.repos.getBranch calls in main.ts
+    let compareCommitsCallCount = 0
+
+    github.getOctokit.mockImplementation(() => ({
+      rest: {
+        repos: {
+          getBranch: jest.fn().mockResolvedValue({
+            status: 200,
+            data: {
+              name: 'main',
+              commit: {
+                sha: '83219c6bb93b1dd25af0db49df2cd32fbadf5f58',
+                commit: {
+                  author: {
+                    name: 'xxx',
+                    email: 'xxx@xxx',
+                    date: '2025-06-23T21:58:25Z'
+                  },
+                  committer: {
+                    name: 'GitHub',
+                    email: 'noreply@github.com',
+                    date: '2025-06-23T21:58:25Z'
+                  },
+                  message: 'Initial commit',
+                  tree: {
+                    sha: '0fed120b06c60e55bfcc98226b7ebf6f68ad6cc8',
+                    url: 'https://api.github.com/repos/ZeroWiggliness/CoberturaChangeOnly/git/trees/0fed120b06c60e55bfcc98226b7ebf6f68ad6cc8'
+                  },
+                  url: 'https://api.github.com/repos/ZeroWiggliness/CoberturaChangeOnly/git/commits/83219c6bb93b1dd25af0db49df2cd32fbadf5f58',
+                  comment_count: 0,
+                  verification: {
+                    verified: true,
+                    reason: 'valid',
+                    signature: 'mock-signature',
+                    payload: 'mock-payload',
+                    verified_at: '2025-06-23T21:58:26Z'
+                  }
+                }
+              }
+            }
+          } as Octokit.Response<any>),
+          compareCommits: jest.fn().mockImplementation(() => {
+            compareCommitsCallCount++
+            if (compareCommitsCallCount === 1) {
+              return Promise.resolve({
+                status: 200,
+                data: mockCompareCommitsResponse
+              })
+            } else {
+              return Promise.resolve({
+                status: 200,
+                data: mockCompareCommitsResponseDiff
+              })
+            }
+          })
+        }
+      }
+    }))
   })
 
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
-  it('Sets the time output', async () => {
+  it('should process coverage file successfully', async () => {
     await run()
 
-    // Verify the time output was set.
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'time',
-      // Simple regex to match a time string in the format HH:MM:SS.
-      expect.stringMatching(/^\d{2}:\d{2}:\d{2}/)
-    )
+    // Verify outputs were set
+    // expect(core.setOutput).toHaveBeenCalled()
+    expect(core.setFailed).not.toHaveBeenCalled()
   })
 
-  it('Sets a failed status', async () => {
-    // Clear the getInput mock and return an invalid value.
-    core.getInput.mockClear().mockReturnValueOnce('this is not a number')
-
-    // Clear the wait mock and return a rejected promise.
-    wait
-      .mockClear()
-      .mockRejectedValueOnce(new Error('milliseconds is not a number'))
+  it('should not write a file when not specified', async () => {
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'cobertura-file':
+          return '__tests__/cobertura.xml'
+        case 'output-file':
+          return null
+        case 'main-branch':
+          return 'main'
+        case 'current-branch':
+          return 'feature/branch'
+        case 'file-filters':
+          return 'src/**,lib/**'
+        case 'fail-action':
+          return 'true'
+        case 'coverage-threshold':
+          return '75 90'
+        case 'coverage-changes-threshold':
+          return '75 90'
+        default:
+          return ''
+      }
+    })
 
     await run()
 
-    // Verify that the action was marked as failed.
-    expect(core.setFailed).toHaveBeenNthCalledWith(
-      1,
-      'milliseconds is not a number'
-    )
+    // Verify outputs were set
+    //expect(core.setOutput).toHaveBeenCalled()
+    expect(core.setFailed).not.toHaveBeenCalled()
+  })
+
+  it('should handle missing coverage file', async () => {
+    core.getInput.mockImplementation((name: string) => (name === 'cobertura-file' ? 'nonexistent.xml' : '500'))
+
+    await run()
+
+    expect(core.setFailed).toHaveBeenCalledWith(expect.stringContaining('file not found'))
+  })
+
+  it('should handle invalid input', async () => {
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'cobertura-file':
+          return '__tests__/invalid.xml'
+        default:
+          return ''
+      }
+    })
+
+    await run()
+
+    expect(core.setFailed).toHaveBeenCalledWith(expect.stringContaining('XML parsing error'))
   })
 })

@@ -7,20 +7,7 @@
       "openFiles": ["README.md"]
     },
     "vscode": {
-      "extensions": [
-        "bierner.markdown-preview-github-styles",
-        "davidanson.vscode-markdownlint",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "github.copilot",
-        "github.copilot-chat",
-        "github.vscode-github-actions",
-        "github.vscode-pull-request-github",
-        "me-dutour-mathieu.vscode-github-actions",
-        "redhat.vscode-yaml",
-        "rvest.vs-code-prettier-eslint",
-        "yzhang.markdown-all-in-one"
-      ],
+      "extensions": ["bierner.markdown-preview-github-styles", "davidanson.vscode-markdownlint", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "github.copilot", "github.copilot-chat", "github.vscode-github-actions", "github.vscode-pull-request-github", "me-dutour-mathieu.vscode-github-actions", "redhat.vscode-yaml", "rvest.vs-code-prettier-eslint", "yzhang.markdown-all-in-one"],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.tabSize": 2,

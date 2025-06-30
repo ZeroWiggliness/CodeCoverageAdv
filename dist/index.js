@@ -1,12 +1,13 @@
 import require$$0 from 'os';
 import require$$0$1 from 'crypto';
-import require$$1 from 'fs';
-import require$$1$5 from 'path';
-import require$$2 from 'http';
-import require$$3 from 'https';
+import * as fs from 'fs';
+import fs__default from 'fs';
+import require$$0$a from 'path';
+import require$$2$1 from 'http';
+import require$$3$1 from 'https';
 import require$$0$4 from 'net';
-import require$$1$1 from 'tls';
-import require$$4 from 'events';
+import require$$1 from 'tls';
+import require$$4$1 from 'events';
 import require$$0$3 from 'assert';
 import require$$0$2 from 'util';
 import require$$0$5 from 'stream';
@@ -14,37 +15,81 @@ import require$$7 from 'buffer';
 import require$$8 from 'querystring';
 import require$$14 from 'stream/web';
 import require$$0$7 from 'node:stream';
-import require$$1$2 from 'node:util';
+import require$$1$1 from 'node:util';
 import require$$0$6 from 'node:events';
 import require$$0$8 from 'worker_threads';
-import require$$2$1 from 'perf_hooks';
+import require$$2$2 from 'perf_hooks';
 import require$$5 from 'util/types';
-import require$$4$1 from 'async_hooks';
-import require$$1$3 from 'console';
-import require$$1$4 from 'url';
-import require$$3$1 from 'zlib';
+import require$$4$2 from 'async_hooks';
+import require$$1$2 from 'console';
+import require$$1$3 from 'url';
+import require$$3$2 from 'zlib';
 import require$$6 from 'string_decoder';
 import require$$0$9 from 'diagnostics_channel';
-import require$$2$2 from 'child_process';
+import require$$2$3 from 'child_process';
 import require$$6$1 from 'timers';
 
+function _mergeNamespaces(n, m) {
+	m.forEach(function (e) {
+		e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
+			if (k !== 'default' && !(k in n)) {
+				var d = Object.getOwnPropertyDescriptor(e, k);
+				Object.defineProperty(n, k, d.get ? d : {
+					enumerable: true,
+					get: function () { return e[k]; }
+				});
+			}
+		});
+	});
+	return Object.freeze(n);
+}
+
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function getAugmentedNamespace(n) {
+  if (Object.prototype.hasOwnProperty.call(n, '__esModule')) return n;
+  var f = n.default;
+	if (typeof f == "function") {
+		var a = function a () {
+			if (this instanceof a) {
+        return Reflect.construct(f, arguments, this.constructor);
+			}
+			return f.apply(this, arguments);
+		};
+		a.prototype = f.prototype;
+  } else a = {};
+  Object.defineProperty(a, '__esModule', {value: true});
+	Object.keys(n).forEach(function (k) {
+		var d = Object.getOwnPropertyDescriptor(n, k);
+		Object.defineProperty(a, k, d.get ? d : {
+			enumerable: true,
+			get: function () {
+				return n[k];
+			}
+		});
+	});
+	return a;
+}
 
 var core = {};
 
 var command = {};
 
-var utils$1 = {};
+var utils$5 = {};
 
-var hasRequiredUtils$1;
+var hasRequiredUtils$5;
 
-function requireUtils$1 () {
-	if (hasRequiredUtils$1) return utils$1;
-	hasRequiredUtils$1 = 1;
+function requireUtils$5 () {
+	if (hasRequiredUtils$5) return utils$5;
+	hasRequiredUtils$5 = 1;
 	// We use any as a valid input type
 	/* eslint-disable @typescript-eslint/no-explicit-any */
-	Object.defineProperty(utils$1, "__esModule", { value: true });
-	utils$1.toCommandProperties = utils$1.toCommandValue = void 0;
+	Object.defineProperty(utils$5, "__esModule", { value: true });
+	utils$5.toCommandProperties = utils$5.toCommandValue = void 0;
 	/**
 	 * Sanitizes an input into a string so it can be passed into issueCommand safely
 	 * @param input input to sanitize into a string
@@ -58,7 +103,7 @@ function requireUtils$1 () {
 	    }
 	    return JSON.stringify(input);
 	}
-	utils$1.toCommandValue = toCommandValue;
+	utils$5.toCommandValue = toCommandValue;
 	/**
 	 *
 	 * @param annotationProperties
@@ -78,9 +123,9 @@ function requireUtils$1 () {
 	        endColumn: annotationProperties.endColumn
 	    };
 	}
-	utils$1.toCommandProperties = toCommandProperties;
+	utils$5.toCommandProperties = toCommandProperties;
 	
-	return utils$1;
+	return utils$5;
 }
 
 var hasRequiredCommand;
@@ -114,7 +159,7 @@ function requireCommand () {
 	Object.defineProperty(command, "__esModule", { value: true });
 	command.issue = command.issueCommand = void 0;
 	const os = __importStar(require$$0);
-	const utils_1 = requireUtils$1();
+	const utils_1 = requireUtils$5();
 	/**
 	 * Commands
 	 *
@@ -222,9 +267,9 @@ function requireFileCommand () {
 	// We use any as a valid input type
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	const crypto = __importStar(require$$0$1);
-	const fs = __importStar(require$$1);
+	const fs = __importStar(fs__default);
 	const os = __importStar(require$$0);
-	const utils_1 = requireUtils$1();
+	const utils_1 = requireUtils$5();
 	function issueFileCommand(command, message) {
 	    const filePath = process.env[`GITHUB_${command}`];
 	    if (!filePath) {
@@ -372,10 +417,10 @@ var hasRequiredTunnel$1;
 function requireTunnel$1 () {
 	if (hasRequiredTunnel$1) return tunnel$1;
 	hasRequiredTunnel$1 = 1;
-	var tls = require$$1$1;
-	var http = require$$2;
-	var https = require$$3;
-	var events = require$$4;
+	var tls = require$$1;
+	var http = require$$2$1;
+	var https = require$$3$1;
+	var events = require$$4$1;
 	var util = require$$0$2;
 
 
@@ -957,12 +1002,12 @@ function requireErrors () {
 	return errors;
 }
 
-var constants$4;
-var hasRequiredConstants$4;
+var constants$6;
+var hasRequiredConstants$6;
 
-function requireConstants$4 () {
-	if (hasRequiredConstants$4) return constants$4;
-	hasRequiredConstants$4 = 1;
+function requireConstants$6 () {
+	if (hasRequiredConstants$6) return constants$6;
+	hasRequiredConstants$6 = 1;
 
 	/** @type {Record<string, string | undefined>} */
 	const headerNameLowerCasedRecord = {};
@@ -1076,11 +1121,11 @@ function requireConstants$4 () {
 	// Note: object prototypes should not be able to be referenced. e.g. `Object#hasOwnProperty`.
 	Object.setPrototypeOf(headerNameLowerCasedRecord, null);
 
-	constants$4 = {
+	constants$6 = {
 	  wellknownHeaderNames,
 	  headerNameLowerCasedRecord
 	};
-	return constants$4;
+	return constants$6;
 }
 
 var util$6;
@@ -1092,14 +1137,14 @@ function requireUtil$6 () {
 
 	const assert = require$$0$3;
 	const { kDestroyed, kBodyUsed } = requireSymbols$4();
-	const { IncomingMessage } = require$$2;
+	const { IncomingMessage } = require$$2$1;
 	const stream = require$$0$5;
 	const net = require$$0$4;
 	const { InvalidArgumentError } = requireErrors();
 	const { Blob } = require$$7;
 	const nodeUtil = require$$0$2;
 	const { stringify } = require$$8;
-	const { headerNameLowerCasedRecord } = requireConstants$4();
+	const { headerNameLowerCasedRecord } = requireConstants$6();
 
 	const [nodeMajor, nodeMinor] = process.versions.node.split('.').map(v => Number(v));
 
@@ -1754,7 +1799,7 @@ function requireSbmh () {
 	 * by Hongli Lai at: https://github.com/FooBarWidget/boyer-moore-horspool
 	 */
 	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$2.inherits;
+	const inherits = require$$1$1.inherits;
 
 	function SBMH (needle) {
 	  if (typeof needle === 'string') {
@@ -1963,7 +2008,7 @@ function requirePartStream () {
 	if (hasRequiredPartStream) return PartStream_1;
 	hasRequiredPartStream = 1;
 
-	const inherits = require$$1$2.inherits;
+	const inherits = require$$1$1.inherits;
 	const ReadableStream = require$$0$7.Readable;
 
 	function PartStream (opts) {
@@ -2009,7 +2054,7 @@ function requireHeaderParser () {
 	hasRequiredHeaderParser = 1;
 
 	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$2.inherits;
+	const inherits = require$$1$1.inherits;
 	const getLimit = requireGetLimit();
 
 	const StreamSearch = requireSbmh();
@@ -2117,7 +2162,7 @@ function requireDicer () {
 	hasRequiredDicer = 1;
 
 	const WritableStream = require$$0$7.Writable;
-	const inherits = require$$1$2.inherits;
+	const inherits = require$$1$1.inherits;
 
 	const StreamSearch = requireSbmh();
 
@@ -2694,7 +2739,7 @@ function requireMultipart () {
 	//     -- this will require modifications to utils.parseParams
 
 	const { Readable } = require$$0$7;
-	const { inherits } = require$$1$2;
+	const { inherits } = require$$1$1;
 
 	const Dicer = requireDicer();
 
@@ -3260,7 +3305,7 @@ function requireMain () {
 	hasRequiredMain = 1;
 
 	const WritableStream = require$$0$7.Writable;
-	const { inherits } = require$$1$2;
+	const { inherits } = require$$1$1;
 	const Dicer = requireDicer();
 
 	const MultipartParser = requireMultipart();
@@ -3345,12 +3390,12 @@ function requireMain () {
 	return main.exports;
 }
 
-var constants$3;
-var hasRequiredConstants$3;
+var constants$5;
+var hasRequiredConstants$5;
 
-function requireConstants$3 () {
-	if (hasRequiredConstants$3) return constants$3;
-	hasRequiredConstants$3 = 1;
+function requireConstants$5 () {
+	if (hasRequiredConstants$5) return constants$5;
+	hasRequiredConstants$5 = 1;
 
 	const { MessageChannel, receiveMessageOnPort } = require$$0$8;
 
@@ -3476,7 +3521,7 @@ function requireConstants$3 () {
 	    return receiveMessageOnPort(channel.port2).message
 	  };
 
-	constants$3 = {
+	constants$5 = {
 	  DOMException,
 	  structuredClone,
 	  subresource,
@@ -3501,7 +3546,7 @@ function requireConstants$3 () {
 	  forbiddenMethodsSet,
 	  referrerPolicySet
 	};
-	return constants$3;
+	return constants$5;
 }
 
 var global$2;
@@ -3559,9 +3604,9 @@ function requireUtil$5 () {
 	if (hasRequiredUtil$5) return util$5;
 	hasRequiredUtil$5 = 1;
 
-	const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = requireConstants$3();
+	const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = requireConstants$5();
 	const { getGlobalOrigin } = requireGlobal$1();
-	const { performance } = require$$2$1;
+	const { performance } = require$$2$2;
 	const { isBlobLike, toUSVString, ReadableStreamFrom } = requireUtil$6();
 	const assert = require$$0$3;
 	const { isUint8Array } = require$$5;
@@ -6656,7 +6701,7 @@ function requireBody () {
 	const { FormData } = requireFormdata();
 	const { kState } = requireSymbols$3();
 	const { webidl } = requireWebidl();
-	const { DOMException, structuredClone } = requireConstants$3();
+	const { DOMException, structuredClone } = requireConstants$5();
 	const { Blob, File: NativeFile } = require$$7;
 	const { kBodyUsed } = requireSymbols$4();
 	const assert = require$$0$3;
@@ -7257,11 +7302,11 @@ function requireBody () {
 	return body;
 }
 
-var request$1;
+var request$2;
 var hasRequiredRequest$1;
 
 function requireRequest$1 () {
-	if (hasRequiredRequest$1) return request$1;
+	if (hasRequiredRequest$1) return request$2;
 	hasRequiredRequest$1 = 1;
 
 	const {
@@ -7760,8 +7805,8 @@ function requireRequest$1 () {
 	  }
 	}
 
-	request$1 = Request;
-	return request$1;
+	request$2 = Request;
+	return request$2;
 }
 
 var dispatcher;
@@ -7771,7 +7816,7 @@ function requireDispatcher () {
 	if (hasRequiredDispatcher) return dispatcher;
 	hasRequiredDispatcher = 1;
 
-	const EventEmitter = require$$4;
+	const EventEmitter = require$$4$1;
 
 	class Dispatcher extends EventEmitter {
 	  dispatch () {
@@ -8084,7 +8129,7 @@ function requireConnect () {
 	    let socket;
 	    if (protocol === 'https:') {
 	      if (!tls) {
-	        tls = require$$1$1;
+	        tls = require$$1;
 	      }
 	      servername = servername || options.servername || util.getServerName(host) || null;
 
@@ -8188,17 +8233,17 @@ function requireConnect () {
 	return connect;
 }
 
-var constants$2 = {};
+var constants$4 = {};
 
-var utils = {};
+var utils$4 = {};
 
-var hasRequiredUtils;
+var hasRequiredUtils$4;
 
-function requireUtils () {
-	if (hasRequiredUtils) return utils;
-	hasRequiredUtils = 1;
-	Object.defineProperty(utils, "__esModule", { value: true });
-	utils.enumToMap = void 0;
+function requireUtils$4 () {
+	if (hasRequiredUtils$4) return utils$4;
+	hasRequiredUtils$4 = 1;
+	Object.defineProperty(utils$4, "__esModule", { value: true });
+	utils$4.enumToMap = void 0;
 	function enumToMap(obj) {
 	    const res = {};
 	    Object.keys(obj).forEach((key) => {
@@ -8209,20 +8254,20 @@ function requireUtils () {
 	    });
 	    return res;
 	}
-	utils.enumToMap = enumToMap;
+	utils$4.enumToMap = enumToMap;
 	
-	return utils;
+	return utils$4;
 }
 
-var hasRequiredConstants$2;
+var hasRequiredConstants$4;
 
-function requireConstants$2 () {
-	if (hasRequiredConstants$2) return constants$2;
-	hasRequiredConstants$2 = 1;
+function requireConstants$4 () {
+	if (hasRequiredConstants$4) return constants$4;
+	hasRequiredConstants$4 = 1;
 	(function (exports) {
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.SPECIAL_HEADERS = exports.HEADER_STATE = exports.MINOR = exports.MAJOR = exports.CONNECTION_TOKEN_CHARS = exports.HEADER_CHARS = exports.TOKEN = exports.STRICT_TOKEN = exports.HEX = exports.URL_CHAR = exports.STRICT_URL_CHAR = exports.USERINFO_CHARS = exports.MARK = exports.ALPHANUM = exports.NUM = exports.HEX_MAP = exports.NUM_MAP = exports.ALPHA = exports.FINISH = exports.H_METHOD_MAP = exports.METHOD_MAP = exports.METHODS_RTSP = exports.METHODS_ICE = exports.METHODS_HTTP = exports.METHODS = exports.LENIENT_FLAGS = exports.FLAGS = exports.TYPE = exports.ERROR = void 0;
-		const utils_1 = requireUtils();
+		const utils_1 = requireUtils$4();
 		(function (ERROR) {
 		    ERROR[ERROR["OK"] = 0] = "OK";
 		    ERROR[ERROR["INTERNAL"] = 1] = "INTERNAL";
@@ -8491,8 +8536,8 @@ function requireConstants$2 () {
 		    'upgrade': HEADER_STATE.UPGRADE,
 		};
 		
-	} (constants$2));
-	return constants$2;
+	} (constants$4));
+	return constants$4;
 }
 
 var RedirectHandler_1;
@@ -8506,7 +8551,7 @@ function requireRedirectHandler () {
 	const { kBodyUsed } = requireSymbols$4();
 	const assert = require$$0$3;
 	const { InvalidArgumentError } = requireErrors();
-	const EE = require$$4;
+	const EE = require$$4$1;
 
 	const redirectableStatusCodes = [300, 301, 302, 303, 307, 308];
 
@@ -8766,7 +8811,7 @@ function requireClient () {
 
 	const assert = require$$0$3;
 	const net = require$$0$4;
-	const http = require$$2;
+	const http = require$$2$1;
 	const { pipeline } = require$$0$5;
 	const util = requireUtil$6();
 	const timers = requireTimers();
@@ -9242,7 +9287,7 @@ function requireClient () {
 	  resume(client);
 	}
 
-	const constants = requireConstants$2();
+	const constants = requireConstants$4();
 	const createRedirectInterceptor = requireRedirectInterceptor();
 	const EMPTY_BUF = Buffer.alloc(0);
 
@@ -12401,7 +12446,7 @@ function requireApiRequest () {
 	} = requireErrors();
 	const util = requireUtil$6();
 	const { getResolveErrorBodyCallback } = requireUtil$4();
-	const { AsyncResource } = require$$4$1;
+	const { AsyncResource } = require$$4$2;
 	const { addSignal, removeSignal } = requireAbortSignal();
 
 	class RequestHandler extends AsyncResource {
@@ -12590,7 +12635,7 @@ function requireApiStream () {
 	} = requireErrors();
 	const util = requireUtil$6();
 	const { getResolveErrorBodyCallback } = requireUtil$4();
-	const { AsyncResource } = require$$4$1;
+	const { AsyncResource } = require$$4$2;
 	const { addSignal, removeSignal } = requireAbortSignal();
 
 	class StreamHandler extends AsyncResource {
@@ -12821,7 +12866,7 @@ function requireApiPipeline () {
 	  RequestAbortedError
 	} = requireErrors();
 	const util = requireUtil$6();
-	const { AsyncResource } = require$$4$1;
+	const { AsyncResource } = require$$4$2;
 	const { addSignal, removeSignal } = requireAbortSignal();
 	const assert = require$$0$3;
 
@@ -13068,7 +13113,7 @@ function requireApiUpgrade () {
 	hasRequiredApiUpgrade = 1;
 
 	const { InvalidArgumentError, RequestAbortedError, SocketError } = requireErrors();
-	const { AsyncResource } = require$$4$1;
+	const { AsyncResource } = require$$4$2;
 	const util = requireUtil$6();
 	const { addSignal, removeSignal } = requireAbortSignal();
 	const assert = require$$0$3;
@@ -13180,7 +13225,7 @@ function requireApiConnect () {
 	if (hasRequiredApiConnect) return apiConnect;
 	hasRequiredApiConnect = 1;
 
-	const { AsyncResource } = require$$4$1;
+	const { AsyncResource } = require$$4$2;
 	const { InvalidArgumentError, RequestAbortedError, SocketError } = requireErrors();
 	const util = requireUtil$6();
 	const { addSignal, removeSignal } = requireAbortSignal();
@@ -13371,7 +13416,7 @@ function requireMockUtils () {
 	  kGetNetConnect
 	} = requireMockSymbols();
 	const { buildURL, nop } = requireUtil$6();
-	const { STATUS_CODES } = require$$2;
+	const { STATUS_CODES } = require$$2$1;
 	const {
 	  types: {
 	    isPromise
@@ -14108,7 +14153,7 @@ function requirePendingInterceptorsFormatter () {
 	hasRequiredPendingInterceptorsFormatter = 1;
 
 	const { Transform } = require$$0$5;
-	const { Console } = require$$1$3;
+	const { Console } = require$$1$2;
 
 	/**
 	 * Gets the output of `console.table(…)` as a string.
@@ -14335,7 +14380,7 @@ function requireProxyAgent () {
 	hasRequiredProxyAgent = 1;
 
 	const { kProxy, kClose, kDestroy, kInterceptors } = requireSymbols$4();
-	const { URL } = require$$1$4;
+	const { URL } = require$$1$3;
 	const Agent = requireAgent();
 	const Pool = requirePool();
 	const DispatcherBase = requireDispatcherBase();
@@ -15568,7 +15613,7 @@ function requireResponse () {
 	  redirectStatusSet,
 	  nullBodyStatus,
 	  DOMException
-	} = requireConstants$3();
+	} = requireConstants$5();
 	const { kState, kHeaders, kGuard, kRealm } = requireSymbols$3();
 	const { webidl } = requireWebidl();
 	const { FormData } = requireFormdata();
@@ -16125,11 +16170,11 @@ function requireResponse () {
 
 /* globals AbortController */
 
-var request;
+var request$1;
 var hasRequiredRequest;
 
 function requireRequest () {
-	if (hasRequiredRequest) return request;
+	if (hasRequiredRequest) return request$1;
 	hasRequiredRequest = 1;
 
 	const { extractBody, mixinBody, cloneBody } = requireBody();
@@ -16152,7 +16197,7 @@ function requireRequest () {
 	  requestCredentials,
 	  requestCache,
 	  requestDuplex
-	} = requireConstants$3();
+	} = requireConstants$5();
 	const { kEnumerableProperty } = util;
 	const { kHeaders, kSignal, kState, kGuard, kRealm } = requireSymbols$3();
 	const { webidl } = requireWebidl();
@@ -16160,7 +16205,7 @@ function requireRequest () {
 	const { URLSerializer } = requireDataURL();
 	const { kHeadersList, kConstruct } = requireSymbols$4();
 	const assert = require$$0$3;
-	const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = require$$4;
+	const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = require$$4$1;
 
 	let TransformStream = globalThis.TransformStream;
 
@@ -17073,8 +17118,8 @@ function requireRequest () {
 	  }
 	]);
 
-	request = { Request, makeRequest };
-	return request;
+	request$1 = { Request, makeRequest };
+	return request$1;
 }
 
 var fetch_1;
@@ -17093,7 +17138,7 @@ function requireFetch () {
 	} = requireResponse();
 	const { Headers } = requireHeaders();
 	const { Request, makeRequest } = requireRequest();
-	const zlib = require$$3$1;
+	const zlib = require$$3$2;
 	const {
 	  bytesMatch,
 	  makePolicyContainer,
@@ -17134,16 +17179,16 @@ function requireFetch () {
 	  requestBodyHeader,
 	  subresourceSet,
 	  DOMException
-	} = requireConstants$3();
+	} = requireConstants$5();
 	const { kHeadersList } = requireSymbols$4();
-	const EE = require$$4;
+	const EE = require$$4$1;
 	const { Readable, pipeline } = require$$0$5;
 	const { addAbortListener, isErrored, isReadable, nodeMajor, nodeMinor } = requireUtil$6();
 	const { dataURLProcessor, serializeAMimeType } = requireDataURL();
 	const { TransformStream } = require$$14;
 	const { getGlobalDispatcher } = requireGlobal();
 	const { webidl } = requireWebidl();
-	const { STATUS_CODES } = require$$2;
+	const { STATUS_CODES } = require$$2$1;
 	const GET_OR_HEAD = ['GET', 'HEAD'];
 
 	/** @type {import('buffer').resolveObjectURL} */
@@ -19575,7 +19620,7 @@ function requireUtil$3 () {
 	} = requireSymbols$2();
 	const { ProgressEvent } = requireProgressevent();
 	const { getEncoding } = requireEncoding();
-	const { DOMException } = requireConstants$3();
+	const { DOMException } = requireConstants$5();
 	const { serializeAMimeType, parseMIMEType } = requireDataURL();
 	const { types } = require$$0$2;
 	const { StringDecoder } = require$$6;
@@ -21379,12 +21424,12 @@ function requireCachestorage () {
 	return cachestorage;
 }
 
-var constants$1;
-var hasRequiredConstants$1;
+var constants$3;
+var hasRequiredConstants$3;
 
-function requireConstants$1 () {
-	if (hasRequiredConstants$1) return constants$1;
-	hasRequiredConstants$1 = 1;
+function requireConstants$3 () {
+	if (hasRequiredConstants$3) return constants$3;
+	hasRequiredConstants$3 = 1;
 
 	// https://wicg.github.io/cookie-store/#cookie-maximum-attribute-value-size
 	const maxAttributeValueSize = 1024;
@@ -21392,11 +21437,11 @@ function requireConstants$1 () {
 	// https://wicg.github.io/cookie-store/#cookie-maximum-name-value-pair-size
 	const maxNameValuePairSize = 4096;
 
-	constants$1 = {
+	constants$3 = {
 	  maxAttributeValueSize,
 	  maxNameValuePairSize
 	};
-	return constants$1;
+	return constants$3;
 }
 
 var util$1;
@@ -21681,14 +21726,14 @@ function requireUtil$1 () {
 	return util$1;
 }
 
-var parse;
-var hasRequiredParse;
+var parse$1;
+var hasRequiredParse$2;
 
-function requireParse () {
-	if (hasRequiredParse) return parse;
-	hasRequiredParse = 1;
+function requireParse$2 () {
+	if (hasRequiredParse$2) return parse$1;
+	hasRequiredParse$2 = 1;
 
-	const { maxNameValuePairSize, maxAttributeValueSize } = requireConstants$1();
+	const { maxNameValuePairSize, maxAttributeValueSize } = requireConstants$3();
 	const { isCTLExcludingHtab } = requireUtil$1();
 	const { collectASequenceOfCodePointsFast } = requireDataURL();
 	const assert = require$$0$3;
@@ -21999,11 +22044,11 @@ function requireParse () {
 	  return parseUnparsedAttributes(unparsedAttributes, cookieAttributeList)
 	}
 
-	parse = {
+	parse$1 = {
 	  parseSetCookie,
 	  parseUnparsedAttributes
 	};
-	return parse;
+	return parse$1;
 }
 
 var cookies;
@@ -22013,7 +22058,7 @@ function requireCookies () {
 	if (hasRequiredCookies) return cookies;
 	hasRequiredCookies = 1;
 
-	const { parseSetCookie } = requireParse();
+	const { parseSetCookie } = requireParse$2();
 	const { stringify } = requireUtil$1();
 	const { webidl } = requireWebidl();
 	const { Headers } = requireHeaders();
@@ -22197,12 +22242,12 @@ function requireCookies () {
 	return cookies;
 }
 
-var constants;
-var hasRequiredConstants;
+var constants$2;
+var hasRequiredConstants$2;
 
-function requireConstants () {
-	if (hasRequiredConstants) return constants;
-	hasRequiredConstants = 1;
+function requireConstants$2 () {
+	if (hasRequiredConstants$2) return constants$2;
+	hasRequiredConstants$2 = 1;
 
 	// This is a Globally Unique Identifier unique used
 	// to validate that the endpoint accepts websocket
@@ -22244,7 +22289,7 @@ function requireConstants () {
 
 	const emptyBuffer = Buffer.allocUnsafe(0);
 
-	constants = {
+	constants$2 = {
 	  uid,
 	  staticPropertyDescriptors,
 	  states,
@@ -22253,7 +22298,7 @@ function requireConstants () {
 	  parserStates,
 	  emptyBuffer
 	};
-	return constants;
+	return constants$2;
 }
 
 var symbols;
@@ -22595,7 +22640,7 @@ function requireUtil () {
 	hasRequiredUtil = 1;
 
 	const { kReadyState, kController, kResponse, kBinaryType, kWebSocketURL } = requireSymbols();
-	const { states, opcodes } = requireConstants();
+	const { states, opcodes } = requireConstants$2();
 	const { MessageEvent, ErrorEvent } = requireEvents();
 
 	/* globals Blob */
@@ -22803,7 +22848,7 @@ function requireConnection () {
 	hasRequiredConnection = 1;
 
 	const diagnosticsChannel = require$$0$9;
-	const { uid, states } = requireConstants();
+	const { uid, states } = requireConstants$2();
 	const {
 	  kReadyState,
 	  kSentClose,
@@ -23101,7 +23146,7 @@ function requireFrame () {
 	if (hasRequiredFrame) return frame;
 	hasRequiredFrame = 1;
 
-	const { maxUnsigned16Bit } = requireConstants();
+	const { maxUnsigned16Bit } = requireConstants$2();
 
 	/** @type {import('crypto')} */
 	let crypto;
@@ -23184,7 +23229,7 @@ function requireReceiver () {
 
 	const { Writable } = require$$0$5;
 	const diagnosticsChannel = require$$0$9;
-	const { parserStates, opcodes, states, emptyBuffer } = requireConstants();
+	const { parserStates, opcodes, states, emptyBuffer } = requireConstants$2();
 	const { kReadyState, kSentClose, kResponse, kReceivedClose } = requireSymbols();
 	const { isValidStatusCode, failWebsocketConnection, websocketMessageReceived } = requireUtil();
 	const { WebsocketFrameSend } = requireFrame();
@@ -23535,10 +23580,10 @@ function requireWebsocket () {
 	hasRequiredWebsocket = 1;
 
 	const { webidl } = requireWebidl();
-	const { DOMException } = requireConstants$3();
+	const { DOMException } = requireConstants$5();
 	const { URLSerializer } = requireDataURL();
 	const { getGlobalOrigin } = requireGlobal$1();
-	const { staticPropertyDescriptors, states, opcodes, emptyBuffer } = requireConstants();
+	const { staticPropertyDescriptors, states, opcodes, emptyBuffer } = requireConstants$2();
 	const {
 	  kWebSocketURL,
 	  kReadyState,
@@ -24387,8 +24432,8 @@ function requireLib () {
 	};
 	Object.defineProperty(lib, "__esModule", { value: true });
 	lib.HttpClient = lib.isHttps = lib.HttpClientResponse = lib.HttpClientError = lib.getProxyUrl = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
-	const http = __importStar(require$$2);
-	const https = __importStar(require$$3);
+	const http = __importStar(require$$2$1);
+	const https = __importStar(require$$3$1);
 	const pm = __importStar(requireProxy());
 	const tunnel = __importStar(requireTunnel());
 	const undici_1 = requireUndici();
@@ -25006,14 +25051,14 @@ function requireLib () {
 	return lib;
 }
 
-var auth = {};
+var auth$1 = {};
 
 var hasRequiredAuth;
 
 function requireAuth () {
-	if (hasRequiredAuth) return auth;
+	if (hasRequiredAuth) return auth$1;
 	hasRequiredAuth = 1;
-	var __awaiter = (auth && auth.__awaiter) || function (thisArg, _arguments, P, generator) {
+	var __awaiter = (auth$1 && auth$1.__awaiter) || function (thisArg, _arguments, P, generator) {
 	    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
 	    return new (P || (P = Promise))(function (resolve, reject) {
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -25022,8 +25067,8 @@ function requireAuth () {
 	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
-	Object.defineProperty(auth, "__esModule", { value: true });
-	auth.PersonalAccessTokenCredentialHandler = auth.BearerCredentialHandler = auth.BasicCredentialHandler = void 0;
+	Object.defineProperty(auth$1, "__esModule", { value: true });
+	auth$1.PersonalAccessTokenCredentialHandler = auth$1.BearerCredentialHandler = auth$1.BasicCredentialHandler = void 0;
 	class BasicCredentialHandler {
 	    constructor(username, password) {
 	        this.username = username;
@@ -25045,7 +25090,7 @@ function requireAuth () {
 	        });
 	    }
 	}
-	auth.BasicCredentialHandler = BasicCredentialHandler;
+	auth$1.BasicCredentialHandler = BasicCredentialHandler;
 	class BearerCredentialHandler {
 	    constructor(token) {
 	        this.token = token;
@@ -25068,7 +25113,7 @@ function requireAuth () {
 	        });
 	    }
 	}
-	auth.BearerCredentialHandler = BearerCredentialHandler;
+	auth$1.BearerCredentialHandler = BearerCredentialHandler;
 	class PersonalAccessTokenCredentialHandler {
 	    constructor(token) {
 	        this.token = token;
@@ -25091,9 +25136,9 @@ function requireAuth () {
 	        });
 	    }
 	}
-	auth.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
+	auth$1.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
 	
-	return auth;
+	return auth$1;
 }
 
 var hasRequiredOidcUtils;
@@ -25200,7 +25245,7 @@ function requireSummary () {
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.summary = exports.markdownSummary = exports.SUMMARY_DOCS_URL = exports.SUMMARY_ENV_VAR = void 0;
 		const os_1 = require$$0;
-		const fs_1 = require$$1;
+		const fs_1 = fs__default;
 		const { access, appendFile, writeFile } = fs_1.promises;
 		exports.SUMMARY_ENV_VAR = 'GITHUB_STEP_SUMMARY';
 		exports.SUMMARY_DOCS_URL = 'https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary';
@@ -25506,7 +25551,7 @@ function requirePathUtils () {
 	};
 	Object.defineProperty(pathUtils, "__esModule", { value: true });
 	pathUtils.toPlatformPath = pathUtils.toWin32Path = pathUtils.toPosixPath = void 0;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$0$a);
 	/**
 	 * toPosixPath converts the given path to the posix form. On Windows, \\ will be
 	 * replaced with /.
@@ -25592,8 +25637,8 @@ function requireIoUtil () {
 		var _a;
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
-		const fs = __importStar(require$$1);
-		const path = __importStar(require$$1$5);
+		const fs = __importStar(fs__default);
+		const path = __importStar(require$$0$a);
 		_a = fs.promises
 		// export const {open} = 'fs'
 		, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
@@ -25783,7 +25828,7 @@ function requireIo () {
 	Object.defineProperty(io, "__esModule", { value: true });
 	io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
 	const assert_1 = require$$0$3;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$0$a);
 	const ioUtil = __importStar(requireIoUtil());
 	/**
 	 * Copies a file or folder.
@@ -26089,9 +26134,9 @@ function requireToolrunner () {
 	Object.defineProperty(toolrunner, "__esModule", { value: true });
 	toolrunner.argStringToArray = toolrunner.ToolRunner = void 0;
 	const os = __importStar(require$$0);
-	const events = __importStar(require$$4);
-	const child = __importStar(require$$2$2);
-	const path = __importStar(require$$1$5);
+	const events = __importStar(require$$4$1);
+	const child = __importStar(require$$2$3);
+	const path = __importStar(require$$0$a);
 	const io = __importStar(requireIo());
 	const ioUtil = __importStar(requireIoUtil());
 	const timers_1 = require$$6$1;
@@ -26933,9 +26978,9 @@ function requireCore () {
 		exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
 		const command_1 = requireCommand();
 		const file_command_1 = requireFileCommand();
-		const utils_1 = requireUtils$1();
+		const utils_1 = requireUtils$5();
 		const os = __importStar(require$$0);
-		const path = __importStar(require$$1$5);
+		const path = __importStar(require$$0$a);
 		const oidc_utils_1 = requireOidcUtils();
 		/**
 		 * The code to exit an action
@@ -27246,19 +27291,10377 @@ function requireCore () {
 
 var coreExports = requireCore();
 
-/**
- * Waits for a number of milliseconds.
- *
- * @param milliseconds The number of milliseconds to wait.
- * @returns Resolves with 'done!' after the wait is over.
- */
-async function wait(milliseconds) {
-    return new Promise((resolve) => {
-        if (isNaN(milliseconds))
-            throw new Error('milliseconds is not a number');
-        setTimeout(() => resolve('done!'), milliseconds);
-    });
+const nameStartChar = ':A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD';
+const nameChar = nameStartChar + '\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040';
+const nameRegexp = '[' + nameStartChar + '][' + nameChar + ']*';
+const regexName = new RegExp('^' + nameRegexp + '$');
+
+function getAllMatches(string, regex) {
+  const matches = [];
+  let match = regex.exec(string);
+  while (match) {
+    const allmatches = [];
+    allmatches.startIndex = regex.lastIndex - match[0].length;
+    const len = match.length;
+    for (let index = 0; index < len; index++) {
+      allmatches.push(match[index]);
+    }
+    matches.push(allmatches);
+    match = regex.exec(string);
+  }
+  return matches;
 }
+
+const isName = function(string) {
+  const match = regexName.exec(string);
+  return !(match === null || typeof match === 'undefined');
+};
+
+function isExist(v) {
+  return typeof v !== 'undefined';
+}
+
+// const fakeCall = function(a) {return a;};
+// const fakeCallNoReturn = function() {};
+
+const defaultOptions$2 = {
+  allowBooleanAttributes: false, //A tag can have attributes without any value
+  unpairedTags: []
+};
+
+//const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
+function validate(xmlData, options) {
+  options = Object.assign({}, defaultOptions$2, options);
+
+  //xmlData = xmlData.replace(/(\r\n|\n|\r)/gm,"");//make it single line
+  //xmlData = xmlData.replace(/(^\s*<\?xml.*?\?>)/g,"");//Remove XML starting tag
+  //xmlData = xmlData.replace(/(<!DOCTYPE[\s\w\"\.\/\-\:]+(\[.*\])*\s*>)/g,"");//Remove DOCTYPE
+  const tags = [];
+  let tagFound = false;
+
+  //indicates that the root tag has been closed (aka. depth 0 has been reached)
+  let reachedRoot = false;
+
+  if (xmlData[0] === '\ufeff') {
+    // check for byte order mark (BOM)
+    xmlData = xmlData.substr(1);
+  }
+  
+  for (let i = 0; i < xmlData.length; i++) {
+
+    if (xmlData[i] === '<' && xmlData[i+1] === '?') {
+      i+=2;
+      i = readPI(xmlData,i);
+      if (i.err) return i;
+    }else if (xmlData[i] === '<') {
+      //starting of tag
+      //read until you reach to '>' avoiding any '>' in attribute value
+      let tagStartPos = i;
+      i++;
+      
+      if (xmlData[i] === '!') {
+        i = readCommentAndCDATA(xmlData, i);
+        continue;
+      } else {
+        let closingTag = false;
+        if (xmlData[i] === '/') {
+          //closing tag
+          closingTag = true;
+          i++;
+        }
+        //read tagname
+        let tagName = '';
+        for (; i < xmlData.length &&
+          xmlData[i] !== '>' &&
+          xmlData[i] !== ' ' &&
+          xmlData[i] !== '\t' &&
+          xmlData[i] !== '\n' &&
+          xmlData[i] !== '\r'; i++
+        ) {
+          tagName += xmlData[i];
+        }
+        tagName = tagName.trim();
+        //console.log(tagName);
+
+        if (tagName[tagName.length - 1] === '/') {
+          //self closing tag without attributes
+          tagName = tagName.substring(0, tagName.length - 1);
+          //continue;
+          i--;
+        }
+        if (!validateTagName(tagName)) {
+          let msg;
+          if (tagName.trim().length === 0) {
+            msg = "Invalid space after '<'.";
+          } else {
+            msg = "Tag '"+tagName+"' is an invalid name.";
+          }
+          return getErrorObject('InvalidTag', msg, getLineNumberForPosition(xmlData, i));
+        }
+
+        const result = readAttributeStr(xmlData, i);
+        if (result === false) {
+          return getErrorObject('InvalidAttr', "Attributes for '"+tagName+"' have open quote.", getLineNumberForPosition(xmlData, i));
+        }
+        let attrStr = result.value;
+        i = result.index;
+
+        if (attrStr[attrStr.length - 1] === '/') {
+          //self closing tag
+          const attrStrStart = i - attrStr.length;
+          attrStr = attrStr.substring(0, attrStr.length - 1);
+          const isValid = validateAttributeString(attrStr, options);
+          if (isValid === true) {
+            tagFound = true;
+            //continue; //text may presents after self closing tag
+          } else {
+            //the result from the nested function returns the position of the error within the attribute
+            //in order to get the 'true' error line, we need to calculate the position where the attribute begins (i - attrStr.length) and then add the position within the attribute
+            //this gives us the absolute index in the entire xml, which we can use to find the line at last
+            return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, attrStrStart + isValid.err.line));
+          }
+        } else if (closingTag) {
+          if (!result.tagClosed) {
+            return getErrorObject('InvalidTag', "Closing tag '"+tagName+"' doesn't have proper closing.", getLineNumberForPosition(xmlData, i));
+          } else if (attrStr.trim().length > 0) {
+            return getErrorObject('InvalidTag', "Closing tag '"+tagName+"' can't have attributes or invalid starting.", getLineNumberForPosition(xmlData, tagStartPos));
+          } else if (tags.length === 0) {
+            return getErrorObject('InvalidTag', "Closing tag '"+tagName+"' has not been opened.", getLineNumberForPosition(xmlData, tagStartPos));
+          } else {
+            const otg = tags.pop();
+            if (tagName !== otg.tagName) {
+              let openPos = getLineNumberForPosition(xmlData, otg.tagStartPos);
+              return getErrorObject('InvalidTag',
+                "Expected closing tag '"+otg.tagName+"' (opened in line "+openPos.line+", col "+openPos.col+") instead of closing tag '"+tagName+"'.",
+                getLineNumberForPosition(xmlData, tagStartPos));
+            }
+
+            //when there are no more tags, we reached the root level.
+            if (tags.length == 0) {
+              reachedRoot = true;
+            }
+          }
+        } else {
+          const isValid = validateAttributeString(attrStr, options);
+          if (isValid !== true) {
+            //the result from the nested function returns the position of the error within the attribute
+            //in order to get the 'true' error line, we need to calculate the position where the attribute begins (i - attrStr.length) and then add the position within the attribute
+            //this gives us the absolute index in the entire xml, which we can use to find the line at last
+            return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, i - attrStr.length + isValid.err.line));
+          }
+
+          //if the root level has been reached before ...
+          if (reachedRoot === true) {
+            return getErrorObject('InvalidXml', 'Multiple possible root nodes found.', getLineNumberForPosition(xmlData, i));
+          } else if(options.unpairedTags.indexOf(tagName) !== -1); else {
+            tags.push({tagName, tagStartPos});
+          }
+          tagFound = true;
+        }
+
+        //skip tag text value
+        //It may include comments and CDATA value
+        for (i++; i < xmlData.length; i++) {
+          if (xmlData[i] === '<') {
+            if (xmlData[i + 1] === '!') {
+              //comment or CADATA
+              i++;
+              i = readCommentAndCDATA(xmlData, i);
+              continue;
+            } else if (xmlData[i+1] === '?') {
+              i = readPI(xmlData, ++i);
+              if (i.err) return i;
+            } else {
+              break;
+            }
+          } else if (xmlData[i] === '&') {
+            const afterAmp = validateAmpersand(xmlData, i);
+            if (afterAmp == -1)
+              return getErrorObject('InvalidChar', "char '&' is not expected.", getLineNumberForPosition(xmlData, i));
+            i = afterAmp;
+          }else {
+            if (reachedRoot === true && !isWhiteSpace(xmlData[i])) {
+              return getErrorObject('InvalidXml', "Extra text at the end", getLineNumberForPosition(xmlData, i));
+            }
+          }
+        } //end of reading tag text value
+        if (xmlData[i] === '<') {
+          i--;
+        }
+      }
+    } else {
+      if ( isWhiteSpace(xmlData[i])) {
+        continue;
+      }
+      return getErrorObject('InvalidChar', "char '"+xmlData[i]+"' is not expected.", getLineNumberForPosition(xmlData, i));
+    }
+  }
+
+  if (!tagFound) {
+    return getErrorObject('InvalidXml', 'Start tag expected.', 1);
+  }else if (tags.length == 1) {
+      return getErrorObject('InvalidTag', "Unclosed tag '"+tags[0].tagName+"'.", getLineNumberForPosition(xmlData, tags[0].tagStartPos));
+  }else if (tags.length > 0) {
+      return getErrorObject('InvalidXml', "Invalid '"+
+          JSON.stringify(tags.map(t => t.tagName), null, 4).replace(/\r?\n/g, '')+
+          "' found.", {line: 1, col: 1});
+  }
+
+  return true;
+}
+function isWhiteSpace(char){
+  return char === ' ' || char === '\t' || char === '\n'  || char === '\r';
+}
+/**
+ * Read Processing insstructions and skip
+ * @param {*} xmlData
+ * @param {*} i
+ */
+function readPI(xmlData, i) {
+  const start = i;
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] == '?' || xmlData[i] == ' ') {
+      //tagname
+      const tagname = xmlData.substr(start, i - start);
+      if (i > 5 && tagname === 'xml') {
+        return getErrorObject('InvalidXml', 'XML declaration allowed only at the start of the document.', getLineNumberForPosition(xmlData, i));
+      } else if (xmlData[i] == '?' && xmlData[i + 1] == '>') {
+        //check if valid attribut string
+        i++;
+        break;
+      } else {
+        continue;
+      }
+    }
+  }
+  return i;
+}
+
+function readCommentAndCDATA(xmlData, i) {
+  if (xmlData.length > i + 5 && xmlData[i + 1] === '-' && xmlData[i + 2] === '-') {
+    //comment
+    for (i += 3; i < xmlData.length; i++) {
+      if (xmlData[i] === '-' && xmlData[i + 1] === '-' && xmlData[i + 2] === '>') {
+        i += 2;
+        break;
+      }
+    }
+  } else if (
+    xmlData.length > i + 8 &&
+    xmlData[i + 1] === 'D' &&
+    xmlData[i + 2] === 'O' &&
+    xmlData[i + 3] === 'C' &&
+    xmlData[i + 4] === 'T' &&
+    xmlData[i + 5] === 'Y' &&
+    xmlData[i + 6] === 'P' &&
+    xmlData[i + 7] === 'E'
+  ) {
+    let angleBracketsCount = 1;
+    for (i += 8; i < xmlData.length; i++) {
+      if (xmlData[i] === '<') {
+        angleBracketsCount++;
+      } else if (xmlData[i] === '>') {
+        angleBracketsCount--;
+        if (angleBracketsCount === 0) {
+          break;
+        }
+      }
+    }
+  } else if (
+    xmlData.length > i + 9 &&
+    xmlData[i + 1] === '[' &&
+    xmlData[i + 2] === 'C' &&
+    xmlData[i + 3] === 'D' &&
+    xmlData[i + 4] === 'A' &&
+    xmlData[i + 5] === 'T' &&
+    xmlData[i + 6] === 'A' &&
+    xmlData[i + 7] === '['
+  ) {
+    for (i += 8; i < xmlData.length; i++) {
+      if (xmlData[i] === ']' && xmlData[i + 1] === ']' && xmlData[i + 2] === '>') {
+        i += 2;
+        break;
+      }
+    }
+  }
+
+  return i;
+}
+
+const doubleQuote = '"';
+const singleQuote = "'";
+
+/**
+ * Keep reading xmlData until '<' is found outside the attribute value.
+ * @param {string} xmlData
+ * @param {number} i
+ */
+function readAttributeStr(xmlData, i) {
+  let attrStr = '';
+  let startChar = '';
+  let tagClosed = false;
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] === doubleQuote || xmlData[i] === singleQuote) {
+      if (startChar === '') {
+        startChar = xmlData[i];
+      } else if (startChar !== xmlData[i]) ; else {
+        startChar = '';
+      }
+    } else if (xmlData[i] === '>') {
+      if (startChar === '') {
+        tagClosed = true;
+        break;
+      }
+    }
+    attrStr += xmlData[i];
+  }
+  if (startChar !== '') {
+    return false;
+  }
+
+  return {
+    value: attrStr,
+    index: i,
+    tagClosed: tagClosed
+  };
+}
+
+/**
+ * Select all the attributes whether valid or invalid.
+ */
+const validAttrStrRegxp = new RegExp('(\\s*)([^\\s=]+)(\\s*=)?(\\s*([\'"])(([\\s\\S])*?)\\5)?', 'g');
+
+//attr, ="sd", a="amit's", a="sd"b="saf", ab  cd=""
+
+function validateAttributeString(attrStr, options) {
+  //console.log("start:"+attrStr+":end");
+
+  //if(attrStr.trim().length === 0) return true; //empty string
+
+  const matches = getAllMatches(attrStr, validAttrStrRegxp);
+  const attrNames = {};
+
+  for (let i = 0; i < matches.length; i++) {
+    if (matches[i][1].length === 0) {
+      //nospace before attribute name: a="sd"b="saf"
+      return getErrorObject('InvalidAttr', "Attribute '"+matches[i][2]+"' has no space in starting.", getPositionFromMatch(matches[i]))
+    } else if (matches[i][3] !== undefined && matches[i][4] === undefined) {
+      return getErrorObject('InvalidAttr', "Attribute '"+matches[i][2]+"' is without value.", getPositionFromMatch(matches[i]));
+    } else if (matches[i][3] === undefined && !options.allowBooleanAttributes) {
+      //independent attribute: ab
+      return getErrorObject('InvalidAttr', "boolean attribute '"+matches[i][2]+"' is not allowed.", getPositionFromMatch(matches[i]));
+    }
+    /* else if(matches[i][6] === undefined){//attribute without value: ab=
+                    return { err: { code:"InvalidAttr",msg:"attribute " + matches[i][2] + " has no value assigned."}};
+                } */
+    const attrName = matches[i][2];
+    if (!validateAttrName(attrName)) {
+      return getErrorObject('InvalidAttr', "Attribute '"+attrName+"' is an invalid name.", getPositionFromMatch(matches[i]));
+    }
+    if (!attrNames.hasOwnProperty(attrName)) {
+      //check for duplicate attribute.
+      attrNames[attrName] = 1;
+    } else {
+      return getErrorObject('InvalidAttr', "Attribute '"+attrName+"' is repeated.", getPositionFromMatch(matches[i]));
+    }
+  }
+
+  return true;
+}
+
+function validateNumberAmpersand(xmlData, i) {
+  let re = /\d/;
+  if (xmlData[i] === 'x') {
+    i++;
+    re = /[\da-fA-F]/;
+  }
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] === ';')
+      return i;
+    if (!xmlData[i].match(re))
+      break;
+  }
+  return -1;
+}
+
+function validateAmpersand(xmlData, i) {
+  // https://www.w3.org/TR/xml/#dt-charref
+  i++;
+  if (xmlData[i] === ';')
+    return -1;
+  if (xmlData[i] === '#') {
+    i++;
+    return validateNumberAmpersand(xmlData, i);
+  }
+  let count = 0;
+  for (; i < xmlData.length; i++, count++) {
+    if (xmlData[i].match(/\w/) && count < 20)
+      continue;
+    if (xmlData[i] === ';')
+      break;
+    return -1;
+  }
+  return i;
+}
+
+function getErrorObject(code, message, lineNumber) {
+  return {
+    err: {
+      code: code,
+      msg: message,
+      line: lineNumber.line || lineNumber,
+      col: lineNumber.col,
+    },
+  };
+}
+
+function validateAttrName(attrName) {
+  return isName(attrName);
+}
+
+// const startsWithXML = /^xml/i;
+
+function validateTagName(tagname) {
+  return isName(tagname) /* && !tagname.match(startsWithXML) */;
+}
+
+//this function returns the line number for the character at the given index
+function getLineNumberForPosition(xmlData, index) {
+  const lines = xmlData.substring(0, index).split(/\r?\n/);
+  return {
+    line: lines.length,
+
+    // column number is last line's length + 1, because column numbering starts at 1:
+    col: lines[lines.length - 1].length + 1
+  };
+}
+
+//this function returns the position of the first character of match within attrStr
+function getPositionFromMatch(match) {
+  return match.startIndex + match[1].length;
+}
+
+const defaultOptions$1 = {
+    preserveOrder: false,
+    attributeNamePrefix: '@_',
+    attributesGroupName: false,
+    textNodeName: '#text',
+    ignoreAttributes: true,
+    removeNSPrefix: false, // remove NS from tag name or attribute name if true
+    allowBooleanAttributes: false, //a tag can have attributes without any value
+    //ignoreRootElement : false,
+    parseTagValue: true,
+    parseAttributeValue: false,
+    trimValues: true, //Trim string values of tag and attributes
+    cdataPropName: false,
+    numberParseOptions: {
+      hex: true,
+      leadingZeros: true,
+      eNotation: true
+    },
+    tagValueProcessor: function(tagName, val) {
+      return val;
+    },
+    attributeValueProcessor: function(attrName, val) {
+      return val;
+    },
+    stopNodes: [], //nested tags will not be parsed even for errors
+    alwaysCreateTextNode: false,
+    isArray: () => false,
+    commentPropName: false,
+    unpairedTags: [],
+    processEntities: true,
+    htmlEntities: false,
+    ignoreDeclaration: false,
+    ignorePiTags: false,
+    transformTagName: false,
+    transformAttributeName: false,
+    updateTag: function(tagName, jPath, attrs){
+      return tagName
+    },
+    // skipEmptyListItem: false
+    captureMetaData: false,
+};
+   
+const buildOptions = function(options) {
+    return Object.assign({}, defaultOptions$1, options);
+};
+
+let METADATA_SYMBOL$1;
+
+if (typeof Symbol !== "function") {
+  METADATA_SYMBOL$1 = "@@xmlMetadata";
+} else {
+  METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
+}
+
+class XmlNode{
+  constructor(tagname) {
+    this.tagname = tagname;
+    this.child = []; //nested tags, text, cdata, comments in order
+    this[":@"] = {}; //attributes map
+  }
+  add(key,val){
+    // this.child.push( {name : key, val: val, isCdata: isCdata });
+    if(key === "__proto__") key = "#__proto__";
+    this.child.push( {[key]: val });
+  }
+  addChild(node, startIndex) {
+    if(node.tagname === "__proto__") node.tagname = "#__proto__";
+    if(node[":@"] && Object.keys(node[":@"]).length > 0){
+      this.child.push( { [node.tagname]: node.child, [":@"]: node[":@"] });
+    }else {
+      this.child.push( { [node.tagname]: node.child });
+    }
+    // if requested, add the startIndex
+    if (startIndex !== undefined) {
+      // Note: for now we just overwrite the metadata. If we had more complex metadata,
+      // we might need to do an object append here:  metadata = { ...metadata, startIndex }
+      this.child[this.child.length - 1][METADATA_SYMBOL$1] = { startIndex };
+    }
+  }
+  /** symbol used for metadata */
+  static getMetaDataSymbol() {
+    return METADATA_SYMBOL$1;
+  }
+}
+
+//TODO: handle comments
+function readDocType(xmlData, i){
+    
+    const entities = {};
+    if( xmlData[i + 3] === 'O' &&
+         xmlData[i + 4] === 'C' &&
+         xmlData[i + 5] === 'T' &&
+         xmlData[i + 6] === 'Y' &&
+         xmlData[i + 7] === 'P' &&
+         xmlData[i + 8] === 'E')
+    {    
+        i = i+9;
+        let angleBracketsCount = 1;
+        let hasBody = false, comment = false;
+        let exp = "";
+        for(;i<xmlData.length;i++){
+            if (xmlData[i] === '<' && !comment) { //Determine the tag type
+                if( hasBody && hasSeq(xmlData, "!ENTITY",i)){
+                    i += 7; 
+                    let entityName, val;
+                    [entityName, val,i] = readEntityExp(xmlData,i+1);
+                    if(val.indexOf("&") === -1) //Parameter entities are not supported
+                        entities[ entityName ] = {
+                            regx : RegExp( `&${entityName};`,"g"),
+                            val: val
+                        };
+                }
+                else if( hasBody && hasSeq(xmlData, "!ELEMENT",i))  {
+                    i += 8;//Not supported
+                    const {index} = readElementExp(xmlData,i+1);
+                    i = index;
+                }else if( hasBody && hasSeq(xmlData, "!ATTLIST",i)){
+                    i += 8;//Not supported
+                    // const {index} = readAttlistExp(xmlData,i+1);
+                    // i = index;
+                }else if( hasBody && hasSeq(xmlData, "!NOTATION",i)) {
+                    i += 9;//Not supported
+                    const {index} = readNotationExp(xmlData,i+1);
+                    i = index;
+                }else if( hasSeq(xmlData, "!--",i) ) comment = true;
+                else throw new Error(`Invalid DOCTYPE`);
+
+                angleBracketsCount++;
+                exp = "";
+            } else if (xmlData[i] === '>') { //Read tag content
+                if(comment){
+                    if( xmlData[i - 1] === "-" && xmlData[i - 2] === "-"){
+                        comment = false;
+                        angleBracketsCount--;
+                    }
+                }else {
+                    angleBracketsCount--;
+                }
+                if (angleBracketsCount === 0) {
+                  break;
+                }
+            }else if( xmlData[i] === '['){
+                hasBody = true;
+            }else {
+                exp += xmlData[i];
+            }
+        }
+        if(angleBracketsCount !== 0){
+            throw new Error(`Unclosed DOCTYPE`);
+        }
+    }else {
+        throw new Error(`Invalid Tag instead of DOCTYPE`);
+    }
+    return {entities, i};
+}
+
+const skipWhitespace = (data, index) => {
+    while (index < data.length && /\s/.test(data[index])) {
+        index++;
+    }
+    return index;
+};
+
+function readEntityExp(xmlData, i) {    
+    //External entities are not supported
+    //    <!ENTITY ext SYSTEM "http://normal-website.com" >
+
+    //Parameter entities are not supported
+    //    <!ENTITY entityname "&anotherElement;">
+
+    //Internal entities are supported
+    //    <!ENTITY entityname "replacement text">
+
+    // Skip leading whitespace after <!ENTITY
+    i = skipWhitespace(xmlData, i);
+
+    // Read entity name
+    let entityName = "";
+    while (i < xmlData.length && !/\s/.test(xmlData[i]) && xmlData[i] !== '"' && xmlData[i] !== "'") {
+        entityName += xmlData[i];
+        i++;
+    }
+    validateEntityName(entityName);
+
+    // Skip whitespace after entity name
+    i = skipWhitespace(xmlData, i);
+
+    // Check for unsupported constructs (external entities or parameter entities)
+    if (xmlData.substring(i, i + 6).toUpperCase() === "SYSTEM") {
+        throw new Error("External entities are not supported");
+    }else if (xmlData[i] === "%") {
+        throw new Error("Parameter entities are not supported");
+    }
+
+    // Read entity value (internal entity)
+    let entityValue = "";
+    [i, entityValue] = readIdentifierVal(xmlData, i, "entity");
+    i--;
+    return [entityName, entityValue, i ];
+}
+
+function readNotationExp(xmlData, i) {
+    // Skip leading whitespace after <!NOTATION
+    i = skipWhitespace(xmlData, i);
+
+    // Read notation name
+    let notationName = "";
+    while (i < xmlData.length && !/\s/.test(xmlData[i])) {
+        notationName += xmlData[i];
+        i++;
+    }
+    validateEntityName(notationName);
+
+    // Skip whitespace after notation name
+    i = skipWhitespace(xmlData, i);
+
+    // Check identifier type (SYSTEM or PUBLIC)
+    const identifierType = xmlData.substring(i, i + 6).toUpperCase();
+    if (identifierType !== "SYSTEM" && identifierType !== "PUBLIC") {
+        throw new Error(`Expected SYSTEM or PUBLIC, found "${identifierType}"`);
+    }
+    i += identifierType.length;
+
+    // Skip whitespace after identifier type
+    i = skipWhitespace(xmlData, i);
+
+    // Read public identifier (if PUBLIC)
+    let publicIdentifier = null;
+    let systemIdentifier = null;
+
+    if (identifierType === "PUBLIC") {
+        [i, publicIdentifier ] = readIdentifierVal(xmlData, i, "publicIdentifier");
+
+        // Skip whitespace after public identifier
+        i = skipWhitespace(xmlData, i);
+
+        // Optionally read system identifier
+        if (xmlData[i] === '"' || xmlData[i] === "'") {
+            [i, systemIdentifier ] = readIdentifierVal(xmlData, i,"systemIdentifier");
+        }
+    } else if (identifierType === "SYSTEM") {
+        // Read system identifier (mandatory for SYSTEM)
+        [i, systemIdentifier ] = readIdentifierVal(xmlData, i, "systemIdentifier");
+
+        if (!systemIdentifier) {
+            throw new Error("Missing mandatory system identifier for SYSTEM notation");
+        }
+    }
+    
+    return {notationName, publicIdentifier, systemIdentifier, index: --i};
+}
+
+function readIdentifierVal(xmlData, i, type) {
+    let identifierVal = "";
+    const startChar = xmlData[i];
+    if (startChar !== '"' && startChar !== "'") {
+        throw new Error(`Expected quoted string, found "${startChar}"`);
+    }
+    i++;
+
+    while (i < xmlData.length && xmlData[i] !== startChar) {
+        identifierVal += xmlData[i];
+        i++;
+    }
+
+    if (xmlData[i] !== startChar) {
+        throw new Error(`Unterminated ${type} value`);
+    }
+    i++;
+    return [i, identifierVal];
+}
+
+function readElementExp(xmlData, i) {
+    // <!ELEMENT br EMPTY>
+    // <!ELEMENT div ANY>
+    // <!ELEMENT title (#PCDATA)>
+    // <!ELEMENT book (title, author+)>
+    // <!ELEMENT name (content-model)>
+    
+    // Skip leading whitespace after <!ELEMENT
+    i = skipWhitespace(xmlData, i);
+
+    // Read element name
+    let elementName = "";
+    while (i < xmlData.length && !/\s/.test(xmlData[i])) {
+        elementName += xmlData[i];
+        i++;
+    }
+
+    // Validate element name
+    if (!validateEntityName(elementName)) {
+        throw new Error(`Invalid element name: "${elementName}"`);
+    }
+
+    // Skip whitespace after element name
+    i = skipWhitespace(xmlData, i);
+    let contentModel = "";
+    // Expect '(' to start content model
+    if(xmlData[i] === "E" && hasSeq(xmlData, "MPTY",i)) i+=4;
+    else if(xmlData[i] === "A" && hasSeq(xmlData, "NY",i)) i+=2;
+    else if (xmlData[i] === "(") {
+        i++; // Move past '('
+
+        // Read content model
+        while (i < xmlData.length && xmlData[i] !== ")") {
+            contentModel += xmlData[i];
+            i++;
+        }
+        if (xmlData[i] !== ")") {
+            throw new Error("Unterminated content model");
+        }
+
+    }else {
+        throw new Error(`Invalid Element Expression, found "${xmlData[i]}"`);
+    }
+    
+    return {
+        elementName,
+        contentModel: contentModel.trim(),
+        index: i
+    };
+}
+
+function hasSeq(data, seq,i){
+    for(let j=0;j<seq.length;j++){
+        if(seq[j]!==data[i+j+1]) return false;
+    }
+    return true;
+}
+
+function validateEntityName(name){
+    if (isName(name))
+	return name;
+    else
+        throw new Error(`Invalid entity name ${name}`);
+}
+
+const hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
+const numRegex = /^([\-\+])?(0*)([0-9]*(\.[0-9]*)?)$/;
+// const octRegex = /^0x[a-z0-9]+/;
+// const binRegex = /0x[a-z0-9]+/;
+
+ 
+const consider = {
+    hex :  true,
+    // oct: false,
+    leadingZeros: true,
+    decimalPoint: "\.",
+    eNotation: true,
+    //skipLike: /regex/
+};
+
+function toNumber(str, options = {}){
+    options = Object.assign({}, consider, options );
+    if(!str || typeof str !== "string" ) return str;
+    
+    let trimmedStr  = str.trim();
+    
+    if(options.skipLike !== undefined && options.skipLike.test(trimmedStr)) return str;
+    else if(str==="0") return 0;
+    else if (options.hex && hexRegex.test(trimmedStr)) {
+        return parse_int(trimmedStr, 16);
+    // }else if (options.oct && octRegex.test(str)) {
+    //     return Number.parseInt(val, 8);
+    }else if (trimmedStr.search(/.+[eE].+/)!== -1) { //eNotation
+        return resolveEnotation(str,trimmedStr,options);
+    // }else if (options.parseBin && binRegex.test(str)) {
+    //     return Number.parseInt(val, 2);
+    }else {
+        //separate negative sign, leading zeros, and rest number
+        const match = numRegex.exec(trimmedStr);
+        // +00.123 => [ , '+', '00', '.123', ..
+        if(match){
+            const sign = match[1] || "";
+            const leadingZeros = match[2];
+            let numTrimmedByZeros = trimZeros(match[3]); //complete num without leading zeros
+            const decimalAdjacentToLeadingZeros = sign ? // 0., -00., 000.
+                str[leadingZeros.length+1] === "." 
+                : str[leadingZeros.length] === ".";
+
+            //trim ending zeros for floating number
+            if(!options.leadingZeros //leading zeros are not allowed
+                && (leadingZeros.length > 1 
+                    || (leadingZeros.length === 1 && !decimalAdjacentToLeadingZeros))){
+                // 00, 00.3, +03.24, 03, 03.24
+                return str;
+            }
+            else {//no leading zeros or leading zeros are allowed
+                const num = Number(trimmedStr);
+                const parsedStr = String(num);
+
+                if( num === 0) return num;
+                if(parsedStr.search(/[eE]/) !== -1){ //given number is long and parsed to eNotation
+                    if(options.eNotation) return num;
+                    else return str;
+                }else if(trimmedStr.indexOf(".") !== -1){ //floating number
+                    if(parsedStr === "0") return num; //0.0
+                    else if(parsedStr === numTrimmedByZeros) return num; //0.456. 0.79000
+                    else if( parsedStr === `${sign}${numTrimmedByZeros}`) return num;
+                    else return str;
+                }
+                
+                let n = leadingZeros? numTrimmedByZeros : trimmedStr;
+                if(leadingZeros){
+                    // -009 => -9
+                    return (n === parsedStr) || (sign+n === parsedStr) ? num : str
+                }else  {
+                    // +9
+                    return (n === parsedStr) || (n === sign+parsedStr) ? num : str
+                }
+            }
+        }else { //non-numeric string
+            return str;
+        }
+    }
+}
+
+const eNotationRegx = /^([-+])?(0*)(\d*(\.\d*)?[eE][-\+]?\d+)$/;
+function resolveEnotation(str,trimmedStr,options){
+    if(!options.eNotation) return str;
+    const notation = trimmedStr.match(eNotationRegx); 
+    if(notation){
+        let sign = notation[1] || "";
+        const eChar = notation[3].indexOf("e") === -1 ? "E" : "e";
+        const leadingZeros = notation[2];
+        const eAdjacentToLeadingZeros = sign ? // 0E.
+            str[leadingZeros.length+1] === eChar 
+            : str[leadingZeros.length] === eChar;
+
+        if(leadingZeros.length > 1 && eAdjacentToLeadingZeros) return str;
+        else if(leadingZeros.length === 1 
+            && (notation[3].startsWith(`.${eChar}`) || notation[3][0] === eChar)){
+                return Number(trimmedStr);
+        }else if(options.leadingZeros && !eAdjacentToLeadingZeros){ //accept with leading zeros
+            //remove leading 0s
+            trimmedStr = (notation[1] || "") + notation[3];
+            return Number(trimmedStr);
+        }else return str;
+    }else {
+        return str;
+    }
+}
+
+/**
+ * 
+ * @param {string} numStr without leading zeros
+ * @returns 
+ */
+function trimZeros(numStr){
+    if(numStr && numStr.indexOf(".") !== -1){//float
+        numStr = numStr.replace(/0+$/, ""); //remove ending zeros
+        if(numStr === ".")  numStr = "0";
+        else if(numStr[0] === ".")  numStr = "0"+numStr;
+        else if(numStr[numStr.length-1] === ".")  numStr = numStr.substring(0,numStr.length-1);
+        return numStr;
+    }
+    return numStr;
+}
+
+function parse_int(numStr, base){
+    //polyfill
+    if(parseInt) return parseInt(numStr, base);
+    else if(Number.parseInt) return Number.parseInt(numStr, base);
+    else if(window && window.parseInt) return window.parseInt(numStr, base);
+    else throw new Error("parseInt, Number.parseInt, window.parseInt are not supported")
+}
+
+function getIgnoreAttributesFn(ignoreAttributes) {
+    if (typeof ignoreAttributes === 'function') {
+        return ignoreAttributes
+    }
+    if (Array.isArray(ignoreAttributes)) {
+        return (attrName) => {
+            for (const pattern of ignoreAttributes) {
+                if (typeof pattern === 'string' && attrName === pattern) {
+                    return true
+                }
+                if (pattern instanceof RegExp && pattern.test(attrName)) {
+                    return true
+                }
+            }
+        }
+    }
+    return () => false
+}
+
+// const regx =
+//   '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|((NAME:)?(NAME))([^>]*)>|((\\/)(NAME)\\s*>))([^<]*)'
+//   .replace(/NAME/g, util.nameRegexp);
+
+//const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
+//const tagsRegx = new RegExp("<(\\/?)((\\w*:)?([\\w:\\-\._]+))([^>]*)>([^<]*)("+cdataRegx+"([^<]*))*([^<]+)?","g");
+
+class OrderedObjParser{
+  constructor(options){
+    this.options = options;
+    this.currentNode = null;
+    this.tagsNodeStack = [];
+    this.docTypeEntities = {};
+    this.lastEntities = {
+      "apos" : { regex: /&(apos|#39|#x27);/g, val : "'"},
+      "gt" : { regex: /&(gt|#62|#x3E);/g, val : ">"},
+      "lt" : { regex: /&(lt|#60|#x3C);/g, val : "<"},
+      "quot" : { regex: /&(quot|#34|#x22);/g, val : "\""},
+    };
+    this.ampEntity = { regex: /&(amp|#38|#x26);/g, val : "&"};
+    this.htmlEntities = {
+      "space": { regex: /&(nbsp|#160);/g, val: " " },
+      // "lt" : { regex: /&(lt|#60);/g, val: "<" },
+      // "gt" : { regex: /&(gt|#62);/g, val: ">" },
+      // "amp" : { regex: /&(amp|#38);/g, val: "&" },
+      // "quot" : { regex: /&(quot|#34);/g, val: "\"" },
+      // "apos" : { regex: /&(apos|#39);/g, val: "'" },
+      "cent" : { regex: /&(cent|#162);/g, val: "¢" },
+      "pound" : { regex: /&(pound|#163);/g, val: "£" },
+      "yen" : { regex: /&(yen|#165);/g, val: "¥" },
+      "euro" : { regex: /&(euro|#8364);/g, val: "€" },
+      "copyright" : { regex: /&(copy|#169);/g, val: "©" },
+      "reg" : { regex: /&(reg|#174);/g, val: "®" },
+      "inr" : { regex: /&(inr|#8377);/g, val: "₹" },
+      "num_dec": { regex: /&#([0-9]{1,7});/g, val : (_, str) => String.fromCodePoint(Number.parseInt(str, 10)) },
+      "num_hex": { regex: /&#x([0-9a-fA-F]{1,6});/g, val : (_, str) => String.fromCodePoint(Number.parseInt(str, 16)) },
+    };
+    this.addExternalEntities = addExternalEntities;
+    this.parseXml = parseXml;
+    this.parseTextData = parseTextData;
+    this.resolveNameSpace = resolveNameSpace;
+    this.buildAttributesMap = buildAttributesMap;
+    this.isItStopNode = isItStopNode;
+    this.replaceEntitiesValue = replaceEntitiesValue$1;
+    this.readStopNodeData = readStopNodeData;
+    this.saveTextToParentTag = saveTextToParentTag;
+    this.addChild = addChild;
+    this.ignoreAttributesFn = getIgnoreAttributesFn(this.options.ignoreAttributes);
+  }
+
+}
+
+function addExternalEntities(externalEntities){
+  const entKeys = Object.keys(externalEntities);
+  for (let i = 0; i < entKeys.length; i++) {
+    const ent = entKeys[i];
+    this.lastEntities[ent] = {
+       regex: new RegExp("&"+ent+";","g"),
+       val : externalEntities[ent]
+    };
+  }
+}
+
+/**
+ * @param {string} val
+ * @param {string} tagName
+ * @param {string} jPath
+ * @param {boolean} dontTrim
+ * @param {boolean} hasAttributes
+ * @param {boolean} isLeafNode
+ * @param {boolean} escapeEntities
+ */
+function parseTextData(val, tagName, jPath, dontTrim, hasAttributes, isLeafNode, escapeEntities) {
+  if (val !== undefined) {
+    if (this.options.trimValues && !dontTrim) {
+      val = val.trim();
+    }
+    if(val.length > 0){
+      if(!escapeEntities) val = this.replaceEntitiesValue(val);
+      
+      const newval = this.options.tagValueProcessor(tagName, val, jPath, hasAttributes, isLeafNode);
+      if(newval === null || newval === undefined){
+        //don't parse
+        return val;
+      }else if(typeof newval !== typeof val || newval !== val){
+        //overwrite
+        return newval;
+      }else if(this.options.trimValues){
+        return parseValue(val, this.options.parseTagValue, this.options.numberParseOptions);
+      }else {
+        const trimmedVal = val.trim();
+        if(trimmedVal === val){
+          return parseValue(val, this.options.parseTagValue, this.options.numberParseOptions);
+        }else {
+          return val;
+        }
+      }
+    }
+  }
+}
+
+function resolveNameSpace(tagname) {
+  if (this.options.removeNSPrefix) {
+    const tags = tagname.split(':');
+    const prefix = tagname.charAt(0) === '/' ? '/' : '';
+    if (tags[0] === 'xmlns') {
+      return '';
+    }
+    if (tags.length === 2) {
+      tagname = prefix + tags[1];
+    }
+  }
+  return tagname;
+}
+
+//TODO: change regex to capture NS
+//const attrsRegx = new RegExp("([\\w\\-\\.\\:]+)\\s*=\\s*(['\"])((.|\n)*?)\\2","gm");
+const attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])([\\s\\S]*?)\\3)?', 'gm');
+
+function buildAttributesMap(attrStr, jPath, tagName) {
+  if (this.options.ignoreAttributes !== true && typeof attrStr === 'string') {
+    // attrStr = attrStr.replace(/\r?\n/g, ' ');
+    //attrStr = attrStr || attrStr.trim();
+
+    const matches = getAllMatches(attrStr, attrsRegx);
+    const len = matches.length; //don't make it inline
+    const attrs = {};
+    for (let i = 0; i < len; i++) {
+      const attrName = this.resolveNameSpace(matches[i][1]);
+      if (this.ignoreAttributesFn(attrName, jPath)) {
+        continue
+      }
+      let oldVal = matches[i][4];
+      let aName = this.options.attributeNamePrefix + attrName;
+      if (attrName.length) {
+        if (this.options.transformAttributeName) {
+          aName = this.options.transformAttributeName(aName);
+        }
+        if(aName === "__proto__") aName  = "#__proto__";
+        if (oldVal !== undefined) {
+          if (this.options.trimValues) {
+            oldVal = oldVal.trim();
+          }
+          oldVal = this.replaceEntitiesValue(oldVal);
+          const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPath);
+          if(newVal === null || newVal === undefined){
+            //don't parse
+            attrs[aName] = oldVal;
+          }else if(typeof newVal !== typeof oldVal || newVal !== oldVal){
+            //overwrite
+            attrs[aName] = newVal;
+          }else {
+            //parse
+            attrs[aName] = parseValue(
+              oldVal,
+              this.options.parseAttributeValue,
+              this.options.numberParseOptions
+            );
+          }
+        } else if (this.options.allowBooleanAttributes) {
+          attrs[aName] = true;
+        }
+      }
+    }
+    if (!Object.keys(attrs).length) {
+      return;
+    }
+    if (this.options.attributesGroupName) {
+      const attrCollection = {};
+      attrCollection[this.options.attributesGroupName] = attrs;
+      return attrCollection;
+    }
+    return attrs
+  }
+}
+
+const parseXml = function(xmlData) {
+  xmlData = xmlData.replace(/\r\n?/g, "\n"); //TODO: remove this line
+  const xmlObj = new XmlNode('!xml');
+  let currentNode = xmlObj;
+  let textData = "";
+  let jPath = "";
+  for(let i=0; i< xmlData.length; i++){//for each char in XML data
+    const ch = xmlData[i];
+    if(ch === '<'){
+      // const nextIndex = i+1;
+      // const _2ndChar = xmlData[nextIndex];
+      if( xmlData[i+1] === '/') {//Closing Tag
+        const closeIndex = findClosingIndex(xmlData, ">", i, "Closing Tag is not closed.");
+        let tagName = xmlData.substring(i+2,closeIndex).trim();
+
+        if(this.options.removeNSPrefix){
+          const colonIndex = tagName.indexOf(":");
+          if(colonIndex !== -1){
+            tagName = tagName.substr(colonIndex+1);
+          }
+        }
+
+        if(this.options.transformTagName) {
+          tagName = this.options.transformTagName(tagName);
+        }
+
+        if(currentNode){
+          textData = this.saveTextToParentTag(textData, currentNode, jPath);
+        }
+
+        //check if last tag of nested tag was unpaired tag
+        const lastTagName = jPath.substring(jPath.lastIndexOf(".")+1);
+        if(tagName && this.options.unpairedTags.indexOf(tagName) !== -1 ){
+          throw new Error(`Unpaired tag can not be used as closing tag: </${tagName}>`);
+        }
+        let propIndex = 0;
+        if(lastTagName && this.options.unpairedTags.indexOf(lastTagName) !== -1 ){
+          propIndex = jPath.lastIndexOf('.', jPath.lastIndexOf('.')-1);
+          this.tagsNodeStack.pop();
+        }else {
+          propIndex = jPath.lastIndexOf(".");
+        }
+        jPath = jPath.substring(0, propIndex);
+
+        currentNode = this.tagsNodeStack.pop();//avoid recursion, set the parent tag scope
+        textData = "";
+        i = closeIndex;
+      } else if( xmlData[i+1] === '?') {
+
+        let tagData = readTagExp(xmlData,i, false, "?>");
+        if(!tagData) throw new Error("Pi Tag is not closed.");
+
+        textData = this.saveTextToParentTag(textData, currentNode, jPath);
+        if( (this.options.ignoreDeclaration && tagData.tagName === "?xml") || this.options.ignorePiTags);else {
+  
+          const childNode = new XmlNode(tagData.tagName);
+          childNode.add(this.options.textNodeName, "");
+          
+          if(tagData.tagName !== tagData.tagExp && tagData.attrExpPresent){
+            childNode[":@"] = this.buildAttributesMap(tagData.tagExp, jPath, tagData.tagName);
+          }
+          this.addChild(currentNode, childNode, jPath, i);
+        }
+
+
+        i = tagData.closeIndex + 1;
+      } else if(xmlData.substr(i + 1, 3) === '!--') {
+        const endIndex = findClosingIndex(xmlData, "-->", i+4, "Comment is not closed.");
+        if(this.options.commentPropName){
+          const comment = xmlData.substring(i + 4, endIndex - 2);
+
+          textData = this.saveTextToParentTag(textData, currentNode, jPath);
+
+          currentNode.add(this.options.commentPropName, [ { [this.options.textNodeName] : comment } ]);
+        }
+        i = endIndex;
+      } else if( xmlData.substr(i + 1, 2) === '!D') {
+        const result = readDocType(xmlData, i);
+        this.docTypeEntities = result.entities;
+        i = result.i;
+      }else if(xmlData.substr(i + 1, 2) === '![') {
+        const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
+        const tagExp = xmlData.substring(i + 9,closeIndex);
+
+        textData = this.saveTextToParentTag(textData, currentNode, jPath);
+
+        let val = this.parseTextData(tagExp, currentNode.tagname, jPath, true, false, true, true);
+        if(val == undefined) val = "";
+
+        //cdata should be set even if it is 0 length string
+        if(this.options.cdataPropName){
+          currentNode.add(this.options.cdataPropName, [ { [this.options.textNodeName] : tagExp } ]);
+        }else {
+          currentNode.add(this.options.textNodeName, val);
+        }
+        
+        i = closeIndex + 2;
+      }else {//Opening tag
+        let result = readTagExp(xmlData,i, this.options.removeNSPrefix);
+        let tagName= result.tagName;
+        const rawTagName = result.rawTagName;
+        let tagExp = result.tagExp;
+        let attrExpPresent = result.attrExpPresent;
+        let closeIndex = result.closeIndex;
+
+        if (this.options.transformTagName) {
+          tagName = this.options.transformTagName(tagName);
+        }
+        
+        //save text as child node
+        if (currentNode && textData) {
+          if(currentNode.tagname !== '!xml'){
+            //when nested tag is found
+            textData = this.saveTextToParentTag(textData, currentNode, jPath, false);
+          }
+        }
+
+        //check if last tag was unpaired tag
+        const lastTag = currentNode;
+        if(lastTag && this.options.unpairedTags.indexOf(lastTag.tagname) !== -1 ){
+          currentNode = this.tagsNodeStack.pop();
+          jPath = jPath.substring(0, jPath.lastIndexOf("."));
+        }
+        if(tagName !== xmlObj.tagname){
+          jPath += jPath ? "." + tagName : tagName;
+        }
+        const startIndex = i;
+        if (this.isItStopNode(this.options.stopNodes, jPath, tagName)) {
+          let tagContent = "";
+          //self-closing tag
+          if(tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1){
+            if(tagName[tagName.length - 1] === "/"){ //remove trailing '/'
+              tagName = tagName.substr(0, tagName.length - 1);
+              jPath = jPath.substr(0, jPath.length - 1);
+              tagExp = tagName;
+            }else {
+              tagExp = tagExp.substr(0, tagExp.length - 1);
+            }
+            i = result.closeIndex;
+          }
+          //unpaired tag
+          else if(this.options.unpairedTags.indexOf(tagName) !== -1){
+            
+            i = result.closeIndex;
+          }
+          //normal tag
+          else {
+            //read until closing tag is found
+            const result = this.readStopNodeData(xmlData, rawTagName, closeIndex + 1);
+            if(!result) throw new Error(`Unexpected end of ${rawTagName}`);
+            i = result.i;
+            tagContent = result.tagContent;
+          }
+
+          const childNode = new XmlNode(tagName);
+
+          if(tagName !== tagExp && attrExpPresent){
+            childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+          }
+          if(tagContent) {
+            tagContent = this.parseTextData(tagContent, tagName, jPath, true, attrExpPresent, true, true);
+          }
+          
+          jPath = jPath.substr(0, jPath.lastIndexOf("."));
+          childNode.add(this.options.textNodeName, tagContent);
+          
+          this.addChild(currentNode, childNode, jPath, startIndex);
+        }else {
+  //selfClosing tag
+          if(tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1){
+            if(tagName[tagName.length - 1] === "/"){ //remove trailing '/'
+              tagName = tagName.substr(0, tagName.length - 1);
+              jPath = jPath.substr(0, jPath.length - 1);
+              tagExp = tagName;
+            }else {
+              tagExp = tagExp.substr(0, tagExp.length - 1);
+            }
+            
+            if(this.options.transformTagName) {
+              tagName = this.options.transformTagName(tagName);
+            }
+
+            const childNode = new XmlNode(tagName);
+            if(tagName !== tagExp && attrExpPresent){
+              childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+            }
+            this.addChild(currentNode, childNode, jPath, startIndex);
+            jPath = jPath.substr(0, jPath.lastIndexOf("."));
+          }
+    //opening tag
+          else {
+            const childNode = new XmlNode( tagName);
+            this.tagsNodeStack.push(currentNode);
+            
+            if(tagName !== tagExp && attrExpPresent){
+              childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+            }
+            this.addChild(currentNode, childNode, jPath, startIndex);
+            currentNode = childNode;
+          }
+          textData = "";
+          i = closeIndex;
+        }
+      }
+    }else {
+      textData += xmlData[i];
+    }
+  }
+  return xmlObj.child;
+};
+
+function addChild(currentNode, childNode, jPath, startIndex){
+  // unset startIndex if not requested
+  if (!this.options.captureMetaData) startIndex = undefined;
+  const result = this.options.updateTag(childNode.tagname, jPath, childNode[":@"]);
+  if(result === false); else if(typeof result === "string"){
+    childNode.tagname = result;
+    currentNode.addChild(childNode, startIndex);
+  }else {
+    currentNode.addChild(childNode, startIndex);
+  }
+}
+
+const replaceEntitiesValue$1 = function(val){
+
+  if(this.options.processEntities){
+    for(let entityName in this.docTypeEntities){
+      const entity = this.docTypeEntities[entityName];
+      val = val.replace( entity.regx, entity.val);
+    }
+    for(let entityName in this.lastEntities){
+      const entity = this.lastEntities[entityName];
+      val = val.replace( entity.regex, entity.val);
+    }
+    if(this.options.htmlEntities){
+      for(let entityName in this.htmlEntities){
+        const entity = this.htmlEntities[entityName];
+        val = val.replace( entity.regex, entity.val);
+      }
+    }
+    val = val.replace( this.ampEntity.regex, this.ampEntity.val);
+  }
+  return val;
+};
+function saveTextToParentTag(textData, currentNode, jPath, isLeafNode) {
+  if (textData) { //store previously collected data as textNode
+    if(isLeafNode === undefined) isLeafNode = currentNode.child.length === 0;
+    
+    textData = this.parseTextData(textData,
+      currentNode.tagname,
+      jPath,
+      false,
+      currentNode[":@"] ? Object.keys(currentNode[":@"]).length !== 0 : false,
+      isLeafNode);
+
+    if (textData !== undefined && textData !== "")
+      currentNode.add(this.options.textNodeName, textData);
+    textData = "";
+  }
+  return textData;
+}
+
+//TODO: use jPath to simplify the logic
+/**
+ * 
+ * @param {string[]} stopNodes 
+ * @param {string} jPath
+ * @param {string} currentTagName 
+ */
+function isItStopNode(stopNodes, jPath, currentTagName){
+  const allNodesExp = "*." + currentTagName;
+  for (const stopNodePath in stopNodes) {
+    const stopNodeExp = stopNodes[stopNodePath];
+    if( allNodesExp === stopNodeExp || jPath === stopNodeExp  ) return true;
+  }
+  return false;
+}
+
+/**
+ * Returns the tag Expression and where it is ending handling single-double quotes situation
+ * @param {string} xmlData 
+ * @param {number} i starting index
+ * @returns 
+ */
+function tagExpWithClosingIndex(xmlData, i, closingChar = ">"){
+  let attrBoundary;
+  let tagExp = "";
+  for (let index = i; index < xmlData.length; index++) {
+    let ch = xmlData[index];
+    if (attrBoundary) {
+        if (ch === attrBoundary) attrBoundary = "";//reset
+    } else if (ch === '"' || ch === "'") {
+        attrBoundary = ch;
+    } else if (ch === closingChar[0]) {
+      if(closingChar[1]){
+        if(xmlData[index + 1] === closingChar[1]){
+          return {
+            data: tagExp,
+            index: index
+          }
+        }
+      }else {
+        return {
+          data: tagExp,
+          index: index
+        }
+      }
+    } else if (ch === '\t') {
+      ch = " ";
+    }
+    tagExp += ch;
+  }
+}
+
+function findClosingIndex(xmlData, str, i, errMsg){
+  const closingIndex = xmlData.indexOf(str, i);
+  if(closingIndex === -1){
+    throw new Error(errMsg)
+  }else {
+    return closingIndex + str.length - 1;
+  }
+}
+
+function readTagExp(xmlData,i, removeNSPrefix, closingChar = ">"){
+  const result = tagExpWithClosingIndex(xmlData, i+1, closingChar);
+  if(!result) return;
+  let tagExp = result.data;
+  const closeIndex = result.index;
+  const separatorIndex = tagExp.search(/\s/);
+  let tagName = tagExp;
+  let attrExpPresent = true;
+  if(separatorIndex !== -1){//separate tag name and attributes expression
+    tagName = tagExp.substring(0, separatorIndex);
+    tagExp = tagExp.substring(separatorIndex + 1).trimStart();
+  }
+
+  const rawTagName = tagName;
+  if(removeNSPrefix){
+    const colonIndex = tagName.indexOf(":");
+    if(colonIndex !== -1){
+      tagName = tagName.substr(colonIndex+1);
+      attrExpPresent = tagName !== result.data.substr(colonIndex + 1);
+    }
+  }
+
+  return {
+    tagName: tagName,
+    tagExp: tagExp,
+    closeIndex: closeIndex,
+    attrExpPresent: attrExpPresent,
+    rawTagName: rawTagName,
+  }
+}
+/**
+ * find paired tag for a stop node
+ * @param {string} xmlData 
+ * @param {string} tagName 
+ * @param {number} i 
+ */
+function readStopNodeData(xmlData, tagName, i){
+  const startIndex = i;
+  // Starting at 1 since we already have an open tag
+  let openTagCount = 1;
+
+  for (; i < xmlData.length; i++) {
+    if( xmlData[i] === "<"){ 
+      if (xmlData[i+1] === "/") {//close tag
+          const closeIndex = findClosingIndex(xmlData, ">", i, `${tagName} is not closed`);
+          let closeTagName = xmlData.substring(i+2,closeIndex).trim();
+          if(closeTagName === tagName){
+            openTagCount--;
+            if (openTagCount === 0) {
+              return {
+                tagContent: xmlData.substring(startIndex, i),
+                i : closeIndex
+              }
+            }
+          }
+          i=closeIndex;
+        } else if(xmlData[i+1] === '?') { 
+          const closeIndex = findClosingIndex(xmlData, "?>", i+1, "StopNode is not closed.");
+          i=closeIndex;
+        } else if(xmlData.substr(i + 1, 3) === '!--') { 
+          const closeIndex = findClosingIndex(xmlData, "-->", i+3, "StopNode is not closed.");
+          i=closeIndex;
+        } else if(xmlData.substr(i + 1, 2) === '![') { 
+          const closeIndex = findClosingIndex(xmlData, "]]>", i, "StopNode is not closed.") - 2;
+          i=closeIndex;
+        } else {
+          const tagData = readTagExp(xmlData, i, '>');
+
+          if (tagData) {
+            const openTagName = tagData && tagData.tagName;
+            if (openTagName === tagName && tagData.tagExp[tagData.tagExp.length-1] !== "/") {
+              openTagCount++;
+            }
+            i=tagData.closeIndex;
+          }
+        }
+      }
+  }//end for loop
+}
+
+function parseValue(val, shouldParse, options) {
+  if (shouldParse && typeof val === 'string') {
+    //console.log(options)
+    const newval = val.trim();
+    if(newval === 'true' ) return true;
+    else if(newval === 'false' ) return false;
+    else return toNumber(val, options);
+  } else {
+    if (isExist(val)) {
+      return val;
+    } else {
+      return '';
+    }
+  }
+}
+
+const METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
+
+/**
+ * 
+ * @param {array} node 
+ * @param {any} options 
+ * @returns 
+ */
+function prettify(node, options){
+  return compress( node, options);
+}
+
+/**
+ * 
+ * @param {array} arr 
+ * @param {object} options 
+ * @param {string} jPath 
+ * @returns object
+ */
+function compress(arr, options, jPath){
+  let text;
+  const compressedObj = {};
+  for (let i = 0; i < arr.length; i++) {
+    const tagObj = arr[i];
+    const property = propName$1(tagObj);
+    let newJpath = "";
+    if(jPath === undefined) newJpath = property;
+    else newJpath = jPath + "." + property;
+
+    if(property === options.textNodeName){
+      if(text === undefined) text = tagObj[property];
+      else text += "" + tagObj[property];
+    }else if(property === undefined){
+      continue;
+    }else if(tagObj[property]){
+      
+      let val = compress(tagObj[property], options, newJpath);
+      const isLeaf = isLeafTag(val, options);
+      if (tagObj[METADATA_SYMBOL] !== undefined) {
+        val[METADATA_SYMBOL] = tagObj[METADATA_SYMBOL]; // copy over metadata
+      }
+
+      if(tagObj[":@"]){
+        assignAttributes( val, tagObj[":@"], newJpath, options);
+      }else if(Object.keys(val).length === 1 && val[options.textNodeName] !== undefined && !options.alwaysCreateTextNode){
+        val = val[options.textNodeName];
+      }else if(Object.keys(val).length === 0){
+        if(options.alwaysCreateTextNode) val[options.textNodeName] = "";
+        else val = "";
+      }
+
+      if(compressedObj[property] !== undefined && compressedObj.hasOwnProperty(property)) {
+        if(!Array.isArray(compressedObj[property])) {
+            compressedObj[property] = [ compressedObj[property] ];
+        }
+        compressedObj[property].push(val);
+      }else {
+        //TODO: if a node is not an array, then check if it should be an array
+        //also determine if it is a leaf node
+        if (options.isArray(property, newJpath, isLeaf )) {
+          compressedObj[property] = [val];
+        }else {
+          compressedObj[property] = val;
+        }
+      }
+    }
+    
+  }
+  // if(text && text.length > 0) compressedObj[options.textNodeName] = text;
+  if(typeof text === "string"){
+    if(text.length > 0) compressedObj[options.textNodeName] = text;
+  }else if(text !== undefined) compressedObj[options.textNodeName] = text;
+  return compressedObj;
+}
+
+function propName$1(obj){
+  const keys = Object.keys(obj);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    if(key !== ":@") return key;
+  }
+}
+
+function assignAttributes(obj, attrMap, jpath, options){
+  if (attrMap) {
+    const keys = Object.keys(attrMap);
+    const len = keys.length; //don't make it inline
+    for (let i = 0; i < len; i++) {
+      const atrrName = keys[i];
+      if (options.isArray(atrrName, jpath + "." + atrrName, true, true)) {
+        obj[atrrName] = [ attrMap[atrrName] ];
+      } else {
+        obj[atrrName] = attrMap[atrrName];
+      }
+    }
+  }
+}
+
+function isLeafTag(obj, options){
+  const { textNodeName } = options;
+  const propCount = Object.keys(obj).length;
+  
+  if (propCount === 0) {
+    return true;
+  }
+
+  if (
+    propCount === 1 &&
+    (obj[textNodeName] || typeof obj[textNodeName] === "boolean" || obj[textNodeName] === 0)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+class XMLParser{
+    
+    constructor(options){
+        this.externalEntities = {};
+        this.options = buildOptions(options);
+        
+    }
+    /**
+     * Parse XML dats to JS object 
+     * @param {string|Buffer} xmlData 
+     * @param {boolean|Object} validationOption 
+     */
+    parse(xmlData,validationOption){
+        if(typeof xmlData === "string");else if( xmlData.toString){
+            xmlData = xmlData.toString();
+        }else {
+            throw new Error("XML data is accepted in String or Bytes[] form.")
+        }
+        if( validationOption){
+            if(validationOption === true) validationOption = {}; //validate with default options
+            
+            const result = validate(xmlData, validationOption);
+            if (result !== true) {
+              throw Error( `${result.err.msg}:${result.err.line}:${result.err.col}` )
+            }
+          }
+        const orderedObjParser = new OrderedObjParser(this.options);
+        orderedObjParser.addExternalEntities(this.externalEntities);
+        const orderedResult = orderedObjParser.parseXml(xmlData);
+        if(this.options.preserveOrder || orderedResult === undefined) return orderedResult;
+        else return prettify(orderedResult, this.options);
+    }
+
+    /**
+     * Add Entity which is not by default supported by this library
+     * @param {string} key 
+     * @param {string} value 
+     */
+    addEntity(key, value){
+        if(value.indexOf("&") !== -1){
+            throw new Error("Entity value can't have '&'")
+        }else if(key.indexOf("&") !== -1 || key.indexOf(";") !== -1){
+            throw new Error("An entity must be set without '&' and ';'. Eg. use '#xD' for '&#xD;'")
+        }else if(value === "&"){
+            throw new Error("An entity with value '&' is not permitted");
+        }else {
+            this.externalEntities[key] = value;
+        }
+    }
+
+    /**
+     * Returns a Symbol that can be used to access the metadata
+     * property on a node.
+     * 
+     * If Symbol is not available in the environment, an ordinary property is used
+     * and the name of the property is here returned.
+     * 
+     * The XMLMetaData property is only present when `captureMetaData`
+     * is true in the options.
+     */
+    static getMetaDataSymbol() {
+        return XmlNode.getMetaDataSymbol();
+    }
+}
+
+const EOL = "\n";
+
+/**
+ * 
+ * @param {array} jArray 
+ * @param {any} options 
+ * @returns 
+ */
+function toXml(jArray, options) {
+    let indentation = "";
+    if (options.format && options.indentBy.length > 0) {
+        indentation = EOL;
+    }
+    return arrToStr(jArray, options, "", indentation);
+}
+
+function arrToStr(arr, options, jPath, indentation) {
+    let xmlStr = "";
+    let isPreviousElementTag = false;
+
+    for (let i = 0; i < arr.length; i++) {
+        const tagObj = arr[i];
+        const tagName = propName(tagObj);
+        if(tagName === undefined) continue;
+
+        let newJPath = "";
+        if (jPath.length === 0) newJPath = tagName;
+        else newJPath = `${jPath}.${tagName}`;
+
+        if (tagName === options.textNodeName) {
+            let tagText = tagObj[tagName];
+            if (!isStopNode(newJPath, options)) {
+                tagText = options.tagValueProcessor(tagName, tagText);
+                tagText = replaceEntitiesValue(tagText, options);
+            }
+            if (isPreviousElementTag) {
+                xmlStr += indentation;
+            }
+            xmlStr += tagText;
+            isPreviousElementTag = false;
+            continue;
+        } else if (tagName === options.cdataPropName) {
+            if (isPreviousElementTag) {
+                xmlStr += indentation;
+            }
+            xmlStr += `<![CDATA[${tagObj[tagName][0][options.textNodeName]}]]>`;
+            isPreviousElementTag = false;
+            continue;
+        } else if (tagName === options.commentPropName) {
+            xmlStr += indentation + `<!--${tagObj[tagName][0][options.textNodeName]}-->`;
+            isPreviousElementTag = true;
+            continue;
+        } else if (tagName[0] === "?") {
+            const attStr = attr_to_str(tagObj[":@"], options);
+            const tempInd = tagName === "?xml" ? "" : indentation;
+            let piTextNodeName = tagObj[tagName][0][options.textNodeName];
+            piTextNodeName = piTextNodeName.length !== 0 ? " " + piTextNodeName : ""; //remove extra spacing
+            xmlStr += tempInd + `<${tagName}${piTextNodeName}${attStr}?>`;
+            isPreviousElementTag = true;
+            continue;
+        }
+        let newIdentation = indentation;
+        if (newIdentation !== "") {
+            newIdentation += options.indentBy;
+        }
+        const attStr = attr_to_str(tagObj[":@"], options);
+        const tagStart = indentation + `<${tagName}${attStr}`;
+        const tagValue = arrToStr(tagObj[tagName], options, newJPath, newIdentation);
+        if (options.unpairedTags.indexOf(tagName) !== -1) {
+            if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
+            else xmlStr += tagStart + "/>";
+        } else if ((!tagValue || tagValue.length === 0) && options.suppressEmptyNode) {
+            xmlStr += tagStart + "/>";
+        } else if (tagValue && tagValue.endsWith(">")) {
+            xmlStr += tagStart + `>${tagValue}${indentation}</${tagName}>`;
+        } else {
+            xmlStr += tagStart + ">";
+            if (tagValue && indentation !== "" && (tagValue.includes("/>") || tagValue.includes("</"))) {
+                xmlStr += indentation + options.indentBy + tagValue + indentation;
+            } else {
+                xmlStr += tagValue;
+            }
+            xmlStr += `</${tagName}>`;
+        }
+        isPreviousElementTag = true;
+    }
+
+    return xmlStr;
+}
+
+function propName(obj) {
+    const keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        if(!obj.hasOwnProperty(key)) continue;
+        if (key !== ":@") return key;
+    }
+}
+
+function attr_to_str(attrMap, options) {
+    let attrStr = "";
+    if (attrMap && !options.ignoreAttributes) {
+        for (let attr in attrMap) {
+            if(!attrMap.hasOwnProperty(attr)) continue;
+            let attrVal = options.attributeValueProcessor(attr, attrMap[attr]);
+            attrVal = replaceEntitiesValue(attrVal, options);
+            if (attrVal === true && options.suppressBooleanAttributes) {
+                attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}`;
+            } else {
+                attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}="${attrVal}"`;
+            }
+        }
+    }
+    return attrStr;
+}
+
+function isStopNode(jPath, options) {
+    jPath = jPath.substr(0, jPath.length - options.textNodeName.length - 1);
+    let tagName = jPath.substr(jPath.lastIndexOf(".") + 1);
+    for (let index in options.stopNodes) {
+        if (options.stopNodes[index] === jPath || options.stopNodes[index] === "*." + tagName) return true;
+    }
+    return false;
+}
+
+function replaceEntitiesValue(textValue, options) {
+    if (textValue && textValue.length > 0 && options.processEntities) {
+        for (let i = 0; i < options.entities.length; i++) {
+            const entity = options.entities[i];
+            textValue = textValue.replace(entity.regex, entity.val);
+        }
+    }
+    return textValue;
+}
+
+const defaultOptions = {
+  attributeNamePrefix: '@_',
+  attributesGroupName: false,
+  textNodeName: '#text',
+  ignoreAttributes: true,
+  cdataPropName: false,
+  format: false,
+  indentBy: '  ',
+  suppressEmptyNode: false,
+  suppressUnpairedNode: true,
+  suppressBooleanAttributes: true,
+  tagValueProcessor: function(key, a) {
+    return a;
+  },
+  attributeValueProcessor: function(attrName, a) {
+    return a;
+  },
+  preserveOrder: false,
+  commentPropName: false,
+  unpairedTags: [],
+  entities: [
+    { regex: new RegExp("&", "g"), val: "&amp;" },//it must be on top
+    { regex: new RegExp(">", "g"), val: "&gt;" },
+    { regex: new RegExp("<", "g"), val: "&lt;" },
+    { regex: new RegExp("\'", "g"), val: "&apos;" },
+    { regex: new RegExp("\"", "g"), val: "&quot;" }
+  ],
+  processEntities: true,
+  stopNodes: [],
+  // transformTagName: false,
+  // transformAttributeName: false,
+  oneListGroup: false
+};
+
+function Builder(options) {
+  this.options = Object.assign({}, defaultOptions, options);
+  if (this.options.ignoreAttributes === true || this.options.attributesGroupName) {
+    this.isAttribute = function(/*a*/) {
+      return false;
+    };
+  } else {
+    this.ignoreAttributesFn = getIgnoreAttributesFn(this.options.ignoreAttributes);
+    this.attrPrefixLen = this.options.attributeNamePrefix.length;
+    this.isAttribute = isAttribute;
+  }
+
+  this.processTextOrObjNode = processTextOrObjNode;
+
+  if (this.options.format) {
+    this.indentate = indentate;
+    this.tagEndChar = '>\n';
+    this.newLine = '\n';
+  } else {
+    this.indentate = function() {
+      return '';
+    };
+    this.tagEndChar = '>';
+    this.newLine = '';
+  }
+}
+
+Builder.prototype.build = function(jObj) {
+  if(this.options.preserveOrder){
+    return toXml(jObj, this.options);
+  }else {
+    if(Array.isArray(jObj) && this.options.arrayNodeName && this.options.arrayNodeName.length > 1){
+      jObj = {
+        [this.options.arrayNodeName] : jObj
+      };
+    }
+    return this.j2x(jObj, 0, []).val;
+  }
+};
+
+Builder.prototype.j2x = function(jObj, level, ajPath) {
+  let attrStr = '';
+  let val = '';
+  const jPath = ajPath.join('.');
+  for (let key in jObj) {
+    if(!Object.prototype.hasOwnProperty.call(jObj, key)) continue;
+    if (typeof jObj[key] === 'undefined') {
+      // supress undefined node only if it is not an attribute
+      if (this.isAttribute(key)) {
+        val += '';
+      }
+    } else if (jObj[key] === null) {
+      // null attribute should be ignored by the attribute list, but should not cause the tag closing
+      if (this.isAttribute(key)) {
+        val += '';
+      } else if (key === this.options.cdataPropName) {
+        val += '';
+      } else if (key[0] === '?') {
+        val += this.indentate(level) + '<' + key + '?' + this.tagEndChar;
+      } else {
+        val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+      }
+      // val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+    } else if (jObj[key] instanceof Date) {
+      val += this.buildTextValNode(jObj[key], key, '', level);
+    } else if (typeof jObj[key] !== 'object') {
+      //premitive type
+      const attr = this.isAttribute(key);
+      if (attr && !this.ignoreAttributesFn(attr, jPath)) {
+        attrStr += this.buildAttrPairStr(attr, '' + jObj[key]);
+      } else if (!attr) {
+        //tag value
+        if (key === this.options.textNodeName) {
+          let newval = this.options.tagValueProcessor(key, '' + jObj[key]);
+          val += this.replaceEntitiesValue(newval);
+        } else {
+          val += this.buildTextValNode(jObj[key], key, '', level);
+        }
+      }
+    } else if (Array.isArray(jObj[key])) {
+      //repeated nodes
+      const arrLen = jObj[key].length;
+      let listTagVal = "";
+      let listTagAttr = "";
+      for (let j = 0; j < arrLen; j++) {
+        const item = jObj[key][j];
+        if (typeof item === 'undefined') ; else if (item === null) {
+          if(key[0] === "?") val += this.indentate(level) + '<' + key + '?' + this.tagEndChar;
+          else val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+          // val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+        } else if (typeof item === 'object') {
+          if(this.options.oneListGroup){
+            const result = this.j2x(item, level + 1, ajPath.concat(key));
+            listTagVal += result.val;
+            if (this.options.attributesGroupName && item.hasOwnProperty(this.options.attributesGroupName)) {
+              listTagAttr += result.attrStr;
+            }
+          }else {
+            listTagVal += this.processTextOrObjNode(item, key, level, ajPath);
+          }
+        } else {
+          if (this.options.oneListGroup) {
+            let textValue = this.options.tagValueProcessor(key, item);
+            textValue = this.replaceEntitiesValue(textValue);
+            listTagVal += textValue;
+          } else {
+            listTagVal += this.buildTextValNode(item, key, '', level);
+          }
+        }
+      }
+      if(this.options.oneListGroup){
+        listTagVal = this.buildObjectNode(listTagVal, key, listTagAttr, level);
+      }
+      val += listTagVal;
+    } else {
+      //nested node
+      if (this.options.attributesGroupName && key === this.options.attributesGroupName) {
+        const Ks = Object.keys(jObj[key]);
+        const L = Ks.length;
+        for (let j = 0; j < L; j++) {
+          attrStr += this.buildAttrPairStr(Ks[j], '' + jObj[key][Ks[j]]);
+        }
+      } else {
+        val += this.processTextOrObjNode(jObj[key], key, level, ajPath);
+      }
+    }
+  }
+  return {attrStr: attrStr, val: val};
+};
+
+Builder.prototype.buildAttrPairStr = function(attrName, val){
+  val = this.options.attributeValueProcessor(attrName, '' + val);
+  val = this.replaceEntitiesValue(val);
+  if (this.options.suppressBooleanAttributes && val === "true") {
+    return ' ' + attrName;
+  } else return ' ' + attrName + '="' + val + '"';
+};
+
+function processTextOrObjNode (object, key, level, ajPath) {
+  const result = this.j2x(object, level + 1, ajPath.concat(key));
+  if (object[this.options.textNodeName] !== undefined && Object.keys(object).length === 1) {
+    return this.buildTextValNode(object[this.options.textNodeName], key, result.attrStr, level);
+  } else {
+    return this.buildObjectNode(result.val, key, result.attrStr, level);
+  }
+}
+
+Builder.prototype.buildObjectNode = function(val, key, attrStr, level) {
+  if(val === ""){
+    if(key[0] === "?") return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar;
+    else {
+      return this.indentate(level) + '<' + key + attrStr + this.closeTag(key) + this.tagEndChar;
+    }
+  }else {
+
+    let tagEndExp = '</' + key + this.tagEndChar;
+    let piClosingChar = "";
+    
+    if(key[0] === "?") {
+      piClosingChar = "?";
+      tagEndExp = "";
+    }
+  
+    // attrStr is an empty string in case the attribute came as undefined or null
+    if ((attrStr || attrStr === '') && val.indexOf('<') === -1) {
+      return ( this.indentate(level) + '<' +  key + attrStr + piClosingChar + '>' + val + tagEndExp );
+    } else if (this.options.commentPropName !== false && key === this.options.commentPropName && piClosingChar.length === 0) {
+      return this.indentate(level) + `<!--${val}-->` + this.newLine;
+    }else {
+      return (
+        this.indentate(level) + '<' + key + attrStr + piClosingChar + this.tagEndChar +
+        val +
+        this.indentate(level) + tagEndExp    );
+    }
+  }
+};
+
+Builder.prototype.closeTag = function(key){
+  let closeTag = "";
+  if(this.options.unpairedTags.indexOf(key) !== -1){ //unpaired
+    if(!this.options.suppressUnpairedNode) closeTag = "/";
+  }else if(this.options.suppressEmptyNode){ //empty
+    closeTag = "/";
+  }else {
+    closeTag = `></${key}`;
+  }
+  return closeTag;
+};
+
+Builder.prototype.buildTextValNode = function(val, key, attrStr, level) {
+  if (this.options.cdataPropName !== false && key === this.options.cdataPropName) {
+    return this.indentate(level) + `<![CDATA[${val}]]>` +  this.newLine;
+  }else if (this.options.commentPropName !== false && key === this.options.commentPropName) {
+    return this.indentate(level) + `<!--${val}-->` +  this.newLine;
+  }else if(key[0] === "?") {//PI tag
+    return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar; 
+  }else {
+    let textValue = this.options.tagValueProcessor(key, val);
+    textValue = this.replaceEntitiesValue(textValue);
+  
+    if( textValue === ''){
+      return this.indentate(level) + '<' + key + attrStr + this.closeTag(key) + this.tagEndChar;
+    }else {
+      return this.indentate(level) + '<' + key + attrStr + '>' +
+         textValue +
+        '</' + key + this.tagEndChar;
+    }
+  }
+};
+
+Builder.prototype.replaceEntitiesValue = function(textValue){
+  if(textValue && textValue.length > 0 && this.options.processEntities){
+    for (let i=0; i<this.options.entities.length; i++) {
+      const entity = this.options.entities[i];
+      textValue = textValue.replace(entity.regex, entity.val);
+    }
+  }
+  return textValue;
+};
+
+function indentate(level) {
+  return this.options.indentBy.repeat(level);
+}
+
+function isAttribute(name /*, options*/) {
+  if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) {
+    return name.substr(this.attrPrefixLen);
+  } else {
+    return false;
+  }
+}
+
+class CoberturaParser {
+    xmlObject;
+    coberuraOriginalCoverage;
+    coberuraCoverage;
+    constructor(xmlObject) {
+        this.xmlObject = xmlObject;
+        const coverage = this.xmlObject.coverage;
+        if (!coverage) {
+            throw new Error('Invalid Cobertura XML: missing coverage element');
+        }
+        this.coberuraOriginalCoverage = this.convertToCoberturaCoverageData(coverage);
+        this.coberuraCoverage = this.convertToCoberturaCoverageData(coverage);
+    }
+    getOriginalCoverage() {
+        return this.coberuraOriginalCoverage;
+    }
+    parse(changedFiles) {
+        // Filter out packages that do not match the changed files
+        this.coberuraCoverage.packages.package.forEach((pkg) => {
+            pkg.classes.class = pkg.classes.class.filter((cls) => {
+                const filename = cls._filename || '';
+                return changedFiles.some((file) => {
+                    const consitantFilename = filename.replace(/\\/g, '/');
+                    return consitantFilename.includes(file);
+                });
+            });
+        });
+        // loops through the packages, then the classes, then the methods and set the lineRate, branchRate, and complexity to 1
+        let coberturaLinesCount = 0;
+        let coberturaBranchesCovered = 0;
+        let coberturaBranchesValid = 0;
+        let coberturaHitsCount = 0;
+        let coberturaBranchCount = 0;
+        let coberturaBranchHitsCount = 0;
+        this.coberuraCoverage.packages.package.forEach((pkg) => {
+            let pkgLinesCount = 0;
+            let pkgHitsCount = 0;
+            let pkgBranchCount = 0;
+            let pkgBranchHitsCount = 0;
+            pkg.classes.class.forEach((cls) => {
+                const classLinesCount = cls.lines.line.length;
+                const classHitsCount = cls.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                let classBranchCount = 0;
+                let classBranchHitsCount = 0;
+                cls.lines.line.forEach((line) => {
+                    if (line._branch == 'true' && line['_condition-coverage']) {
+                        const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/);
+                        if (match) {
+                            classBranchHitsCount += parseInt(match[1], 10);
+                            classBranchCount += parseInt(match[2], 10);
+                            coberturaBranchesCovered += parseInt(match[1], 10);
+                            coberturaBranchesValid += parseInt(match[2], 10);
+                        }
+                    }
+                });
+                // Set methods lineRate, branchRate, and complexity
+                cls.methods.method.forEach((meth) => {
+                    const methodLinesCount = meth.lines.line.length;
+                    const methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                    let methodBranchCount = 0;
+                    let methodBranchHitsCount = 0;
+                    meth.lines.line.forEach((line) => {
+                        if (line._branch == 'true' && line['_condition-coverage']) {
+                            const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/);
+                            if (match) {
+                                methodBranchHitsCount += parseInt(match[1], 10);
+                                methodBranchCount += parseInt(match[2], 10);
+                                coberturaBranchesCovered += parseInt(match[1], 10);
+                                coberturaBranchesValid += parseInt(match[2], 10);
+                            }
+                        }
+                    });
+                    meth['_line-rate'] = methodHitsCount / methodLinesCount;
+                    meth['_branch-rate'] = methodBranchHitsCount == 0 && methodBranchCount == 0 ? 1 : methodBranchHitsCount / methodBranchCount;
+                    meth._complexity = Number.NaN;
+                });
+                cls['_line-rate'] = classHitsCount / classLinesCount;
+                cls['_branch-rate'] = classBranchHitsCount == 0 && classBranchCount == 0 ? 1 : classBranchHitsCount / classBranchCount;
+                cls._complexity = Number.NaN;
+                pkgLinesCount += classLinesCount;
+                pkgHitsCount += classHitsCount;
+                pkgBranchCount += classBranchCount;
+                pkgBranchHitsCount += classBranchHitsCount;
+            });
+            pkg['_line-rate'] = pkgHitsCount / pkgLinesCount;
+            pkg['_branch-rate'] = pkgBranchHitsCount == 0 && pkgBranchCount == 0 ? 1 : pkgBranchHitsCount / pkgBranchCount;
+            pkg._complexity = Number.NaN;
+            coberturaLinesCount += pkgLinesCount;
+            coberturaHitsCount += pkgHitsCount;
+            coberturaBranchCount += pkgBranchCount;
+            coberturaBranchHitsCount += pkgBranchHitsCount;
+        });
+        this.coberuraCoverage['_line-rate'] = coberturaHitsCount == 0 && coberturaLinesCount == 0 ? 0 : coberturaHitsCount / coberturaLinesCount;
+        this.coberuraCoverage['_lines-covered'] = coberturaHitsCount;
+        this.coberuraCoverage['_lines-valid'] = coberturaLinesCount;
+        this.coberuraCoverage['_branch-rate'] = coberturaBranchHitsCount == 0 && coberturaBranchCount == 0 ? 1 : coberturaBranchHitsCount / coberturaBranchCount;
+        this.coberuraCoverage['_branches-covered'] = coberturaBranchesCovered;
+        this.coberuraCoverage['_branches-valid'] = coberturaBranchesValid;
+        this.coberuraCoverage._complexity = Number.NaN;
+        return this.coberuraCoverage;
+    }
+    toArrayIfNot(array) {
+        if (array === undefined || array === null) {
+            return [];
+        }
+        return Array.isArray(array) ? array : [array];
+    }
+    convertToCoberturaCoverageData(xmlObject) {
+        const newData = {
+            '_lines-valid': xmlObject['_lines-valid'] == undefined ? undefined : parseFloat(xmlObject['_lines-valid']),
+            '_lines-covered': xmlObject['_lines-covered'] == undefined ? undefined : parseFloat(xmlObject['_lines-covered']),
+            '_line-rate': xmlObject['_line-rate'] == undefined ? undefined : parseFloat(xmlObject['_line-rate']),
+            '_branches-covered': xmlObject['_branches-covered'] == undefined ? undefined : parseFloat(xmlObject['_branches-covered']),
+            '_branches-valid': xmlObject['_branches-valid'] == undefined ? undefined : parseFloat(xmlObject['_branches-valid']),
+            '_branch-rate': xmlObject['_branch-rate'] == undefined ? undefined : parseFloat(xmlObject['_branch-rate']),
+            _complexity: xmlObject['_complexity'] == undefined ? undefined : parseFloat(xmlObject['_complexity']),
+            _version: xmlObject._version,
+            _timestamp: xmlObject._timestamp,
+            packages: this.convertToPackagesData(this.toArrayIfNot(xmlObject.packages.package)),
+            sources: xmlObject.sources?.source
+        };
+        return newData;
+    }
+    convertToPackagesData(packages) {
+        return {
+            package: packages.map((pkg) => ({
+                _name: pkg?._name || '',
+                '_line-rate': parseFloat(pkg['_line-rate'] || '0'),
+                '_branch-rate': parseFloat(pkg['_branch-rate'] || '0'),
+                _complexity: parseFloat(pkg?._complexity || '0'),
+                classes: this.convertToClassesData(this.toArrayIfNot(pkg.classes.class))
+            }))
+        };
+    }
+    convertToClassesData(classes) {
+        const coberturaClasses = classes.map((cls) => ({
+            _name: cls.name || '',
+            _filename: cls._filename || '',
+            '_line-rate': parseFloat(cls?.['_line-rate'] || '0'),
+            '_branch-rate': parseFloat(cls?.['_branch-rate'] || '0'),
+            _complexity: parseFloat(cls?._complexity || '0'),
+            methods: this.convertToMethodsData(this.toArrayIfNot(cls.methods.method)),
+            lines: this.convertToLinesData(this.toArrayIfNot(cls.lines.line))
+        }));
+        return {
+            class: coberturaClasses
+        };
+    }
+    convertToMethodsData(methods) {
+        return {
+            method: methods.map((meth) => ({
+                _name: meth._name || '',
+                _signature: meth?._signature || '',
+                '_line-rate': parseFloat(meth['_line-rate'] || '0'),
+                '_branch-rate': parseFloat(meth['_branch-rate'] || '0'),
+                _complexity: parseFloat(meth?._complexity || '0'),
+                lines: this.convertToLinesData(this.toArrayIfNot(meth.lines.line))
+            }))
+        };
+    }
+    convertToLinesData(lines) {
+        return {
+            line: lines.map((line) => ({
+                _number: parseInt(line?._number || '0', 10),
+                _hits: parseInt(line?._hits || '0', 10),
+                _branch: line._branch,
+                '_condition-coverage': line['_condition-coverage']
+            }))
+        };
+    }
+}
+
+var utils$3 = {};
+
+var hasRequiredUtils$3;
+
+function requireUtils$3 () {
+	if (hasRequiredUtils$3) return utils$3;
+	hasRequiredUtils$3 = 1;
+	(function (exports) {
+
+		exports.isInteger = num => {
+		  if (typeof num === 'number') {
+		    return Number.isInteger(num);
+		  }
+		  if (typeof num === 'string' && num.trim() !== '') {
+		    return Number.isInteger(Number(num));
+		  }
+		  return false;
+		};
+
+		/**
+		 * Find a node of the given type
+		 */
+
+		exports.find = (node, type) => node.nodes.find(node => node.type === type);
+
+		/**
+		 * Find a node of the given type
+		 */
+
+		exports.exceedsLimit = (min, max, step = 1, limit) => {
+		  if (limit === false) return false;
+		  if (!exports.isInteger(min) || !exports.isInteger(max)) return false;
+		  return ((Number(max) - Number(min)) / Number(step)) >= limit;
+		};
+
+		/**
+		 * Escape the given node with '\\' before node.value
+		 */
+
+		exports.escapeNode = (block, n = 0, type) => {
+		  const node = block.nodes[n];
+		  if (!node) return;
+
+		  if ((type && node.type === type) || node.type === 'open' || node.type === 'close') {
+		    if (node.escaped !== true) {
+		      node.value = '\\' + node.value;
+		      node.escaped = true;
+		    }
+		  }
+		};
+
+		/**
+		 * Returns true if the given brace node should be enclosed in literal braces
+		 */
+
+		exports.encloseBrace = node => {
+		  if (node.type !== 'brace') return false;
+		  if ((node.commas >> 0 + node.ranges >> 0) === 0) {
+		    node.invalid = true;
+		    return true;
+		  }
+		  return false;
+		};
+
+		/**
+		 * Returns true if a brace node is invalid.
+		 */
+
+		exports.isInvalidBrace = block => {
+		  if (block.type !== 'brace') return false;
+		  if (block.invalid === true || block.dollar) return true;
+		  if ((block.commas >> 0 + block.ranges >> 0) === 0) {
+		    block.invalid = true;
+		    return true;
+		  }
+		  if (block.open !== true || block.close !== true) {
+		    block.invalid = true;
+		    return true;
+		  }
+		  return false;
+		};
+
+		/**
+		 * Returns true if a node is an open or close node
+		 */
+
+		exports.isOpenOrClose = node => {
+		  if (node.type === 'open' || node.type === 'close') {
+		    return true;
+		  }
+		  return node.open === true || node.close === true;
+		};
+
+		/**
+		 * Reduce an array of text nodes.
+		 */
+
+		exports.reduce = nodes => nodes.reduce((acc, node) => {
+		  if (node.type === 'text') acc.push(node.value);
+		  if (node.type === 'range') node.type = 'text';
+		  return acc;
+		}, []);
+
+		/**
+		 * Flatten an array
+		 */
+
+		exports.flatten = (...args) => {
+		  const result = [];
+
+		  const flat = arr => {
+		    for (let i = 0; i < arr.length; i++) {
+		      const ele = arr[i];
+
+		      if (Array.isArray(ele)) {
+		        flat(ele);
+		        continue;
+		      }
+
+		      if (ele !== undefined) {
+		        result.push(ele);
+		      }
+		    }
+		    return result;
+		  };
+
+		  flat(args);
+		  return result;
+		}; 
+	} (utils$3));
+	return utils$3;
+}
+
+var stringify;
+var hasRequiredStringify;
+
+function requireStringify () {
+	if (hasRequiredStringify) return stringify;
+	hasRequiredStringify = 1;
+
+	const utils = requireUtils$3();
+
+	stringify = (ast, options = {}) => {
+	  const stringify = (node, parent = {}) => {
+	    const invalidBlock = options.escapeInvalid && utils.isInvalidBrace(parent);
+	    const invalidNode = node.invalid === true && options.escapeInvalid === true;
+	    let output = '';
+
+	    if (node.value) {
+	      if ((invalidBlock || invalidNode) && utils.isOpenOrClose(node)) {
+	        return '\\' + node.value;
+	      }
+	      return node.value;
+	    }
+
+	    if (node.value) {
+	      return node.value;
+	    }
+
+	    if (node.nodes) {
+	      for (const child of node.nodes) {
+	        output += stringify(child);
+	      }
+	    }
+	    return output;
+	  };
+
+	  return stringify(ast);
+	};
+	return stringify;
+}
+
+/*!
+ * is-number <https://github.com/jonschlinkert/is-number>
+ *
+ * Copyright (c) 2014-present, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+var isNumber;
+var hasRequiredIsNumber;
+
+function requireIsNumber () {
+	if (hasRequiredIsNumber) return isNumber;
+	hasRequiredIsNumber = 1;
+
+	isNumber = function(num) {
+	  if (typeof num === 'number') {
+	    return num - num === 0;
+	  }
+	  if (typeof num === 'string' && num.trim() !== '') {
+	    return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
+	  }
+	  return false;
+	};
+	return isNumber;
+}
+
+/*!
+ * to-regex-range <https://github.com/micromatch/to-regex-range>
+ *
+ * Copyright (c) 2015-present, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+var toRegexRange_1;
+var hasRequiredToRegexRange;
+
+function requireToRegexRange () {
+	if (hasRequiredToRegexRange) return toRegexRange_1;
+	hasRequiredToRegexRange = 1;
+
+	const isNumber = requireIsNumber();
+
+	const toRegexRange = (min, max, options) => {
+	  if (isNumber(min) === false) {
+	    throw new TypeError('toRegexRange: expected the first argument to be a number');
+	  }
+
+	  if (max === void 0 || min === max) {
+	    return String(min);
+	  }
+
+	  if (isNumber(max) === false) {
+	    throw new TypeError('toRegexRange: expected the second argument to be a number.');
+	  }
+
+	  let opts = { relaxZeros: true, ...options };
+	  if (typeof opts.strictZeros === 'boolean') {
+	    opts.relaxZeros = opts.strictZeros === false;
+	  }
+
+	  let relax = String(opts.relaxZeros);
+	  let shorthand = String(opts.shorthand);
+	  let capture = String(opts.capture);
+	  let wrap = String(opts.wrap);
+	  let cacheKey = min + ':' + max + '=' + relax + shorthand + capture + wrap;
+
+	  if (toRegexRange.cache.hasOwnProperty(cacheKey)) {
+	    return toRegexRange.cache[cacheKey].result;
+	  }
+
+	  let a = Math.min(min, max);
+	  let b = Math.max(min, max);
+
+	  if (Math.abs(a - b) === 1) {
+	    let result = min + '|' + max;
+	    if (opts.capture) {
+	      return `(${result})`;
+	    }
+	    if (opts.wrap === false) {
+	      return result;
+	    }
+	    return `(?:${result})`;
+	  }
+
+	  let isPadded = hasPadding(min) || hasPadding(max);
+	  let state = { min, max, a, b };
+	  let positives = [];
+	  let negatives = [];
+
+	  if (isPadded) {
+	    state.isPadded = isPadded;
+	    state.maxLen = String(state.max).length;
+	  }
+
+	  if (a < 0) {
+	    let newMin = b < 0 ? Math.abs(b) : 1;
+	    negatives = splitToPatterns(newMin, Math.abs(a), state, opts);
+	    a = state.a = 0;
+	  }
+
+	  if (b >= 0) {
+	    positives = splitToPatterns(a, b, state, opts);
+	  }
+
+	  state.negatives = negatives;
+	  state.positives = positives;
+	  state.result = collatePatterns(negatives, positives);
+
+	  if (opts.capture === true) {
+	    state.result = `(${state.result})`;
+	  } else if (opts.wrap !== false && (positives.length + negatives.length) > 1) {
+	    state.result = `(?:${state.result})`;
+	  }
+
+	  toRegexRange.cache[cacheKey] = state;
+	  return state.result;
+	};
+
+	function collatePatterns(neg, pos, options) {
+	  let onlyNegative = filterPatterns(neg, pos, '-', false) || [];
+	  let onlyPositive = filterPatterns(pos, neg, '', false) || [];
+	  let intersected = filterPatterns(neg, pos, '-?', true) || [];
+	  let subpatterns = onlyNegative.concat(intersected).concat(onlyPositive);
+	  return subpatterns.join('|');
+	}
+
+	function splitToRanges(min, max) {
+	  let nines = 1;
+	  let zeros = 1;
+
+	  let stop = countNines(min, nines);
+	  let stops = new Set([max]);
+
+	  while (min <= stop && stop <= max) {
+	    stops.add(stop);
+	    nines += 1;
+	    stop = countNines(min, nines);
+	  }
+
+	  stop = countZeros(max + 1, zeros) - 1;
+
+	  while (min < stop && stop <= max) {
+	    stops.add(stop);
+	    zeros += 1;
+	    stop = countZeros(max + 1, zeros) - 1;
+	  }
+
+	  stops = [...stops];
+	  stops.sort(compare);
+	  return stops;
+	}
+
+	/**
+	 * Convert a range to a regex pattern
+	 * @param {Number} `start`
+	 * @param {Number} `stop`
+	 * @return {String}
+	 */
+
+	function rangeToPattern(start, stop, options) {
+	  if (start === stop) {
+	    return { pattern: start, count: [], digits: 0 };
+	  }
+
+	  let zipped = zip(start, stop);
+	  let digits = zipped.length;
+	  let pattern = '';
+	  let count = 0;
+
+	  for (let i = 0; i < digits; i++) {
+	    let [startDigit, stopDigit] = zipped[i];
+
+	    if (startDigit === stopDigit) {
+	      pattern += startDigit;
+
+	    } else if (startDigit !== '0' || stopDigit !== '9') {
+	      pattern += toCharacterClass(startDigit, stopDigit);
+
+	    } else {
+	      count++;
+	    }
+	  }
+
+	  if (count) {
+	    pattern += options.shorthand === true ? '\\d' : '[0-9]';
+	  }
+
+	  return { pattern, count: [count], digits };
+	}
+
+	function splitToPatterns(min, max, tok, options) {
+	  let ranges = splitToRanges(min, max);
+	  let tokens = [];
+	  let start = min;
+	  let prev;
+
+	  for (let i = 0; i < ranges.length; i++) {
+	    let max = ranges[i];
+	    let obj = rangeToPattern(String(start), String(max), options);
+	    let zeros = '';
+
+	    if (!tok.isPadded && prev && prev.pattern === obj.pattern) {
+	      if (prev.count.length > 1) {
+	        prev.count.pop();
+	      }
+
+	      prev.count.push(obj.count[0]);
+	      prev.string = prev.pattern + toQuantifier(prev.count);
+	      start = max + 1;
+	      continue;
+	    }
+
+	    if (tok.isPadded) {
+	      zeros = padZeros(max, tok, options);
+	    }
+
+	    obj.string = zeros + obj.pattern + toQuantifier(obj.count);
+	    tokens.push(obj);
+	    start = max + 1;
+	    prev = obj;
+	  }
+
+	  return tokens;
+	}
+
+	function filterPatterns(arr, comparison, prefix, intersection, options) {
+	  let result = [];
+
+	  for (let ele of arr) {
+	    let { string } = ele;
+
+	    // only push if _both_ are negative...
+	    if (!intersection && !contains(comparison, 'string', string)) {
+	      result.push(prefix + string);
+	    }
+
+	    // or _both_ are positive
+	    if (intersection && contains(comparison, 'string', string)) {
+	      result.push(prefix + string);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Zip strings
+	 */
+
+	function zip(a, b) {
+	  let arr = [];
+	  for (let i = 0; i < a.length; i++) arr.push([a[i], b[i]]);
+	  return arr;
+	}
+
+	function compare(a, b) {
+	  return a > b ? 1 : b > a ? -1 : 0;
+	}
+
+	function contains(arr, key, val) {
+	  return arr.some(ele => ele[key] === val);
+	}
+
+	function countNines(min, len) {
+	  return Number(String(min).slice(0, -len) + '9'.repeat(len));
+	}
+
+	function countZeros(integer, zeros) {
+	  return integer - (integer % Math.pow(10, zeros));
+	}
+
+	function toQuantifier(digits) {
+	  let [start = 0, stop = ''] = digits;
+	  if (stop || start > 1) {
+	    return `{${start + (stop ? ',' + stop : '')}}`;
+	  }
+	  return '';
+	}
+
+	function toCharacterClass(a, b, options) {
+	  return `[${a}${(b - a === 1) ? '' : '-'}${b}]`;
+	}
+
+	function hasPadding(str) {
+	  return /^-?(0+)\d/.test(str);
+	}
+
+	function padZeros(value, tok, options) {
+	  if (!tok.isPadded) {
+	    return value;
+	  }
+
+	  let diff = Math.abs(tok.maxLen - String(value).length);
+	  let relax = options.relaxZeros !== false;
+
+	  switch (diff) {
+	    case 0:
+	      return '';
+	    case 1:
+	      return relax ? '0?' : '0';
+	    case 2:
+	      return relax ? '0{0,2}' : '00';
+	    default: {
+	      return relax ? `0{0,${diff}}` : `0{${diff}}`;
+	    }
+	  }
+	}
+
+	/**
+	 * Cache
+	 */
+
+	toRegexRange.cache = {};
+	toRegexRange.clearCache = () => (toRegexRange.cache = {});
+
+	/**
+	 * Expose `toRegexRange`
+	 */
+
+	toRegexRange_1 = toRegexRange;
+	return toRegexRange_1;
+}
+
+/*!
+ * fill-range <https://github.com/jonschlinkert/fill-range>
+ *
+ * Copyright (c) 2014-present, Jon Schlinkert.
+ * Licensed under the MIT License.
+ */
+
+var fillRange;
+var hasRequiredFillRange;
+
+function requireFillRange () {
+	if (hasRequiredFillRange) return fillRange;
+	hasRequiredFillRange = 1;
+
+	const util = require$$0$2;
+	const toRegexRange = requireToRegexRange();
+
+	const isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
+
+	const transform = toNumber => {
+	  return value => toNumber === true ? Number(value) : String(value);
+	};
+
+	const isValidValue = value => {
+	  return typeof value === 'number' || (typeof value === 'string' && value !== '');
+	};
+
+	const isNumber = num => Number.isInteger(+num);
+
+	const zeros = input => {
+	  let value = `${input}`;
+	  let index = -1;
+	  if (value[0] === '-') value = value.slice(1);
+	  if (value === '0') return false;
+	  while (value[++index] === '0');
+	  return index > 0;
+	};
+
+	const stringify = (start, end, options) => {
+	  if (typeof start === 'string' || typeof end === 'string') {
+	    return true;
+	  }
+	  return options.stringify === true;
+	};
+
+	const pad = (input, maxLength, toNumber) => {
+	  if (maxLength > 0) {
+	    let dash = input[0] === '-' ? '-' : '';
+	    if (dash) input = input.slice(1);
+	    input = (dash + input.padStart(dash ? maxLength - 1 : maxLength, '0'));
+	  }
+	  if (toNumber === false) {
+	    return String(input);
+	  }
+	  return input;
+	};
+
+	const toMaxLen = (input, maxLength) => {
+	  let negative = input[0] === '-' ? '-' : '';
+	  if (negative) {
+	    input = input.slice(1);
+	    maxLength--;
+	  }
+	  while (input.length < maxLength) input = '0' + input;
+	  return negative ? ('-' + input) : input;
+	};
+
+	const toSequence = (parts, options, maxLen) => {
+	  parts.negatives.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+	  parts.positives.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+
+	  let prefix = options.capture ? '' : '?:';
+	  let positives = '';
+	  let negatives = '';
+	  let result;
+
+	  if (parts.positives.length) {
+	    positives = parts.positives.map(v => toMaxLen(String(v), maxLen)).join('|');
+	  }
+
+	  if (parts.negatives.length) {
+	    negatives = `-(${prefix}${parts.negatives.map(v => toMaxLen(String(v), maxLen)).join('|')})`;
+	  }
+
+	  if (positives && negatives) {
+	    result = `${positives}|${negatives}`;
+	  } else {
+	    result = positives || negatives;
+	  }
+
+	  if (options.wrap) {
+	    return `(${prefix}${result})`;
+	  }
+
+	  return result;
+	};
+
+	const toRange = (a, b, isNumbers, options) => {
+	  if (isNumbers) {
+	    return toRegexRange(a, b, { wrap: false, ...options });
+	  }
+
+	  let start = String.fromCharCode(a);
+	  if (a === b) return start;
+
+	  let stop = String.fromCharCode(b);
+	  return `[${start}-${stop}]`;
+	};
+
+	const toRegex = (start, end, options) => {
+	  if (Array.isArray(start)) {
+	    let wrap = options.wrap === true;
+	    let prefix = options.capture ? '' : '?:';
+	    return wrap ? `(${prefix}${start.join('|')})` : start.join('|');
+	  }
+	  return toRegexRange(start, end, options);
+	};
+
+	const rangeError = (...args) => {
+	  return new RangeError('Invalid range arguments: ' + util.inspect(...args));
+	};
+
+	const invalidRange = (start, end, options) => {
+	  if (options.strictRanges === true) throw rangeError([start, end]);
+	  return [];
+	};
+
+	const invalidStep = (step, options) => {
+	  if (options.strictRanges === true) {
+	    throw new TypeError(`Expected step "${step}" to be a number`);
+	  }
+	  return [];
+	};
+
+	const fillNumbers = (start, end, step = 1, options = {}) => {
+	  let a = Number(start);
+	  let b = Number(end);
+
+	  if (!Number.isInteger(a) || !Number.isInteger(b)) {
+	    if (options.strictRanges === true) throw rangeError([start, end]);
+	    return [];
+	  }
+
+	  // fix negative zero
+	  if (a === 0) a = 0;
+	  if (b === 0) b = 0;
+
+	  let descending = a > b;
+	  let startString = String(start);
+	  let endString = String(end);
+	  let stepString = String(step);
+	  step = Math.max(Math.abs(step), 1);
+
+	  let padded = zeros(startString) || zeros(endString) || zeros(stepString);
+	  let maxLen = padded ? Math.max(startString.length, endString.length, stepString.length) : 0;
+	  let toNumber = padded === false && stringify(start, end, options) === false;
+	  let format = options.transform || transform(toNumber);
+
+	  if (options.toRegex && step === 1) {
+	    return toRange(toMaxLen(start, maxLen), toMaxLen(end, maxLen), true, options);
+	  }
+
+	  let parts = { negatives: [], positives: [] };
+	  let push = num => parts[num < 0 ? 'negatives' : 'positives'].push(Math.abs(num));
+	  let range = [];
+	  let index = 0;
+
+	  while (descending ? a >= b : a <= b) {
+	    if (options.toRegex === true && step > 1) {
+	      push(a);
+	    } else {
+	      range.push(pad(format(a, index), maxLen, toNumber));
+	    }
+	    a = descending ? a - step : a + step;
+	    index++;
+	  }
+
+	  if (options.toRegex === true) {
+	    return step > 1
+	      ? toSequence(parts, options, maxLen)
+	      : toRegex(range, null, { wrap: false, ...options });
+	  }
+
+	  return range;
+	};
+
+	const fillLetters = (start, end, step = 1, options = {}) => {
+	  if ((!isNumber(start) && start.length > 1) || (!isNumber(end) && end.length > 1)) {
+	    return invalidRange(start, end, options);
+	  }
+
+	  let format = options.transform || (val => String.fromCharCode(val));
+	  let a = `${start}`.charCodeAt(0);
+	  let b = `${end}`.charCodeAt(0);
+
+	  let descending = a > b;
+	  let min = Math.min(a, b);
+	  let max = Math.max(a, b);
+
+	  if (options.toRegex && step === 1) {
+	    return toRange(min, max, false, options);
+	  }
+
+	  let range = [];
+	  let index = 0;
+
+	  while (descending ? a >= b : a <= b) {
+	    range.push(format(a, index));
+	    a = descending ? a - step : a + step;
+	    index++;
+	  }
+
+	  if (options.toRegex === true) {
+	    return toRegex(range, null, { wrap: false, options });
+	  }
+
+	  return range;
+	};
+
+	const fill = (start, end, step, options = {}) => {
+	  if (end == null && isValidValue(start)) {
+	    return [start];
+	  }
+
+	  if (!isValidValue(start) || !isValidValue(end)) {
+	    return invalidRange(start, end, options);
+	  }
+
+	  if (typeof step === 'function') {
+	    return fill(start, end, 1, { transform: step });
+	  }
+
+	  if (isObject(step)) {
+	    return fill(start, end, 0, step);
+	  }
+
+	  let opts = { ...options };
+	  if (opts.capture === true) opts.wrap = true;
+	  step = step || opts.step || 1;
+
+	  if (!isNumber(step)) {
+	    if (step != null && !isObject(step)) return invalidStep(step, opts);
+	    return fill(start, end, 1, step);
+	  }
+
+	  if (isNumber(start) && isNumber(end)) {
+	    return fillNumbers(start, end, step, opts);
+	  }
+
+	  return fillLetters(start, end, Math.max(Math.abs(step), 1), opts);
+	};
+
+	fillRange = fill;
+	return fillRange;
+}
+
+var compile_1;
+var hasRequiredCompile;
+
+function requireCompile () {
+	if (hasRequiredCompile) return compile_1;
+	hasRequiredCompile = 1;
+
+	const fill = requireFillRange();
+	const utils = requireUtils$3();
+
+	const compile = (ast, options = {}) => {
+	  const walk = (node, parent = {}) => {
+	    const invalidBlock = utils.isInvalidBrace(parent);
+	    const invalidNode = node.invalid === true && options.escapeInvalid === true;
+	    const invalid = invalidBlock === true || invalidNode === true;
+	    const prefix = options.escapeInvalid === true ? '\\' : '';
+	    let output = '';
+
+	    if (node.isOpen === true) {
+	      return prefix + node.value;
+	    }
+
+	    if (node.isClose === true) {
+	      console.log('node.isClose', prefix, node.value);
+	      return prefix + node.value;
+	    }
+
+	    if (node.type === 'open') {
+	      return invalid ? prefix + node.value : '(';
+	    }
+
+	    if (node.type === 'close') {
+	      return invalid ? prefix + node.value : ')';
+	    }
+
+	    if (node.type === 'comma') {
+	      return node.prev.type === 'comma' ? '' : invalid ? node.value : '|';
+	    }
+
+	    if (node.value) {
+	      return node.value;
+	    }
+
+	    if (node.nodes && node.ranges > 0) {
+	      const args = utils.reduce(node.nodes);
+	      const range = fill(...args, { ...options, wrap: false, toRegex: true, strictZeros: true });
+
+	      if (range.length !== 0) {
+	        return args.length > 1 && range.length > 1 ? `(${range})` : range;
+	      }
+	    }
+
+	    if (node.nodes) {
+	      for (const child of node.nodes) {
+	        output += walk(child, node);
+	      }
+	    }
+
+	    return output;
+	  };
+
+	  return walk(ast);
+	};
+
+	compile_1 = compile;
+	return compile_1;
+}
+
+var expand_1;
+var hasRequiredExpand;
+
+function requireExpand () {
+	if (hasRequiredExpand) return expand_1;
+	hasRequiredExpand = 1;
+
+	const fill = requireFillRange();
+	const stringify = requireStringify();
+	const utils = requireUtils$3();
+
+	const append = (queue = '', stash = '', enclose = false) => {
+	  const result = [];
+
+	  queue = [].concat(queue);
+	  stash = [].concat(stash);
+
+	  if (!stash.length) return queue;
+	  if (!queue.length) {
+	    return enclose ? utils.flatten(stash).map(ele => `{${ele}}`) : stash;
+	  }
+
+	  for (const item of queue) {
+	    if (Array.isArray(item)) {
+	      for (const value of item) {
+	        result.push(append(value, stash, enclose));
+	      }
+	    } else {
+	      for (let ele of stash) {
+	        if (enclose === true && typeof ele === 'string') ele = `{${ele}}`;
+	        result.push(Array.isArray(ele) ? append(item, ele, enclose) : item + ele);
+	      }
+	    }
+	  }
+	  return utils.flatten(result);
+	};
+
+	const expand = (ast, options = {}) => {
+	  const rangeLimit = options.rangeLimit === undefined ? 1000 : options.rangeLimit;
+
+	  const walk = (node, parent = {}) => {
+	    node.queue = [];
+
+	    let p = parent;
+	    let q = parent.queue;
+
+	    while (p.type !== 'brace' && p.type !== 'root' && p.parent) {
+	      p = p.parent;
+	      q = p.queue;
+	    }
+
+	    if (node.invalid || node.dollar) {
+	      q.push(append(q.pop(), stringify(node, options)));
+	      return;
+	    }
+
+	    if (node.type === 'brace' && node.invalid !== true && node.nodes.length === 2) {
+	      q.push(append(q.pop(), ['{}']));
+	      return;
+	    }
+
+	    if (node.nodes && node.ranges > 0) {
+	      const args = utils.reduce(node.nodes);
+
+	      if (utils.exceedsLimit(...args, options.step, rangeLimit)) {
+	        throw new RangeError('expanded array length exceeds range limit. Use options.rangeLimit to increase or disable the limit.');
+	      }
+
+	      let range = fill(...args, options);
+	      if (range.length === 0) {
+	        range = stringify(node, options);
+	      }
+
+	      q.push(append(q.pop(), range));
+	      node.nodes = [];
+	      return;
+	    }
+
+	    const enclose = utils.encloseBrace(node);
+	    let queue = node.queue;
+	    let block = node;
+
+	    while (block.type !== 'brace' && block.type !== 'root' && block.parent) {
+	      block = block.parent;
+	      queue = block.queue;
+	    }
+
+	    for (let i = 0; i < node.nodes.length; i++) {
+	      const child = node.nodes[i];
+
+	      if (child.type === 'comma' && node.type === 'brace') {
+	        if (i === 1) queue.push('');
+	        queue.push('');
+	        continue;
+	      }
+
+	      if (child.type === 'close') {
+	        q.push(append(q.pop(), queue, enclose));
+	        continue;
+	      }
+
+	      if (child.value && child.type !== 'open') {
+	        queue.push(append(queue.pop(), child.value));
+	        continue;
+	      }
+
+	      if (child.nodes) {
+	        walk(child, node);
+	      }
+	    }
+
+	    return queue;
+	  };
+
+	  return utils.flatten(walk(ast));
+	};
+
+	expand_1 = expand;
+	return expand_1;
+}
+
+var constants$1;
+var hasRequiredConstants$1;
+
+function requireConstants$1 () {
+	if (hasRequiredConstants$1) return constants$1;
+	hasRequiredConstants$1 = 1;
+
+	constants$1 = {
+	  MAX_LENGTH: 10000,
+
+	  // Digits
+	  CHAR_0: '0', /* 0 */
+	  CHAR_9: '9', /* 9 */
+
+	  // Alphabet chars.
+	  CHAR_UPPERCASE_A: 'A', /* A */
+	  CHAR_LOWERCASE_A: 'a', /* a */
+	  CHAR_UPPERCASE_Z: 'Z', /* Z */
+	  CHAR_LOWERCASE_Z: 'z', /* z */
+
+	  CHAR_LEFT_PARENTHESES: '(', /* ( */
+	  CHAR_RIGHT_PARENTHESES: ')', /* ) */
+
+	  CHAR_ASTERISK: '*', /* * */
+
+	  // Non-alphabetic chars.
+	  CHAR_AMPERSAND: '&', /* & */
+	  CHAR_AT: '@', /* @ */
+	  CHAR_BACKSLASH: '\\', /* \ */
+	  CHAR_BACKTICK: '`', /* ` */
+	  CHAR_CARRIAGE_RETURN: '\r', /* \r */
+	  CHAR_CIRCUMFLEX_ACCENT: '^', /* ^ */
+	  CHAR_COLON: ':', /* : */
+	  CHAR_COMMA: ',', /* , */
+	  CHAR_DOLLAR: '$', /* . */
+	  CHAR_DOT: '.', /* . */
+	  CHAR_DOUBLE_QUOTE: '"', /* " */
+	  CHAR_EQUAL: '=', /* = */
+	  CHAR_EXCLAMATION_MARK: '!', /* ! */
+	  CHAR_FORM_FEED: '\f', /* \f */
+	  CHAR_FORWARD_SLASH: '/', /* / */
+	  CHAR_HASH: '#', /* # */
+	  CHAR_HYPHEN_MINUS: '-', /* - */
+	  CHAR_LEFT_ANGLE_BRACKET: '<', /* < */
+	  CHAR_LEFT_CURLY_BRACE: '{', /* { */
+	  CHAR_LEFT_SQUARE_BRACKET: '[', /* [ */
+	  CHAR_LINE_FEED: '\n', /* \n */
+	  CHAR_NO_BREAK_SPACE: '\u00A0', /* \u00A0 */
+	  CHAR_PERCENT: '%', /* % */
+	  CHAR_PLUS: '+', /* + */
+	  CHAR_QUESTION_MARK: '?', /* ? */
+	  CHAR_RIGHT_ANGLE_BRACKET: '>', /* > */
+	  CHAR_RIGHT_CURLY_BRACE: '}', /* } */
+	  CHAR_RIGHT_SQUARE_BRACKET: ']', /* ] */
+	  CHAR_SEMICOLON: ';', /* ; */
+	  CHAR_SINGLE_QUOTE: '\'', /* ' */
+	  CHAR_SPACE: ' ', /*   */
+	  CHAR_TAB: '\t', /* \t */
+	  CHAR_UNDERSCORE: '_', /* _ */
+	  CHAR_VERTICAL_LINE: '|', /* | */
+	  CHAR_ZERO_WIDTH_NOBREAK_SPACE: '\uFEFF' /* \uFEFF */
+	};
+	return constants$1;
+}
+
+var parse_1$1;
+var hasRequiredParse$1;
+
+function requireParse$1 () {
+	if (hasRequiredParse$1) return parse_1$1;
+	hasRequiredParse$1 = 1;
+
+	const stringify = requireStringify();
+
+	/**
+	 * Constants
+	 */
+
+	const {
+	  MAX_LENGTH,
+	  CHAR_BACKSLASH, /* \ */
+	  CHAR_BACKTICK, /* ` */
+	  CHAR_COMMA, /* , */
+	  CHAR_DOT, /* . */
+	  CHAR_LEFT_PARENTHESES, /* ( */
+	  CHAR_RIGHT_PARENTHESES, /* ) */
+	  CHAR_LEFT_CURLY_BRACE, /* { */
+	  CHAR_RIGHT_CURLY_BRACE, /* } */
+	  CHAR_LEFT_SQUARE_BRACKET, /* [ */
+	  CHAR_RIGHT_SQUARE_BRACKET, /* ] */
+	  CHAR_DOUBLE_QUOTE, /* " */
+	  CHAR_SINGLE_QUOTE, /* ' */
+	  CHAR_NO_BREAK_SPACE,
+	  CHAR_ZERO_WIDTH_NOBREAK_SPACE
+	} = requireConstants$1();
+
+	/**
+	 * parse
+	 */
+
+	const parse = (input, options = {}) => {
+	  if (typeof input !== 'string') {
+	    throw new TypeError('Expected a string');
+	  }
+
+	  const opts = options || {};
+	  const max = typeof opts.maxLength === 'number' ? Math.min(MAX_LENGTH, opts.maxLength) : MAX_LENGTH;
+	  if (input.length > max) {
+	    throw new SyntaxError(`Input length (${input.length}), exceeds max characters (${max})`);
+	  }
+
+	  const ast = { type: 'root', input, nodes: [] };
+	  const stack = [ast];
+	  let block = ast;
+	  let prev = ast;
+	  let brackets = 0;
+	  const length = input.length;
+	  let index = 0;
+	  let depth = 0;
+	  let value;
+
+	  /**
+	   * Helpers
+	   */
+
+	  const advance = () => input[index++];
+	  const push = node => {
+	    if (node.type === 'text' && prev.type === 'dot') {
+	      prev.type = 'text';
+	    }
+
+	    if (prev && prev.type === 'text' && node.type === 'text') {
+	      prev.value += node.value;
+	      return;
+	    }
+
+	    block.nodes.push(node);
+	    node.parent = block;
+	    node.prev = prev;
+	    prev = node;
+	    return node;
+	  };
+
+	  push({ type: 'bos' });
+
+	  while (index < length) {
+	    block = stack[stack.length - 1];
+	    value = advance();
+
+	    /**
+	     * Invalid chars
+	     */
+
+	    if (value === CHAR_ZERO_WIDTH_NOBREAK_SPACE || value === CHAR_NO_BREAK_SPACE) {
+	      continue;
+	    }
+
+	    /**
+	     * Escaped chars
+	     */
+
+	    if (value === CHAR_BACKSLASH) {
+	      push({ type: 'text', value: (options.keepEscaping ? value : '') + advance() });
+	      continue;
+	    }
+
+	    /**
+	     * Right square bracket (literal): ']'
+	     */
+
+	    if (value === CHAR_RIGHT_SQUARE_BRACKET) {
+	      push({ type: 'text', value: '\\' + value });
+	      continue;
+	    }
+
+	    /**
+	     * Left square bracket: '['
+	     */
+
+	    if (value === CHAR_LEFT_SQUARE_BRACKET) {
+	      brackets++;
+
+	      let next;
+
+	      while (index < length && (next = advance())) {
+	        value += next;
+
+	        if (next === CHAR_LEFT_SQUARE_BRACKET) {
+	          brackets++;
+	          continue;
+	        }
+
+	        if (next === CHAR_BACKSLASH) {
+	          value += advance();
+	          continue;
+	        }
+
+	        if (next === CHAR_RIGHT_SQUARE_BRACKET) {
+	          brackets--;
+
+	          if (brackets === 0) {
+	            break;
+	          }
+	        }
+	      }
+
+	      push({ type: 'text', value });
+	      continue;
+	    }
+
+	    /**
+	     * Parentheses
+	     */
+
+	    if (value === CHAR_LEFT_PARENTHESES) {
+	      block = push({ type: 'paren', nodes: [] });
+	      stack.push(block);
+	      push({ type: 'text', value });
+	      continue;
+	    }
+
+	    if (value === CHAR_RIGHT_PARENTHESES) {
+	      if (block.type !== 'paren') {
+	        push({ type: 'text', value });
+	        continue;
+	      }
+	      block = stack.pop();
+	      push({ type: 'text', value });
+	      block = stack[stack.length - 1];
+	      continue;
+	    }
+
+	    /**
+	     * Quotes: '|"|`
+	     */
+
+	    if (value === CHAR_DOUBLE_QUOTE || value === CHAR_SINGLE_QUOTE || value === CHAR_BACKTICK) {
+	      const open = value;
+	      let next;
+
+	      if (options.keepQuotes !== true) {
+	        value = '';
+	      }
+
+	      while (index < length && (next = advance())) {
+	        if (next === CHAR_BACKSLASH) {
+	          value += next + advance();
+	          continue;
+	        }
+
+	        if (next === open) {
+	          if (options.keepQuotes === true) value += next;
+	          break;
+	        }
+
+	        value += next;
+	      }
+
+	      push({ type: 'text', value });
+	      continue;
+	    }
+
+	    /**
+	     * Left curly brace: '{'
+	     */
+
+	    if (value === CHAR_LEFT_CURLY_BRACE) {
+	      depth++;
+
+	      const dollar = prev.value && prev.value.slice(-1) === '$' || block.dollar === true;
+	      const brace = {
+	        type: 'brace',
+	        open: true,
+	        close: false,
+	        dollar,
+	        depth,
+	        commas: 0,
+	        ranges: 0,
+	        nodes: []
+	      };
+
+	      block = push(brace);
+	      stack.push(block);
+	      push({ type: 'open', value });
+	      continue;
+	    }
+
+	    /**
+	     * Right curly brace: '}'
+	     */
+
+	    if (value === CHAR_RIGHT_CURLY_BRACE) {
+	      if (block.type !== 'brace') {
+	        push({ type: 'text', value });
+	        continue;
+	      }
+
+	      const type = 'close';
+	      block = stack.pop();
+	      block.close = true;
+
+	      push({ type, value });
+	      depth--;
+
+	      block = stack[stack.length - 1];
+	      continue;
+	    }
+
+	    /**
+	     * Comma: ','
+	     */
+
+	    if (value === CHAR_COMMA && depth > 0) {
+	      if (block.ranges > 0) {
+	        block.ranges = 0;
+	        const open = block.nodes.shift();
+	        block.nodes = [open, { type: 'text', value: stringify(block) }];
+	      }
+
+	      push({ type: 'comma', value });
+	      block.commas++;
+	      continue;
+	    }
+
+	    /**
+	     * Dot: '.'
+	     */
+
+	    if (value === CHAR_DOT && depth > 0 && block.commas === 0) {
+	      const siblings = block.nodes;
+
+	      if (depth === 0 || siblings.length === 0) {
+	        push({ type: 'text', value });
+	        continue;
+	      }
+
+	      if (prev.type === 'dot') {
+	        block.range = [];
+	        prev.value += value;
+	        prev.type = 'range';
+
+	        if (block.nodes.length !== 3 && block.nodes.length !== 5) {
+	          block.invalid = true;
+	          block.ranges = 0;
+	          prev.type = 'text';
+	          continue;
+	        }
+
+	        block.ranges++;
+	        block.args = [];
+	        continue;
+	      }
+
+	      if (prev.type === 'range') {
+	        siblings.pop();
+
+	        const before = siblings[siblings.length - 1];
+	        before.value += prev.value + value;
+	        prev = before;
+	        block.ranges--;
+	        continue;
+	      }
+
+	      push({ type: 'dot', value });
+	      continue;
+	    }
+
+	    /**
+	     * Text
+	     */
+
+	    push({ type: 'text', value });
+	  }
+
+	  // Mark imbalanced braces and brackets as invalid
+	  do {
+	    block = stack.pop();
+
+	    if (block.type !== 'root') {
+	      block.nodes.forEach(node => {
+	        if (!node.nodes) {
+	          if (node.type === 'open') node.isOpen = true;
+	          if (node.type === 'close') node.isClose = true;
+	          if (!node.nodes) node.type = 'text';
+	          node.invalid = true;
+	        }
+	      });
+
+	      // get the location of the block on parent.nodes (block's siblings)
+	      const parent = stack[stack.length - 1];
+	      const index = parent.nodes.indexOf(block);
+	      // replace the (invalid) block with it's nodes
+	      parent.nodes.splice(index, 1, ...block.nodes);
+	    }
+	  } while (stack.length > 0);
+
+	  push({ type: 'eos' });
+	  return ast;
+	};
+
+	parse_1$1 = parse;
+	return parse_1$1;
+}
+
+var braces_1;
+var hasRequiredBraces;
+
+function requireBraces () {
+	if (hasRequiredBraces) return braces_1;
+	hasRequiredBraces = 1;
+
+	const stringify = requireStringify();
+	const compile = requireCompile();
+	const expand = requireExpand();
+	const parse = requireParse$1();
+
+	/**
+	 * Expand the given pattern or create a regex-compatible string.
+	 *
+	 * ```js
+	 * const braces = require('braces');
+	 * console.log(braces('{a,b,c}', { compile: true })); //=> ['(a|b|c)']
+	 * console.log(braces('{a,b,c}')); //=> ['a', 'b', 'c']
+	 * ```
+	 * @param {String} `str`
+	 * @param {Object} `options`
+	 * @return {String}
+	 * @api public
+	 */
+
+	const braces = (input, options = {}) => {
+	  let output = [];
+
+	  if (Array.isArray(input)) {
+	    for (const pattern of input) {
+	      const result = braces.create(pattern, options);
+	      if (Array.isArray(result)) {
+	        output.push(...result);
+	      } else {
+	        output.push(result);
+	      }
+	    }
+	  } else {
+	    output = [].concat(braces.create(input, options));
+	  }
+
+	  if (options && options.expand === true && options.nodupes === true) {
+	    output = [...new Set(output)];
+	  }
+	  return output;
+	};
+
+	/**
+	 * Parse the given `str` with the given `options`.
+	 *
+	 * ```js
+	 * // braces.parse(pattern, [, options]);
+	 * const ast = braces.parse('a/{b,c}/d');
+	 * console.log(ast);
+	 * ```
+	 * @param {String} pattern Brace pattern to parse
+	 * @param {Object} options
+	 * @return {Object} Returns an AST
+	 * @api public
+	 */
+
+	braces.parse = (input, options = {}) => parse(input, options);
+
+	/**
+	 * Creates a braces string from an AST, or an AST node.
+	 *
+	 * ```js
+	 * const braces = require('braces');
+	 * let ast = braces.parse('foo/{a,b}/bar');
+	 * console.log(stringify(ast.nodes[2])); //=> '{a,b}'
+	 * ```
+	 * @param {String} `input` Brace pattern or AST.
+	 * @param {Object} `options`
+	 * @return {Array} Returns an array of expanded values.
+	 * @api public
+	 */
+
+	braces.stringify = (input, options = {}) => {
+	  if (typeof input === 'string') {
+	    return stringify(braces.parse(input, options), options);
+	  }
+	  return stringify(input, options);
+	};
+
+	/**
+	 * Compiles a brace pattern into a regex-compatible, optimized string.
+	 * This method is called by the main [braces](#braces) function by default.
+	 *
+	 * ```js
+	 * const braces = require('braces');
+	 * console.log(braces.compile('a/{b,c}/d'));
+	 * //=> ['a/(b|c)/d']
+	 * ```
+	 * @param {String} `input` Brace pattern or AST.
+	 * @param {Object} `options`
+	 * @return {Array} Returns an array of expanded values.
+	 * @api public
+	 */
+
+	braces.compile = (input, options = {}) => {
+	  if (typeof input === 'string') {
+	    input = braces.parse(input, options);
+	  }
+	  return compile(input, options);
+	};
+
+	/**
+	 * Expands a brace pattern into an array. This method is called by the
+	 * main [braces](#braces) function when `options.expand` is true. Before
+	 * using this method it's recommended that you read the [performance notes](#performance))
+	 * and advantages of using [.compile](#compile) instead.
+	 *
+	 * ```js
+	 * const braces = require('braces');
+	 * console.log(braces.expand('a/{b,c}/d'));
+	 * //=> ['a/b/d', 'a/c/d'];
+	 * ```
+	 * @param {String} `pattern` Brace pattern
+	 * @param {Object} `options`
+	 * @return {Array} Returns an array of expanded values.
+	 * @api public
+	 */
+
+	braces.expand = (input, options = {}) => {
+	  if (typeof input === 'string') {
+	    input = braces.parse(input, options);
+	  }
+
+	  let result = expand(input, options);
+
+	  // filter out empty strings if specified
+	  if (options.noempty === true) {
+	    result = result.filter(Boolean);
+	  }
+
+	  // filter out duplicates if specified
+	  if (options.nodupes === true) {
+	    result = [...new Set(result)];
+	  }
+
+	  return result;
+	};
+
+	/**
+	 * Processes a brace pattern and returns either an expanded array
+	 * (if `options.expand` is true), a highly optimized regex-compatible string.
+	 * This method is called by the main [braces](#braces) function.
+	 *
+	 * ```js
+	 * const braces = require('braces');
+	 * console.log(braces.create('user-{200..300}/project-{a,b,c}-{1..10}'))
+	 * //=> 'user-(20[0-9]|2[1-9][0-9]|300)/project-(a|b|c)-([1-9]|10)'
+	 * ```
+	 * @param {String} `pattern` Brace pattern
+	 * @param {Object} `options`
+	 * @return {Array} Returns an array of expanded values.
+	 * @api public
+	 */
+
+	braces.create = (input, options = {}) => {
+	  if (input === '' || input.length < 3) {
+	    return [input];
+	  }
+
+	  return options.expand !== true
+	    ? braces.compile(input, options)
+	    : braces.expand(input, options);
+	};
+
+	/**
+	 * Expose "braces"
+	 */
+
+	braces_1 = braces;
+	return braces_1;
+}
+
+var utils$2 = {};
+
+var constants;
+var hasRequiredConstants;
+
+function requireConstants () {
+	if (hasRequiredConstants) return constants;
+	hasRequiredConstants = 1;
+
+	const path = require$$0$a;
+	const WIN_SLASH = '\\\\/';
+	const WIN_NO_SLASH = `[^${WIN_SLASH}]`;
+
+	/**
+	 * Posix glob regex
+	 */
+
+	const DOT_LITERAL = '\\.';
+	const PLUS_LITERAL = '\\+';
+	const QMARK_LITERAL = '\\?';
+	const SLASH_LITERAL = '\\/';
+	const ONE_CHAR = '(?=.)';
+	const QMARK = '[^/]';
+	const END_ANCHOR = `(?:${SLASH_LITERAL}|$)`;
+	const START_ANCHOR = `(?:^|${SLASH_LITERAL})`;
+	const DOTS_SLASH = `${DOT_LITERAL}{1,2}${END_ANCHOR}`;
+	const NO_DOT = `(?!${DOT_LITERAL})`;
+	const NO_DOTS = `(?!${START_ANCHOR}${DOTS_SLASH})`;
+	const NO_DOT_SLASH = `(?!${DOT_LITERAL}{0,1}${END_ANCHOR})`;
+	const NO_DOTS_SLASH = `(?!${DOTS_SLASH})`;
+	const QMARK_NO_DOT = `[^.${SLASH_LITERAL}]`;
+	const STAR = `${QMARK}*?`;
+
+	const POSIX_CHARS = {
+	  DOT_LITERAL,
+	  PLUS_LITERAL,
+	  QMARK_LITERAL,
+	  SLASH_LITERAL,
+	  ONE_CHAR,
+	  QMARK,
+	  END_ANCHOR,
+	  DOTS_SLASH,
+	  NO_DOT,
+	  NO_DOTS,
+	  NO_DOT_SLASH,
+	  NO_DOTS_SLASH,
+	  QMARK_NO_DOT,
+	  STAR,
+	  START_ANCHOR
+	};
+
+	/**
+	 * Windows glob regex
+	 */
+
+	const WINDOWS_CHARS = {
+	  ...POSIX_CHARS,
+
+	  SLASH_LITERAL: `[${WIN_SLASH}]`,
+	  QMARK: WIN_NO_SLASH,
+	  STAR: `${WIN_NO_SLASH}*?`,
+	  DOTS_SLASH: `${DOT_LITERAL}{1,2}(?:[${WIN_SLASH}]|$)`,
+	  NO_DOT: `(?!${DOT_LITERAL})`,
+	  NO_DOTS: `(?!(?:^|[${WIN_SLASH}])${DOT_LITERAL}{1,2}(?:[${WIN_SLASH}]|$))`,
+	  NO_DOT_SLASH: `(?!${DOT_LITERAL}{0,1}(?:[${WIN_SLASH}]|$))`,
+	  NO_DOTS_SLASH: `(?!${DOT_LITERAL}{1,2}(?:[${WIN_SLASH}]|$))`,
+	  QMARK_NO_DOT: `[^.${WIN_SLASH}]`,
+	  START_ANCHOR: `(?:^|[${WIN_SLASH}])`,
+	  END_ANCHOR: `(?:[${WIN_SLASH}]|$)`
+	};
+
+	/**
+	 * POSIX Bracket Regex
+	 */
+
+	const POSIX_REGEX_SOURCE = {
+	  alnum: 'a-zA-Z0-9',
+	  alpha: 'a-zA-Z',
+	  ascii: '\\x00-\\x7F',
+	  blank: ' \\t',
+	  cntrl: '\\x00-\\x1F\\x7F',
+	  digit: '0-9',
+	  graph: '\\x21-\\x7E',
+	  lower: 'a-z',
+	  print: '\\x20-\\x7E ',
+	  punct: '\\-!"#$%&\'()\\*+,./:;<=>?@[\\]^_`{|}~',
+	  space: ' \\t\\r\\n\\v\\f',
+	  upper: 'A-Z',
+	  word: 'A-Za-z0-9_',
+	  xdigit: 'A-Fa-f0-9'
+	};
+
+	constants = {
+	  MAX_LENGTH: 1024 * 64,
+	  POSIX_REGEX_SOURCE,
+
+	  // regular expressions
+	  REGEX_BACKSLASH: /\\(?![*+?^${}(|)[\]])/g,
+	  REGEX_NON_SPECIAL_CHARS: /^[^@![\].,$*+?^{}()|\\/]+/,
+	  REGEX_SPECIAL_CHARS: /[-*+?.^${}(|)[\]]/,
+	  REGEX_SPECIAL_CHARS_BACKREF: /(\\?)((\W)(\3*))/g,
+	  REGEX_SPECIAL_CHARS_GLOBAL: /([-*+?.^${}(|)[\]])/g,
+	  REGEX_REMOVE_BACKSLASH: /(?:\[.*?[^\\]\]|\\(?=.))/g,
+
+	  // Replace globs with equivalent patterns to reduce parsing time.
+	  REPLACEMENTS: {
+	    '***': '*',
+	    '**/**': '**',
+	    '**/**/**': '**'
+	  },
+
+	  // Digits
+	  CHAR_0: 48, /* 0 */
+	  CHAR_9: 57, /* 9 */
+
+	  // Alphabet chars.
+	  CHAR_UPPERCASE_A: 65, /* A */
+	  CHAR_LOWERCASE_A: 97, /* a */
+	  CHAR_UPPERCASE_Z: 90, /* Z */
+	  CHAR_LOWERCASE_Z: 122, /* z */
+
+	  CHAR_LEFT_PARENTHESES: 40, /* ( */
+	  CHAR_RIGHT_PARENTHESES: 41, /* ) */
+
+	  CHAR_ASTERISK: 42, /* * */
+
+	  // Non-alphabetic chars.
+	  CHAR_AMPERSAND: 38, /* & */
+	  CHAR_AT: 64, /* @ */
+	  CHAR_BACKWARD_SLASH: 92, /* \ */
+	  CHAR_CARRIAGE_RETURN: 13, /* \r */
+	  CHAR_CIRCUMFLEX_ACCENT: 94, /* ^ */
+	  CHAR_COLON: 58, /* : */
+	  CHAR_COMMA: 44, /* , */
+	  CHAR_DOT: 46, /* . */
+	  CHAR_DOUBLE_QUOTE: 34, /* " */
+	  CHAR_EQUAL: 61, /* = */
+	  CHAR_EXCLAMATION_MARK: 33, /* ! */
+	  CHAR_FORM_FEED: 12, /* \f */
+	  CHAR_FORWARD_SLASH: 47, /* / */
+	  CHAR_GRAVE_ACCENT: 96, /* ` */
+	  CHAR_HASH: 35, /* # */
+	  CHAR_HYPHEN_MINUS: 45, /* - */
+	  CHAR_LEFT_ANGLE_BRACKET: 60, /* < */
+	  CHAR_LEFT_CURLY_BRACE: 123, /* { */
+	  CHAR_LEFT_SQUARE_BRACKET: 91, /* [ */
+	  CHAR_LINE_FEED: 10, /* \n */
+	  CHAR_NO_BREAK_SPACE: 160, /* \u00A0 */
+	  CHAR_PERCENT: 37, /* % */
+	  CHAR_PLUS: 43, /* + */
+	  CHAR_QUESTION_MARK: 63, /* ? */
+	  CHAR_RIGHT_ANGLE_BRACKET: 62, /* > */
+	  CHAR_RIGHT_CURLY_BRACE: 125, /* } */
+	  CHAR_RIGHT_SQUARE_BRACKET: 93, /* ] */
+	  CHAR_SEMICOLON: 59, /* ; */
+	  CHAR_SINGLE_QUOTE: 39, /* ' */
+	  CHAR_SPACE: 32, /*   */
+	  CHAR_TAB: 9, /* \t */
+	  CHAR_UNDERSCORE: 95, /* _ */
+	  CHAR_VERTICAL_LINE: 124, /* | */
+	  CHAR_ZERO_WIDTH_NOBREAK_SPACE: 65279, /* \uFEFF */
+
+	  SEP: path.sep,
+
+	  /**
+	   * Create EXTGLOB_CHARS
+	   */
+
+	  extglobChars(chars) {
+	    return {
+	      '!': { type: 'negate', open: '(?:(?!(?:', close: `))${chars.STAR})` },
+	      '?': { type: 'qmark', open: '(?:', close: ')?' },
+	      '+': { type: 'plus', open: '(?:', close: ')+' },
+	      '*': { type: 'star', open: '(?:', close: ')*' },
+	      '@': { type: 'at', open: '(?:', close: ')' }
+	    };
+	  },
+
+	  /**
+	   * Create GLOB_CHARS
+	   */
+
+	  globChars(win32) {
+	    return win32 === true ? WINDOWS_CHARS : POSIX_CHARS;
+	  }
+	};
+	return constants;
+}
+
+var hasRequiredUtils$2;
+
+function requireUtils$2 () {
+	if (hasRequiredUtils$2) return utils$2;
+	hasRequiredUtils$2 = 1;
+	(function (exports) {
+
+		const path = require$$0$a;
+		const win32 = process.platform === 'win32';
+		const {
+		  REGEX_BACKSLASH,
+		  REGEX_REMOVE_BACKSLASH,
+		  REGEX_SPECIAL_CHARS,
+		  REGEX_SPECIAL_CHARS_GLOBAL
+		} = requireConstants();
+
+		exports.isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
+		exports.hasRegexChars = str => REGEX_SPECIAL_CHARS.test(str);
+		exports.isRegexChar = str => str.length === 1 && exports.hasRegexChars(str);
+		exports.escapeRegex = str => str.replace(REGEX_SPECIAL_CHARS_GLOBAL, '\\$1');
+		exports.toPosixSlashes = str => str.replace(REGEX_BACKSLASH, '/');
+
+		exports.removeBackslashes = str => {
+		  return str.replace(REGEX_REMOVE_BACKSLASH, match => {
+		    return match === '\\' ? '' : match;
+		  });
+		};
+
+		exports.supportsLookbehinds = () => {
+		  const segs = process.version.slice(1).split('.').map(Number);
+		  if (segs.length === 3 && segs[0] >= 9 || (segs[0] === 8 && segs[1] >= 10)) {
+		    return true;
+		  }
+		  return false;
+		};
+
+		exports.isWindows = options => {
+		  if (options && typeof options.windows === 'boolean') {
+		    return options.windows;
+		  }
+		  return win32 === true || path.sep === '\\';
+		};
+
+		exports.escapeLast = (input, char, lastIdx) => {
+		  const idx = input.lastIndexOf(char, lastIdx);
+		  if (idx === -1) return input;
+		  if (input[idx - 1] === '\\') return exports.escapeLast(input, char, idx - 1);
+		  return `${input.slice(0, idx)}\\${input.slice(idx)}`;
+		};
+
+		exports.removePrefix = (input, state = {}) => {
+		  let output = input;
+		  if (output.startsWith('./')) {
+		    output = output.slice(2);
+		    state.prefix = './';
+		  }
+		  return output;
+		};
+
+		exports.wrapOutput = (input, state = {}, options = {}) => {
+		  const prepend = options.contains ? '' : '^';
+		  const append = options.contains ? '' : '$';
+
+		  let output = `${prepend}(?:${input})${append}`;
+		  if (state.negated === true) {
+		    output = `(?:^(?!${output}).*$)`;
+		  }
+		  return output;
+		}; 
+	} (utils$2));
+	return utils$2;
+}
+
+var scan_1;
+var hasRequiredScan;
+
+function requireScan () {
+	if (hasRequiredScan) return scan_1;
+	hasRequiredScan = 1;
+
+	const utils = requireUtils$2();
+	const {
+	  CHAR_ASTERISK,             /* * */
+	  CHAR_AT,                   /* @ */
+	  CHAR_BACKWARD_SLASH,       /* \ */
+	  CHAR_COMMA,                /* , */
+	  CHAR_DOT,                  /* . */
+	  CHAR_EXCLAMATION_MARK,     /* ! */
+	  CHAR_FORWARD_SLASH,        /* / */
+	  CHAR_LEFT_CURLY_BRACE,     /* { */
+	  CHAR_LEFT_PARENTHESES,     /* ( */
+	  CHAR_LEFT_SQUARE_BRACKET,  /* [ */
+	  CHAR_PLUS,                 /* + */
+	  CHAR_QUESTION_MARK,        /* ? */
+	  CHAR_RIGHT_CURLY_BRACE,    /* } */
+	  CHAR_RIGHT_PARENTHESES,    /* ) */
+	  CHAR_RIGHT_SQUARE_BRACKET  /* ] */
+	} = requireConstants();
+
+	const isPathSeparator = code => {
+	  return code === CHAR_FORWARD_SLASH || code === CHAR_BACKWARD_SLASH;
+	};
+
+	const depth = token => {
+	  if (token.isPrefix !== true) {
+	    token.depth = token.isGlobstar ? Infinity : 1;
+	  }
+	};
+
+	/**
+	 * Quickly scans a glob pattern and returns an object with a handful of
+	 * useful properties, like `isGlob`, `path` (the leading non-glob, if it exists),
+	 * `glob` (the actual pattern), `negated` (true if the path starts with `!` but not
+	 * with `!(`) and `negatedExtglob` (true if the path starts with `!(`).
+	 *
+	 * ```js
+	 * const pm = require('picomatch');
+	 * console.log(pm.scan('foo/bar/*.js'));
+	 * { isGlob: true, input: 'foo/bar/*.js', base: 'foo/bar', glob: '*.js' }
+	 * ```
+	 * @param {String} `str`
+	 * @param {Object} `options`
+	 * @return {Object} Returns an object with tokens and regex source string.
+	 * @api public
+	 */
+
+	const scan = (input, options) => {
+	  const opts = options || {};
+
+	  const length = input.length - 1;
+	  const scanToEnd = opts.parts === true || opts.scanToEnd === true;
+	  const slashes = [];
+	  const tokens = [];
+	  const parts = [];
+
+	  let str = input;
+	  let index = -1;
+	  let start = 0;
+	  let lastIndex = 0;
+	  let isBrace = false;
+	  let isBracket = false;
+	  let isGlob = false;
+	  let isExtglob = false;
+	  let isGlobstar = false;
+	  let braceEscaped = false;
+	  let backslashes = false;
+	  let negated = false;
+	  let negatedExtglob = false;
+	  let finished = false;
+	  let braces = 0;
+	  let prev;
+	  let code;
+	  let token = { value: '', depth: 0, isGlob: false };
+
+	  const eos = () => index >= length;
+	  const peek = () => str.charCodeAt(index + 1);
+	  const advance = () => {
+	    prev = code;
+	    return str.charCodeAt(++index);
+	  };
+
+	  while (index < length) {
+	    code = advance();
+	    let next;
+
+	    if (code === CHAR_BACKWARD_SLASH) {
+	      backslashes = token.backslashes = true;
+	      code = advance();
+
+	      if (code === CHAR_LEFT_CURLY_BRACE) {
+	        braceEscaped = true;
+	      }
+	      continue;
+	    }
+
+	    if (braceEscaped === true || code === CHAR_LEFT_CURLY_BRACE) {
+	      braces++;
+
+	      while (eos() !== true && (code = advance())) {
+	        if (code === CHAR_BACKWARD_SLASH) {
+	          backslashes = token.backslashes = true;
+	          advance();
+	          continue;
+	        }
+
+	        if (code === CHAR_LEFT_CURLY_BRACE) {
+	          braces++;
+	          continue;
+	        }
+
+	        if (braceEscaped !== true && code === CHAR_DOT && (code = advance()) === CHAR_DOT) {
+	          isBrace = token.isBrace = true;
+	          isGlob = token.isGlob = true;
+	          finished = true;
+
+	          if (scanToEnd === true) {
+	            continue;
+	          }
+
+	          break;
+	        }
+
+	        if (braceEscaped !== true && code === CHAR_COMMA) {
+	          isBrace = token.isBrace = true;
+	          isGlob = token.isGlob = true;
+	          finished = true;
+
+	          if (scanToEnd === true) {
+	            continue;
+	          }
+
+	          break;
+	        }
+
+	        if (code === CHAR_RIGHT_CURLY_BRACE) {
+	          braces--;
+
+	          if (braces === 0) {
+	            braceEscaped = false;
+	            isBrace = token.isBrace = true;
+	            finished = true;
+	            break;
+	          }
+	        }
+	      }
+
+	      if (scanToEnd === true) {
+	        continue;
+	      }
+
+	      break;
+	    }
+
+	    if (code === CHAR_FORWARD_SLASH) {
+	      slashes.push(index);
+	      tokens.push(token);
+	      token = { value: '', depth: 0, isGlob: false };
+
+	      if (finished === true) continue;
+	      if (prev === CHAR_DOT && index === (start + 1)) {
+	        start += 2;
+	        continue;
+	      }
+
+	      lastIndex = index + 1;
+	      continue;
+	    }
+
+	    if (opts.noext !== true) {
+	      const isExtglobChar = code === CHAR_PLUS
+	        || code === CHAR_AT
+	        || code === CHAR_ASTERISK
+	        || code === CHAR_QUESTION_MARK
+	        || code === CHAR_EXCLAMATION_MARK;
+
+	      if (isExtglobChar === true && peek() === CHAR_LEFT_PARENTHESES) {
+	        isGlob = token.isGlob = true;
+	        isExtglob = token.isExtglob = true;
+	        finished = true;
+	        if (code === CHAR_EXCLAMATION_MARK && index === start) {
+	          negatedExtglob = true;
+	        }
+
+	        if (scanToEnd === true) {
+	          while (eos() !== true && (code = advance())) {
+	            if (code === CHAR_BACKWARD_SLASH) {
+	              backslashes = token.backslashes = true;
+	              code = advance();
+	              continue;
+	            }
+
+	            if (code === CHAR_RIGHT_PARENTHESES) {
+	              isGlob = token.isGlob = true;
+	              finished = true;
+	              break;
+	            }
+	          }
+	          continue;
+	        }
+	        break;
+	      }
+	    }
+
+	    if (code === CHAR_ASTERISK) {
+	      if (prev === CHAR_ASTERISK) isGlobstar = token.isGlobstar = true;
+	      isGlob = token.isGlob = true;
+	      finished = true;
+
+	      if (scanToEnd === true) {
+	        continue;
+	      }
+	      break;
+	    }
+
+	    if (code === CHAR_QUESTION_MARK) {
+	      isGlob = token.isGlob = true;
+	      finished = true;
+
+	      if (scanToEnd === true) {
+	        continue;
+	      }
+	      break;
+	    }
+
+	    if (code === CHAR_LEFT_SQUARE_BRACKET) {
+	      while (eos() !== true && (next = advance())) {
+	        if (next === CHAR_BACKWARD_SLASH) {
+	          backslashes = token.backslashes = true;
+	          advance();
+	          continue;
+	        }
+
+	        if (next === CHAR_RIGHT_SQUARE_BRACKET) {
+	          isBracket = token.isBracket = true;
+	          isGlob = token.isGlob = true;
+	          finished = true;
+	          break;
+	        }
+	      }
+
+	      if (scanToEnd === true) {
+	        continue;
+	      }
+
+	      break;
+	    }
+
+	    if (opts.nonegate !== true && code === CHAR_EXCLAMATION_MARK && index === start) {
+	      negated = token.negated = true;
+	      start++;
+	      continue;
+	    }
+
+	    if (opts.noparen !== true && code === CHAR_LEFT_PARENTHESES) {
+	      isGlob = token.isGlob = true;
+
+	      if (scanToEnd === true) {
+	        while (eos() !== true && (code = advance())) {
+	          if (code === CHAR_LEFT_PARENTHESES) {
+	            backslashes = token.backslashes = true;
+	            code = advance();
+	            continue;
+	          }
+
+	          if (code === CHAR_RIGHT_PARENTHESES) {
+	            finished = true;
+	            break;
+	          }
+	        }
+	        continue;
+	      }
+	      break;
+	    }
+
+	    if (isGlob === true) {
+	      finished = true;
+
+	      if (scanToEnd === true) {
+	        continue;
+	      }
+
+	      break;
+	    }
+	  }
+
+	  if (opts.noext === true) {
+	    isExtglob = false;
+	    isGlob = false;
+	  }
+
+	  let base = str;
+	  let prefix = '';
+	  let glob = '';
+
+	  if (start > 0) {
+	    prefix = str.slice(0, start);
+	    str = str.slice(start);
+	    lastIndex -= start;
+	  }
+
+	  if (base && isGlob === true && lastIndex > 0) {
+	    base = str.slice(0, lastIndex);
+	    glob = str.slice(lastIndex);
+	  } else if (isGlob === true) {
+	    base = '';
+	    glob = str;
+	  } else {
+	    base = str;
+	  }
+
+	  if (base && base !== '' && base !== '/' && base !== str) {
+	    if (isPathSeparator(base.charCodeAt(base.length - 1))) {
+	      base = base.slice(0, -1);
+	    }
+	  }
+
+	  if (opts.unescape === true) {
+	    if (glob) glob = utils.removeBackslashes(glob);
+
+	    if (base && backslashes === true) {
+	      base = utils.removeBackslashes(base);
+	    }
+	  }
+
+	  const state = {
+	    prefix,
+	    input,
+	    start,
+	    base,
+	    glob,
+	    isBrace,
+	    isBracket,
+	    isGlob,
+	    isExtglob,
+	    isGlobstar,
+	    negated,
+	    negatedExtglob
+	  };
+
+	  if (opts.tokens === true) {
+	    state.maxDepth = 0;
+	    if (!isPathSeparator(code)) {
+	      tokens.push(token);
+	    }
+	    state.tokens = tokens;
+	  }
+
+	  if (opts.parts === true || opts.tokens === true) {
+	    let prevIndex;
+
+	    for (let idx = 0; idx < slashes.length; idx++) {
+	      const n = prevIndex ? prevIndex + 1 : start;
+	      const i = slashes[idx];
+	      const value = input.slice(n, i);
+	      if (opts.tokens) {
+	        if (idx === 0 && start !== 0) {
+	          tokens[idx].isPrefix = true;
+	          tokens[idx].value = prefix;
+	        } else {
+	          tokens[idx].value = value;
+	        }
+	        depth(tokens[idx]);
+	        state.maxDepth += tokens[idx].depth;
+	      }
+	      if (idx !== 0 || value !== '') {
+	        parts.push(value);
+	      }
+	      prevIndex = i;
+	    }
+
+	    if (prevIndex && prevIndex + 1 < input.length) {
+	      const value = input.slice(prevIndex + 1);
+	      parts.push(value);
+
+	      if (opts.tokens) {
+	        tokens[tokens.length - 1].value = value;
+	        depth(tokens[tokens.length - 1]);
+	        state.maxDepth += tokens[tokens.length - 1].depth;
+	      }
+	    }
+
+	    state.slashes = slashes;
+	    state.parts = parts;
+	  }
+
+	  return state;
+	};
+
+	scan_1 = scan;
+	return scan_1;
+}
+
+var parse_1;
+var hasRequiredParse;
+
+function requireParse () {
+	if (hasRequiredParse) return parse_1;
+	hasRequiredParse = 1;
+
+	const constants = requireConstants();
+	const utils = requireUtils$2();
+
+	/**
+	 * Constants
+	 */
+
+	const {
+	  MAX_LENGTH,
+	  POSIX_REGEX_SOURCE,
+	  REGEX_NON_SPECIAL_CHARS,
+	  REGEX_SPECIAL_CHARS_BACKREF,
+	  REPLACEMENTS
+	} = constants;
+
+	/**
+	 * Helpers
+	 */
+
+	const expandRange = (args, options) => {
+	  if (typeof options.expandRange === 'function') {
+	    return options.expandRange(...args, options);
+	  }
+
+	  args.sort();
+	  const value = `[${args.join('-')}]`;
+
+	  try {
+	    /* eslint-disable-next-line no-new */
+	    new RegExp(value);
+	  } catch (ex) {
+	    return args.map(v => utils.escapeRegex(v)).join('..');
+	  }
+
+	  return value;
+	};
+
+	/**
+	 * Create the message for a syntax error
+	 */
+
+	const syntaxError = (type, char) => {
+	  return `Missing ${type}: "${char}" - use "\\\\${char}" to match literal characters`;
+	};
+
+	/**
+	 * Parse the given input string.
+	 * @param {String} input
+	 * @param {Object} options
+	 * @return {Object}
+	 */
+
+	const parse = (input, options) => {
+	  if (typeof input !== 'string') {
+	    throw new TypeError('Expected a string');
+	  }
+
+	  input = REPLACEMENTS[input] || input;
+
+	  const opts = { ...options };
+	  const max = typeof opts.maxLength === 'number' ? Math.min(MAX_LENGTH, opts.maxLength) : MAX_LENGTH;
+
+	  let len = input.length;
+	  if (len > max) {
+	    throw new SyntaxError(`Input length: ${len}, exceeds maximum allowed length: ${max}`);
+	  }
+
+	  const bos = { type: 'bos', value: '', output: opts.prepend || '' };
+	  const tokens = [bos];
+
+	  const capture = opts.capture ? '' : '?:';
+	  const win32 = utils.isWindows(options);
+
+	  // create constants based on platform, for windows or posix
+	  const PLATFORM_CHARS = constants.globChars(win32);
+	  const EXTGLOB_CHARS = constants.extglobChars(PLATFORM_CHARS);
+
+	  const {
+	    DOT_LITERAL,
+	    PLUS_LITERAL,
+	    SLASH_LITERAL,
+	    ONE_CHAR,
+	    DOTS_SLASH,
+	    NO_DOT,
+	    NO_DOT_SLASH,
+	    NO_DOTS_SLASH,
+	    QMARK,
+	    QMARK_NO_DOT,
+	    STAR,
+	    START_ANCHOR
+	  } = PLATFORM_CHARS;
+
+	  const globstar = opts => {
+	    return `(${capture}(?:(?!${START_ANCHOR}${opts.dot ? DOTS_SLASH : DOT_LITERAL}).)*?)`;
+	  };
+
+	  const nodot = opts.dot ? '' : NO_DOT;
+	  const qmarkNoDot = opts.dot ? QMARK : QMARK_NO_DOT;
+	  let star = opts.bash === true ? globstar(opts) : STAR;
+
+	  if (opts.capture) {
+	    star = `(${star})`;
+	  }
+
+	  // minimatch options support
+	  if (typeof opts.noext === 'boolean') {
+	    opts.noextglob = opts.noext;
+	  }
+
+	  const state = {
+	    input,
+	    index: -1,
+	    start: 0,
+	    dot: opts.dot === true,
+	    consumed: '',
+	    output: '',
+	    prefix: '',
+	    backtrack: false,
+	    negated: false,
+	    brackets: 0,
+	    braces: 0,
+	    parens: 0,
+	    quotes: 0,
+	    globstar: false,
+	    tokens
+	  };
+
+	  input = utils.removePrefix(input, state);
+	  len = input.length;
+
+	  const extglobs = [];
+	  const braces = [];
+	  const stack = [];
+	  let prev = bos;
+	  let value;
+
+	  /**
+	   * Tokenizing helpers
+	   */
+
+	  const eos = () => state.index === len - 1;
+	  const peek = state.peek = (n = 1) => input[state.index + n];
+	  const advance = state.advance = () => input[++state.index] || '';
+	  const remaining = () => input.slice(state.index + 1);
+	  const consume = (value = '', num = 0) => {
+	    state.consumed += value;
+	    state.index += num;
+	  };
+
+	  const append = token => {
+	    state.output += token.output != null ? token.output : token.value;
+	    consume(token.value);
+	  };
+
+	  const negate = () => {
+	    let count = 1;
+
+	    while (peek() === '!' && (peek(2) !== '(' || peek(3) === '?')) {
+	      advance();
+	      state.start++;
+	      count++;
+	    }
+
+	    if (count % 2 === 0) {
+	      return false;
+	    }
+
+	    state.negated = true;
+	    state.start++;
+	    return true;
+	  };
+
+	  const increment = type => {
+	    state[type]++;
+	    stack.push(type);
+	  };
+
+	  const decrement = type => {
+	    state[type]--;
+	    stack.pop();
+	  };
+
+	  /**
+	   * Push tokens onto the tokens array. This helper speeds up
+	   * tokenizing by 1) helping us avoid backtracking as much as possible,
+	   * and 2) helping us avoid creating extra tokens when consecutive
+	   * characters are plain text. This improves performance and simplifies
+	   * lookbehinds.
+	   */
+
+	  const push = tok => {
+	    if (prev.type === 'globstar') {
+	      const isBrace = state.braces > 0 && (tok.type === 'comma' || tok.type === 'brace');
+	      const isExtglob = tok.extglob === true || (extglobs.length && (tok.type === 'pipe' || tok.type === 'paren'));
+
+	      if (tok.type !== 'slash' && tok.type !== 'paren' && !isBrace && !isExtglob) {
+	        state.output = state.output.slice(0, -prev.output.length);
+	        prev.type = 'star';
+	        prev.value = '*';
+	        prev.output = star;
+	        state.output += prev.output;
+	      }
+	    }
+
+	    if (extglobs.length && tok.type !== 'paren') {
+	      extglobs[extglobs.length - 1].inner += tok.value;
+	    }
+
+	    if (tok.value || tok.output) append(tok);
+	    if (prev && prev.type === 'text' && tok.type === 'text') {
+	      prev.value += tok.value;
+	      prev.output = (prev.output || '') + tok.value;
+	      return;
+	    }
+
+	    tok.prev = prev;
+	    tokens.push(tok);
+	    prev = tok;
+	  };
+
+	  const extglobOpen = (type, value) => {
+	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+
+	    token.prev = prev;
+	    token.parens = state.parens;
+	    token.output = state.output;
+	    const output = (opts.capture ? '(' : '') + token.open;
+
+	    increment('parens');
+	    push({ type, value, output: state.output ? '' : ONE_CHAR });
+	    push({ type: 'paren', extglob: true, value: advance(), output });
+	    extglobs.push(token);
+	  };
+
+	  const extglobClose = token => {
+	    let output = token.close + (opts.capture ? ')' : '');
+	    let rest;
+
+	    if (token.type === 'negate') {
+	      let extglobStar = star;
+
+	      if (token.inner && token.inner.length > 1 && token.inner.includes('/')) {
+	        extglobStar = globstar(opts);
+	      }
+
+	      if (extglobStar !== star || eos() || /^\)+$/.test(remaining())) {
+	        output = token.close = `)$))${extglobStar}`;
+	      }
+
+	      if (token.inner.includes('*') && (rest = remaining()) && /^\.[^\\/.]+$/.test(rest)) {
+	        // Any non-magical string (`.ts`) or even nested expression (`.{ts,tsx}`) can follow after the closing parenthesis.
+	        // In this case, we need to parse the string and use it in the output of the original pattern.
+	        // Suitable patterns: `/!(*.d).ts`, `/!(*.d).{ts,tsx}`, `**/!(*-dbg).@(js)`.
+	        //
+	        // Disabling the `fastpaths` option due to a problem with parsing strings as `.ts` in the pattern like `**/!(*.d).ts`.
+	        const expression = parse(rest, { ...options, fastpaths: false }).output;
+
+	        output = token.close = `)${expression})${extglobStar})`;
+	      }
+
+	      if (token.prev.type === 'bos') {
+	        state.negatedExtglob = true;
+	      }
+	    }
+
+	    push({ type: 'paren', extglob: true, value, output });
+	    decrement('parens');
+	  };
+
+	  /**
+	   * Fast paths
+	   */
+
+	  if (opts.fastpaths !== false && !/(^[*!]|[/()[\]{}"])/.test(input)) {
+	    let backslashes = false;
+
+	    let output = input.replace(REGEX_SPECIAL_CHARS_BACKREF, (m, esc, chars, first, rest, index) => {
+	      if (first === '\\') {
+	        backslashes = true;
+	        return m;
+	      }
+
+	      if (first === '?') {
+	        if (esc) {
+	          return esc + first + (rest ? QMARK.repeat(rest.length) : '');
+	        }
+	        if (index === 0) {
+	          return qmarkNoDot + (rest ? QMARK.repeat(rest.length) : '');
+	        }
+	        return QMARK.repeat(chars.length);
+	      }
+
+	      if (first === '.') {
+	        return DOT_LITERAL.repeat(chars.length);
+	      }
+
+	      if (first === '*') {
+	        if (esc) {
+	          return esc + first + (rest ? star : '');
+	        }
+	        return star;
+	      }
+	      return esc ? m : `\\${m}`;
+	    });
+
+	    if (backslashes === true) {
+	      if (opts.unescape === true) {
+	        output = output.replace(/\\/g, '');
+	      } else {
+	        output = output.replace(/\\+/g, m => {
+	          return m.length % 2 === 0 ? '\\\\' : (m ? '\\' : '');
+	        });
+	      }
+	    }
+
+	    if (output === input && opts.contains === true) {
+	      state.output = input;
+	      return state;
+	    }
+
+	    state.output = utils.wrapOutput(output, state, options);
+	    return state;
+	  }
+
+	  /**
+	   * Tokenize input until we reach end-of-string
+	   */
+
+	  while (!eos()) {
+	    value = advance();
+
+	    if (value === '\u0000') {
+	      continue;
+	    }
+
+	    /**
+	     * Escaped characters
+	     */
+
+	    if (value === '\\') {
+	      const next = peek();
+
+	      if (next === '/' && opts.bash !== true) {
+	        continue;
+	      }
+
+	      if (next === '.' || next === ';') {
+	        continue;
+	      }
+
+	      if (!next) {
+	        value += '\\';
+	        push({ type: 'text', value });
+	        continue;
+	      }
+
+	      // collapse slashes to reduce potential for exploits
+	      const match = /^\\+/.exec(remaining());
+	      let slashes = 0;
+
+	      if (match && match[0].length > 2) {
+	        slashes = match[0].length;
+	        state.index += slashes;
+	        if (slashes % 2 !== 0) {
+	          value += '\\';
+	        }
+	      }
+
+	      if (opts.unescape === true) {
+	        value = advance();
+	      } else {
+	        value += advance();
+	      }
+
+	      if (state.brackets === 0) {
+	        push({ type: 'text', value });
+	        continue;
+	      }
+	    }
+
+	    /**
+	     * If we're inside a regex character class, continue
+	     * until we reach the closing bracket.
+	     */
+
+	    if (state.brackets > 0 && (value !== ']' || prev.value === '[' || prev.value === '[^')) {
+	      if (opts.posix !== false && value === ':') {
+	        const inner = prev.value.slice(1);
+	        if (inner.includes('[')) {
+	          prev.posix = true;
+
+	          if (inner.includes(':')) {
+	            const idx = prev.value.lastIndexOf('[');
+	            const pre = prev.value.slice(0, idx);
+	            const rest = prev.value.slice(idx + 2);
+	            const posix = POSIX_REGEX_SOURCE[rest];
+	            if (posix) {
+	              prev.value = pre + posix;
+	              state.backtrack = true;
+	              advance();
+
+	              if (!bos.output && tokens.indexOf(prev) === 1) {
+	                bos.output = ONE_CHAR;
+	              }
+	              continue;
+	            }
+	          }
+	        }
+	      }
+
+	      if ((value === '[' && peek() !== ':') || (value === '-' && peek() === ']')) {
+	        value = `\\${value}`;
+	      }
+
+	      if (value === ']' && (prev.value === '[' || prev.value === '[^')) {
+	        value = `\\${value}`;
+	      }
+
+	      if (opts.posix === true && value === '!' && prev.value === '[') {
+	        value = '^';
+	      }
+
+	      prev.value += value;
+	      append({ value });
+	      continue;
+	    }
+
+	    /**
+	     * If we're inside a quoted string, continue
+	     * until we reach the closing double quote.
+	     */
+
+	    if (state.quotes === 1 && value !== '"') {
+	      value = utils.escapeRegex(value);
+	      prev.value += value;
+	      append({ value });
+	      continue;
+	    }
+
+	    /**
+	     * Double quotes
+	     */
+
+	    if (value === '"') {
+	      state.quotes = state.quotes === 1 ? 0 : 1;
+	      if (opts.keepQuotes === true) {
+	        push({ type: 'text', value });
+	      }
+	      continue;
+	    }
+
+	    /**
+	     * Parentheses
+	     */
+
+	    if (value === '(') {
+	      increment('parens');
+	      push({ type: 'paren', value });
+	      continue;
+	    }
+
+	    if (value === ')') {
+	      if (state.parens === 0 && opts.strictBrackets === true) {
+	        throw new SyntaxError(syntaxError('opening', '('));
+	      }
+
+	      const extglob = extglobs[extglobs.length - 1];
+	      if (extglob && state.parens === extglob.parens + 1) {
+	        extglobClose(extglobs.pop());
+	        continue;
+	      }
+
+	      push({ type: 'paren', value, output: state.parens ? ')' : '\\)' });
+	      decrement('parens');
+	      continue;
+	    }
+
+	    /**
+	     * Square brackets
+	     */
+
+	    if (value === '[') {
+	      if (opts.nobracket === true || !remaining().includes(']')) {
+	        if (opts.nobracket !== true && opts.strictBrackets === true) {
+	          throw new SyntaxError(syntaxError('closing', ']'));
+	        }
+
+	        value = `\\${value}`;
+	      } else {
+	        increment('brackets');
+	      }
+
+	      push({ type: 'bracket', value });
+	      continue;
+	    }
+
+	    if (value === ']') {
+	      if (opts.nobracket === true || (prev && prev.type === 'bracket' && prev.value.length === 1)) {
+	        push({ type: 'text', value, output: `\\${value}` });
+	        continue;
+	      }
+
+	      if (state.brackets === 0) {
+	        if (opts.strictBrackets === true) {
+	          throw new SyntaxError(syntaxError('opening', '['));
+	        }
+
+	        push({ type: 'text', value, output: `\\${value}` });
+	        continue;
+	      }
+
+	      decrement('brackets');
+
+	      const prevValue = prev.value.slice(1);
+	      if (prev.posix !== true && prevValue[0] === '^' && !prevValue.includes('/')) {
+	        value = `/${value}`;
+	      }
+
+	      prev.value += value;
+	      append({ value });
+
+	      // when literal brackets are explicitly disabled
+	      // assume we should match with a regex character class
+	      if (opts.literalBrackets === false || utils.hasRegexChars(prevValue)) {
+	        continue;
+	      }
+
+	      const escaped = utils.escapeRegex(prev.value);
+	      state.output = state.output.slice(0, -prev.value.length);
+
+	      // when literal brackets are explicitly enabled
+	      // assume we should escape the brackets to match literal characters
+	      if (opts.literalBrackets === true) {
+	        state.output += escaped;
+	        prev.value = escaped;
+	        continue;
+	      }
+
+	      // when the user specifies nothing, try to match both
+	      prev.value = `(${capture}${escaped}|${prev.value})`;
+	      state.output += prev.value;
+	      continue;
+	    }
+
+	    /**
+	     * Braces
+	     */
+
+	    if (value === '{' && opts.nobrace !== true) {
+	      increment('braces');
+
+	      const open = {
+	        type: 'brace',
+	        value,
+	        output: '(',
+	        outputIndex: state.output.length,
+	        tokensIndex: state.tokens.length
+	      };
+
+	      braces.push(open);
+	      push(open);
+	      continue;
+	    }
+
+	    if (value === '}') {
+	      const brace = braces[braces.length - 1];
+
+	      if (opts.nobrace === true || !brace) {
+	        push({ type: 'text', value, output: value });
+	        continue;
+	      }
+
+	      let output = ')';
+
+	      if (brace.dots === true) {
+	        const arr = tokens.slice();
+	        const range = [];
+
+	        for (let i = arr.length - 1; i >= 0; i--) {
+	          tokens.pop();
+	          if (arr[i].type === 'brace') {
+	            break;
+	          }
+	          if (arr[i].type !== 'dots') {
+	            range.unshift(arr[i].value);
+	          }
+	        }
+
+	        output = expandRange(range, opts);
+	        state.backtrack = true;
+	      }
+
+	      if (brace.comma !== true && brace.dots !== true) {
+	        const out = state.output.slice(0, brace.outputIndex);
+	        const toks = state.tokens.slice(brace.tokensIndex);
+	        brace.value = brace.output = '\\{';
+	        value = output = '\\}';
+	        state.output = out;
+	        for (const t of toks) {
+	          state.output += (t.output || t.value);
+	        }
+	      }
+
+	      push({ type: 'brace', value, output });
+	      decrement('braces');
+	      braces.pop();
+	      continue;
+	    }
+
+	    /**
+	     * Pipes
+	     */
+
+	    if (value === '|') {
+	      if (extglobs.length > 0) {
+	        extglobs[extglobs.length - 1].conditions++;
+	      }
+	      push({ type: 'text', value });
+	      continue;
+	    }
+
+	    /**
+	     * Commas
+	     */
+
+	    if (value === ',') {
+	      let output = value;
+
+	      const brace = braces[braces.length - 1];
+	      if (brace && stack[stack.length - 1] === 'braces') {
+	        brace.comma = true;
+	        output = '|';
+	      }
+
+	      push({ type: 'comma', value, output });
+	      continue;
+	    }
+
+	    /**
+	     * Slashes
+	     */
+
+	    if (value === '/') {
+	      // if the beginning of the glob is "./", advance the start
+	      // to the current index, and don't add the "./" characters
+	      // to the state. This greatly simplifies lookbehinds when
+	      // checking for BOS characters like "!" and "." (not "./")
+	      if (prev.type === 'dot' && state.index === state.start + 1) {
+	        state.start = state.index + 1;
+	        state.consumed = '';
+	        state.output = '';
+	        tokens.pop();
+	        prev = bos; // reset "prev" to the first token
+	        continue;
+	      }
+
+	      push({ type: 'slash', value, output: SLASH_LITERAL });
+	      continue;
+	    }
+
+	    /**
+	     * Dots
+	     */
+
+	    if (value === '.') {
+	      if (state.braces > 0 && prev.type === 'dot') {
+	        if (prev.value === '.') prev.output = DOT_LITERAL;
+	        const brace = braces[braces.length - 1];
+	        prev.type = 'dots';
+	        prev.output += value;
+	        prev.value += value;
+	        brace.dots = true;
+	        continue;
+	      }
+
+	      if ((state.braces + state.parens) === 0 && prev.type !== 'bos' && prev.type !== 'slash') {
+	        push({ type: 'text', value, output: DOT_LITERAL });
+	        continue;
+	      }
+
+	      push({ type: 'dot', value, output: DOT_LITERAL });
+	      continue;
+	    }
+
+	    /**
+	     * Question marks
+	     */
+
+	    if (value === '?') {
+	      const isGroup = prev && prev.value === '(';
+	      if (!isGroup && opts.noextglob !== true && peek() === '(' && peek(2) !== '?') {
+	        extglobOpen('qmark', value);
+	        continue;
+	      }
+
+	      if (prev && prev.type === 'paren') {
+	        const next = peek();
+	        let output = value;
+
+	        if (next === '<' && !utils.supportsLookbehinds()) {
+	          throw new Error('Node.js v10 or higher is required for regex lookbehinds');
+	        }
+
+	        if ((prev.value === '(' && !/[!=<:]/.test(next)) || (next === '<' && !/<([!=]|\w+>)/.test(remaining()))) {
+	          output = `\\${value}`;
+	        }
+
+	        push({ type: 'text', value, output });
+	        continue;
+	      }
+
+	      if (opts.dot !== true && (prev.type === 'slash' || prev.type === 'bos')) {
+	        push({ type: 'qmark', value, output: QMARK_NO_DOT });
+	        continue;
+	      }
+
+	      push({ type: 'qmark', value, output: QMARK });
+	      continue;
+	    }
+
+	    /**
+	     * Exclamation
+	     */
+
+	    if (value === '!') {
+	      if (opts.noextglob !== true && peek() === '(') {
+	        if (peek(2) !== '?' || !/[!=<:]/.test(peek(3))) {
+	          extglobOpen('negate', value);
+	          continue;
+	        }
+	      }
+
+	      if (opts.nonegate !== true && state.index === 0) {
+	        negate();
+	        continue;
+	      }
+	    }
+
+	    /**
+	     * Plus
+	     */
+
+	    if (value === '+') {
+	      if (opts.noextglob !== true && peek() === '(' && peek(2) !== '?') {
+	        extglobOpen('plus', value);
+	        continue;
+	      }
+
+	      if ((prev && prev.value === '(') || opts.regex === false) {
+	        push({ type: 'plus', value, output: PLUS_LITERAL });
+	        continue;
+	      }
+
+	      if ((prev && (prev.type === 'bracket' || prev.type === 'paren' || prev.type === 'brace')) || state.parens > 0) {
+	        push({ type: 'plus', value });
+	        continue;
+	      }
+
+	      push({ type: 'plus', value: PLUS_LITERAL });
+	      continue;
+	    }
+
+	    /**
+	     * Plain text
+	     */
+
+	    if (value === '@') {
+	      if (opts.noextglob !== true && peek() === '(' && peek(2) !== '?') {
+	        push({ type: 'at', extglob: true, value, output: '' });
+	        continue;
+	      }
+
+	      push({ type: 'text', value });
+	      continue;
+	    }
+
+	    /**
+	     * Plain text
+	     */
+
+	    if (value !== '*') {
+	      if (value === '$' || value === '^') {
+	        value = `\\${value}`;
+	      }
+
+	      const match = REGEX_NON_SPECIAL_CHARS.exec(remaining());
+	      if (match) {
+	        value += match[0];
+	        state.index += match[0].length;
+	      }
+
+	      push({ type: 'text', value });
+	      continue;
+	    }
+
+	    /**
+	     * Stars
+	     */
+
+	    if (prev && (prev.type === 'globstar' || prev.star === true)) {
+	      prev.type = 'star';
+	      prev.star = true;
+	      prev.value += value;
+	      prev.output = star;
+	      state.backtrack = true;
+	      state.globstar = true;
+	      consume(value);
+	      continue;
+	    }
+
+	    let rest = remaining();
+	    if (opts.noextglob !== true && /^\([^?]/.test(rest)) {
+	      extglobOpen('star', value);
+	      continue;
+	    }
+
+	    if (prev.type === 'star') {
+	      if (opts.noglobstar === true) {
+	        consume(value);
+	        continue;
+	      }
+
+	      const prior = prev.prev;
+	      const before = prior.prev;
+	      const isStart = prior.type === 'slash' || prior.type === 'bos';
+	      const afterStar = before && (before.type === 'star' || before.type === 'globstar');
+
+	      if (opts.bash === true && (!isStart || (rest[0] && rest[0] !== '/'))) {
+	        push({ type: 'star', value, output: '' });
+	        continue;
+	      }
+
+	      const isBrace = state.braces > 0 && (prior.type === 'comma' || prior.type === 'brace');
+	      const isExtglob = extglobs.length && (prior.type === 'pipe' || prior.type === 'paren');
+	      if (!isStart && prior.type !== 'paren' && !isBrace && !isExtglob) {
+	        push({ type: 'star', value, output: '' });
+	        continue;
+	      }
+
+	      // strip consecutive `/**/`
+	      while (rest.slice(0, 3) === '/**') {
+	        const after = input[state.index + 4];
+	        if (after && after !== '/') {
+	          break;
+	        }
+	        rest = rest.slice(3);
+	        consume('/**', 3);
+	      }
+
+	      if (prior.type === 'bos' && eos()) {
+	        prev.type = 'globstar';
+	        prev.value += value;
+	        prev.output = globstar(opts);
+	        state.output = prev.output;
+	        state.globstar = true;
+	        consume(value);
+	        continue;
+	      }
+
+	      if (prior.type === 'slash' && prior.prev.type !== 'bos' && !afterStar && eos()) {
+	        state.output = state.output.slice(0, -(prior.output + prev.output).length);
+	        prior.output = `(?:${prior.output}`;
+
+	        prev.type = 'globstar';
+	        prev.output = globstar(opts) + (opts.strictSlashes ? ')' : '|$)');
+	        prev.value += value;
+	        state.globstar = true;
+	        state.output += prior.output + prev.output;
+	        consume(value);
+	        continue;
+	      }
+
+	      if (prior.type === 'slash' && prior.prev.type !== 'bos' && rest[0] === '/') {
+	        const end = rest[1] !== void 0 ? '|$' : '';
+
+	        state.output = state.output.slice(0, -(prior.output + prev.output).length);
+	        prior.output = `(?:${prior.output}`;
+
+	        prev.type = 'globstar';
+	        prev.output = `${globstar(opts)}${SLASH_LITERAL}|${SLASH_LITERAL}${end})`;
+	        prev.value += value;
+
+	        state.output += prior.output + prev.output;
+	        state.globstar = true;
+
+	        consume(value + advance());
+
+	        push({ type: 'slash', value: '/', output: '' });
+	        continue;
+	      }
+
+	      if (prior.type === 'bos' && rest[0] === '/') {
+	        prev.type = 'globstar';
+	        prev.value += value;
+	        prev.output = `(?:^|${SLASH_LITERAL}|${globstar(opts)}${SLASH_LITERAL})`;
+	        state.output = prev.output;
+	        state.globstar = true;
+	        consume(value + advance());
+	        push({ type: 'slash', value: '/', output: '' });
+	        continue;
+	      }
+
+	      // remove single star from output
+	      state.output = state.output.slice(0, -prev.output.length);
+
+	      // reset previous token to globstar
+	      prev.type = 'globstar';
+	      prev.output = globstar(opts);
+	      prev.value += value;
+
+	      // reset output with globstar
+	      state.output += prev.output;
+	      state.globstar = true;
+	      consume(value);
+	      continue;
+	    }
+
+	    const token = { type: 'star', value, output: star };
+
+	    if (opts.bash === true) {
+	      token.output = '.*?';
+	      if (prev.type === 'bos' || prev.type === 'slash') {
+	        token.output = nodot + token.output;
+	      }
+	      push(token);
+	      continue;
+	    }
+
+	    if (prev && (prev.type === 'bracket' || prev.type === 'paren') && opts.regex === true) {
+	      token.output = value;
+	      push(token);
+	      continue;
+	    }
+
+	    if (state.index === state.start || prev.type === 'slash' || prev.type === 'dot') {
+	      if (prev.type === 'dot') {
+	        state.output += NO_DOT_SLASH;
+	        prev.output += NO_DOT_SLASH;
+
+	      } else if (opts.dot === true) {
+	        state.output += NO_DOTS_SLASH;
+	        prev.output += NO_DOTS_SLASH;
+
+	      } else {
+	        state.output += nodot;
+	        prev.output += nodot;
+	      }
+
+	      if (peek() !== '*') {
+	        state.output += ONE_CHAR;
+	        prev.output += ONE_CHAR;
+	      }
+	    }
+
+	    push(token);
+	  }
+
+	  while (state.brackets > 0) {
+	    if (opts.strictBrackets === true) throw new SyntaxError(syntaxError('closing', ']'));
+	    state.output = utils.escapeLast(state.output, '[');
+	    decrement('brackets');
+	  }
+
+	  while (state.parens > 0) {
+	    if (opts.strictBrackets === true) throw new SyntaxError(syntaxError('closing', ')'));
+	    state.output = utils.escapeLast(state.output, '(');
+	    decrement('parens');
+	  }
+
+	  while (state.braces > 0) {
+	    if (opts.strictBrackets === true) throw new SyntaxError(syntaxError('closing', '}'));
+	    state.output = utils.escapeLast(state.output, '{');
+	    decrement('braces');
+	  }
+
+	  if (opts.strictSlashes !== true && (prev.type === 'star' || prev.type === 'bracket')) {
+	    push({ type: 'maybe_slash', value: '', output: `${SLASH_LITERAL}?` });
+	  }
+
+	  // rebuild the output if we had to backtrack at any point
+	  if (state.backtrack === true) {
+	    state.output = '';
+
+	    for (const token of state.tokens) {
+	      state.output += token.output != null ? token.output : token.value;
+
+	      if (token.suffix) {
+	        state.output += token.suffix;
+	      }
+	    }
+	  }
+
+	  return state;
+	};
+
+	/**
+	 * Fast paths for creating regular expressions for common glob patterns.
+	 * This can significantly speed up processing and has very little downside
+	 * impact when none of the fast paths match.
+	 */
+
+	parse.fastpaths = (input, options) => {
+	  const opts = { ...options };
+	  const max = typeof opts.maxLength === 'number' ? Math.min(MAX_LENGTH, opts.maxLength) : MAX_LENGTH;
+	  const len = input.length;
+	  if (len > max) {
+	    throw new SyntaxError(`Input length: ${len}, exceeds maximum allowed length: ${max}`);
+	  }
+
+	  input = REPLACEMENTS[input] || input;
+	  const win32 = utils.isWindows(options);
+
+	  // create constants based on platform, for windows or posix
+	  const {
+	    DOT_LITERAL,
+	    SLASH_LITERAL,
+	    ONE_CHAR,
+	    DOTS_SLASH,
+	    NO_DOT,
+	    NO_DOTS,
+	    NO_DOTS_SLASH,
+	    STAR,
+	    START_ANCHOR
+	  } = constants.globChars(win32);
+
+	  const nodot = opts.dot ? NO_DOTS : NO_DOT;
+	  const slashDot = opts.dot ? NO_DOTS_SLASH : NO_DOT;
+	  const capture = opts.capture ? '' : '?:';
+	  const state = { negated: false, prefix: '' };
+	  let star = opts.bash === true ? '.*?' : STAR;
+
+	  if (opts.capture) {
+	    star = `(${star})`;
+	  }
+
+	  const globstar = opts => {
+	    if (opts.noglobstar === true) return star;
+	    return `(${capture}(?:(?!${START_ANCHOR}${opts.dot ? DOTS_SLASH : DOT_LITERAL}).)*?)`;
+	  };
+
+	  const create = str => {
+	    switch (str) {
+	      case '*':
+	        return `${nodot}${ONE_CHAR}${star}`;
+
+	      case '.*':
+	        return `${DOT_LITERAL}${ONE_CHAR}${star}`;
+
+	      case '*.*':
+	        return `${nodot}${star}${DOT_LITERAL}${ONE_CHAR}${star}`;
+
+	      case '*/*':
+	        return `${nodot}${star}${SLASH_LITERAL}${ONE_CHAR}${slashDot}${star}`;
+
+	      case '**':
+	        return nodot + globstar(opts);
+
+	      case '**/*':
+	        return `(?:${nodot}${globstar(opts)}${SLASH_LITERAL})?${slashDot}${ONE_CHAR}${star}`;
+
+	      case '**/*.*':
+	        return `(?:${nodot}${globstar(opts)}${SLASH_LITERAL})?${slashDot}${star}${DOT_LITERAL}${ONE_CHAR}${star}`;
+
+	      case '**/.*':
+	        return `(?:${nodot}${globstar(opts)}${SLASH_LITERAL})?${DOT_LITERAL}${ONE_CHAR}${star}`;
+
+	      default: {
+	        const match = /^(.*?)\.(\w+)$/.exec(str);
+	        if (!match) return;
+
+	        const source = create(match[1]);
+	        if (!source) return;
+
+	        return source + DOT_LITERAL + match[2];
+	      }
+	    }
+	  };
+
+	  const output = utils.removePrefix(input, state);
+	  let source = create(output);
+
+	  if (source && opts.strictSlashes !== true) {
+	    source += `${SLASH_LITERAL}?`;
+	  }
+
+	  return source;
+	};
+
+	parse_1 = parse;
+	return parse_1;
+}
+
+var picomatch_1;
+var hasRequiredPicomatch$1;
+
+function requirePicomatch$1 () {
+	if (hasRequiredPicomatch$1) return picomatch_1;
+	hasRequiredPicomatch$1 = 1;
+
+	const path = require$$0$a;
+	const scan = requireScan();
+	const parse = requireParse();
+	const utils = requireUtils$2();
+	const constants = requireConstants();
+	const isObject = val => val && typeof val === 'object' && !Array.isArray(val);
+
+	/**
+	 * Creates a matcher function from one or more glob patterns. The
+	 * returned function takes a string to match as its first argument,
+	 * and returns true if the string is a match. The returned matcher
+	 * function also takes a boolean as the second argument that, when true,
+	 * returns an object with additional information.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * // picomatch(glob[, options]);
+	 *
+	 * const isMatch = picomatch('*.!(*a)');
+	 * console.log(isMatch('a.a')); //=> false
+	 * console.log(isMatch('a.b')); //=> true
+	 * ```
+	 * @name picomatch
+	 * @param {String|Array} `globs` One or more glob patterns.
+	 * @param {Object=} `options`
+	 * @return {Function=} Returns a matcher function.
+	 * @api public
+	 */
+
+	const picomatch = (glob, options, returnState = false) => {
+	  if (Array.isArray(glob)) {
+	    const fns = glob.map(input => picomatch(input, options, returnState));
+	    const arrayMatcher = str => {
+	      for (const isMatch of fns) {
+	        const state = isMatch(str);
+	        if (state) return state;
+	      }
+	      return false;
+	    };
+	    return arrayMatcher;
+	  }
+
+	  const isState = isObject(glob) && glob.tokens && glob.input;
+
+	  if (glob === '' || (typeof glob !== 'string' && !isState)) {
+	    throw new TypeError('Expected pattern to be a non-empty string');
+	  }
+
+	  const opts = options || {};
+	  const posix = utils.isWindows(options);
+	  const regex = isState
+	    ? picomatch.compileRe(glob, options)
+	    : picomatch.makeRe(glob, options, false, true);
+
+	  const state = regex.state;
+	  delete regex.state;
+
+	  let isIgnored = () => false;
+	  if (opts.ignore) {
+	    const ignoreOpts = { ...options, ignore: null, onMatch: null, onResult: null };
+	    isIgnored = picomatch(opts.ignore, ignoreOpts, returnState);
+	  }
+
+	  const matcher = (input, returnObject = false) => {
+	    const { isMatch, match, output } = picomatch.test(input, regex, options, { glob, posix });
+	    const result = { glob, state, regex, posix, input, output, match, isMatch };
+
+	    if (typeof opts.onResult === 'function') {
+	      opts.onResult(result);
+	    }
+
+	    if (isMatch === false) {
+	      result.isMatch = false;
+	      return returnObject ? result : false;
+	    }
+
+	    if (isIgnored(input)) {
+	      if (typeof opts.onIgnore === 'function') {
+	        opts.onIgnore(result);
+	      }
+	      result.isMatch = false;
+	      return returnObject ? result : false;
+	    }
+
+	    if (typeof opts.onMatch === 'function') {
+	      opts.onMatch(result);
+	    }
+	    return returnObject ? result : true;
+	  };
+
+	  if (returnState) {
+	    matcher.state = state;
+	  }
+
+	  return matcher;
+	};
+
+	/**
+	 * Test `input` with the given `regex`. This is used by the main
+	 * `picomatch()` function to test the input string.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * // picomatch.test(input, regex[, options]);
+	 *
+	 * console.log(picomatch.test('foo/bar', /^(?:([^/]*?)\/([^/]*?))$/));
+	 * // { isMatch: true, match: [ 'foo/', 'foo', 'bar' ], output: 'foo/bar' }
+	 * ```
+	 * @param {String} `input` String to test.
+	 * @param {RegExp} `regex`
+	 * @return {Object} Returns an object with matching info.
+	 * @api public
+	 */
+
+	picomatch.test = (input, regex, options, { glob, posix } = {}) => {
+	  if (typeof input !== 'string') {
+	    throw new TypeError('Expected input to be a string');
+	  }
+
+	  if (input === '') {
+	    return { isMatch: false, output: '' };
+	  }
+
+	  const opts = options || {};
+	  const format = opts.format || (posix ? utils.toPosixSlashes : null);
+	  let match = input === glob;
+	  let output = (match && format) ? format(input) : input;
+
+	  if (match === false) {
+	    output = format ? format(input) : input;
+	    match = output === glob;
+	  }
+
+	  if (match === false || opts.capture === true) {
+	    if (opts.matchBase === true || opts.basename === true) {
+	      match = picomatch.matchBase(input, regex, options, posix);
+	    } else {
+	      match = regex.exec(output);
+	    }
+	  }
+
+	  return { isMatch: Boolean(match), match, output };
+	};
+
+	/**
+	 * Match the basename of a filepath.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * // picomatch.matchBase(input, glob[, options]);
+	 * console.log(picomatch.matchBase('foo/bar.js', '*.js'); // true
+	 * ```
+	 * @param {String} `input` String to test.
+	 * @param {RegExp|String} `glob` Glob pattern or regex created by [.makeRe](#makeRe).
+	 * @return {Boolean}
+	 * @api public
+	 */
+
+	picomatch.matchBase = (input, glob, options, posix = utils.isWindows(options)) => {
+	  const regex = glob instanceof RegExp ? glob : picomatch.makeRe(glob, options);
+	  return regex.test(path.basename(input));
+	};
+
+	/**
+	 * Returns true if **any** of the given glob `patterns` match the specified `string`.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * // picomatch.isMatch(string, patterns[, options]);
+	 *
+	 * console.log(picomatch.isMatch('a.a', ['b.*', '*.a'])); //=> true
+	 * console.log(picomatch.isMatch('a.a', 'b.*')); //=> false
+	 * ```
+	 * @param {String|Array} str The string to test.
+	 * @param {String|Array} patterns One or more glob patterns to use for matching.
+	 * @param {Object} [options] See available [options](#options).
+	 * @return {Boolean} Returns true if any patterns match `str`
+	 * @api public
+	 */
+
+	picomatch.isMatch = (str, patterns, options) => picomatch(patterns, options)(str);
+
+	/**
+	 * Parse a glob pattern to create the source string for a regular
+	 * expression.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * const result = picomatch.parse(pattern[, options]);
+	 * ```
+	 * @param {String} `pattern`
+	 * @param {Object} `options`
+	 * @return {Object} Returns an object with useful properties and output to be used as a regex source string.
+	 * @api public
+	 */
+
+	picomatch.parse = (pattern, options) => {
+	  if (Array.isArray(pattern)) return pattern.map(p => picomatch.parse(p, options));
+	  return parse(pattern, { ...options, fastpaths: false });
+	};
+
+	/**
+	 * Scan a glob pattern to separate the pattern into segments.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * // picomatch.scan(input[, options]);
+	 *
+	 * const result = picomatch.scan('!./foo/*.js');
+	 * console.log(result);
+	 * { prefix: '!./',
+	 *   input: '!./foo/*.js',
+	 *   start: 3,
+	 *   base: 'foo',
+	 *   glob: '*.js',
+	 *   isBrace: false,
+	 *   isBracket: false,
+	 *   isGlob: true,
+	 *   isExtglob: false,
+	 *   isGlobstar: false,
+	 *   negated: true }
+	 * ```
+	 * @param {String} `input` Glob pattern to scan.
+	 * @param {Object} `options`
+	 * @return {Object} Returns an object with
+	 * @api public
+	 */
+
+	picomatch.scan = (input, options) => scan(input, options);
+
+	/**
+	 * Compile a regular expression from the `state` object returned by the
+	 * [parse()](#parse) method.
+	 *
+	 * @param {Object} `state`
+	 * @param {Object} `options`
+	 * @param {Boolean} `returnOutput` Intended for implementors, this argument allows you to return the raw output from the parser.
+	 * @param {Boolean} `returnState` Adds the state to a `state` property on the returned regex. Useful for implementors and debugging.
+	 * @return {RegExp}
+	 * @api public
+	 */
+
+	picomatch.compileRe = (state, options, returnOutput = false, returnState = false) => {
+	  if (returnOutput === true) {
+	    return state.output;
+	  }
+
+	  const opts = options || {};
+	  const prepend = opts.contains ? '' : '^';
+	  const append = opts.contains ? '' : '$';
+
+	  let source = `${prepend}(?:${state.output})${append}`;
+	  if (state && state.negated === true) {
+	    source = `^(?!${source}).*$`;
+	  }
+
+	  const regex = picomatch.toRegex(source, options);
+	  if (returnState === true) {
+	    regex.state = state;
+	  }
+
+	  return regex;
+	};
+
+	/**
+	 * Create a regular expression from a parsed glob pattern.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * const state = picomatch.parse('*.js');
+	 * // picomatch.compileRe(state[, options]);
+	 *
+	 * console.log(picomatch.compileRe(state));
+	 * //=> /^(?:(?!\.)(?=.)[^/]*?\.js)$/
+	 * ```
+	 * @param {String} `state` The object returned from the `.parse` method.
+	 * @param {Object} `options`
+	 * @param {Boolean} `returnOutput` Implementors may use this argument to return the compiled output, instead of a regular expression. This is not exposed on the options to prevent end-users from mutating the result.
+	 * @param {Boolean} `returnState` Implementors may use this argument to return the state from the parsed glob with the returned regular expression.
+	 * @return {RegExp} Returns a regex created from the given pattern.
+	 * @api public
+	 */
+
+	picomatch.makeRe = (input, options = {}, returnOutput = false, returnState = false) => {
+	  if (!input || typeof input !== 'string') {
+	    throw new TypeError('Expected a non-empty string');
+	  }
+
+	  let parsed = { negated: false, fastpaths: true };
+
+	  if (options.fastpaths !== false && (input[0] === '.' || input[0] === '*')) {
+	    parsed.output = parse.fastpaths(input, options);
+	  }
+
+	  if (!parsed.output) {
+	    parsed = parse(input, options);
+	  }
+
+	  return picomatch.compileRe(parsed, options, returnOutput, returnState);
+	};
+
+	/**
+	 * Create a regular expression from the given regex source string.
+	 *
+	 * ```js
+	 * const picomatch = require('picomatch');
+	 * // picomatch.toRegex(source[, options]);
+	 *
+	 * const { output } = picomatch.parse('*.js');
+	 * console.log(picomatch.toRegex(output));
+	 * //=> /^(?:(?!\.)(?=.)[^/]*?\.js)$/
+	 * ```
+	 * @param {String} `source` Regular expression source string.
+	 * @param {Object} `options`
+	 * @return {RegExp}
+	 * @api public
+	 */
+
+	picomatch.toRegex = (source, options) => {
+	  try {
+	    const opts = options || {};
+	    return new RegExp(source, opts.flags || (opts.nocase ? 'i' : ''));
+	  } catch (err) {
+	    if (options && options.debug === true) throw err;
+	    return /$^/;
+	  }
+	};
+
+	/**
+	 * Picomatch constants.
+	 * @return {Object}
+	 */
+
+	picomatch.constants = constants;
+
+	/**
+	 * Expose "picomatch"
+	 */
+
+	picomatch_1 = picomatch;
+	return picomatch_1;
+}
+
+var picomatch;
+var hasRequiredPicomatch;
+
+function requirePicomatch () {
+	if (hasRequiredPicomatch) return picomatch;
+	hasRequiredPicomatch = 1;
+
+	picomatch = requirePicomatch$1();
+	return picomatch;
+}
+
+var micromatch_1;
+var hasRequiredMicromatch;
+
+function requireMicromatch () {
+	if (hasRequiredMicromatch) return micromatch_1;
+	hasRequiredMicromatch = 1;
+
+	const util = require$$0$2;
+	const braces = requireBraces();
+	const picomatch = requirePicomatch();
+	const utils = requireUtils$2();
+
+	const isEmptyString = v => v === '' || v === './';
+	const hasBraces = v => {
+	  const index = v.indexOf('{');
+	  return index > -1 && v.indexOf('}', index) > -1;
+	};
+
+	/**
+	 * Returns an array of strings that match one or more glob patterns.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm(list, patterns[, options]);
+	 *
+	 * console.log(mm(['a.js', 'a.txt'], ['*.js']));
+	 * //=> [ 'a.js' ]
+	 * ```
+	 * @param {String|Array<string>} `list` List of strings to match.
+	 * @param {String|Array<string>} `patterns` One or more glob patterns to use for matching.
+	 * @param {Object} `options` See available [options](#options)
+	 * @return {Array} Returns an array of matches
+	 * @summary false
+	 * @api public
+	 */
+
+	const micromatch = (list, patterns, options) => {
+	  patterns = [].concat(patterns);
+	  list = [].concat(list);
+
+	  let omit = new Set();
+	  let keep = new Set();
+	  let items = new Set();
+	  let negatives = 0;
+
+	  let onResult = state => {
+	    items.add(state.output);
+	    if (options && options.onResult) {
+	      options.onResult(state);
+	    }
+	  };
+
+	  for (let i = 0; i < patterns.length; i++) {
+	    let isMatch = picomatch(String(patterns[i]), { ...options, onResult }, true);
+	    let negated = isMatch.state.negated || isMatch.state.negatedExtglob;
+	    if (negated) negatives++;
+
+	    for (let item of list) {
+	      let matched = isMatch(item, true);
+
+	      let match = negated ? !matched.isMatch : matched.isMatch;
+	      if (!match) continue;
+
+	      if (negated) {
+	        omit.add(matched.output);
+	      } else {
+	        omit.delete(matched.output);
+	        keep.add(matched.output);
+	      }
+	    }
+	  }
+
+	  let result = negatives === patterns.length ? [...items] : [...keep];
+	  let matches = result.filter(item => !omit.has(item));
+
+	  if (options && matches.length === 0) {
+	    if (options.failglob === true) {
+	      throw new Error(`No matches found for "${patterns.join(', ')}"`);
+	    }
+
+	    if (options.nonull === true || options.nullglob === true) {
+	      return options.unescape ? patterns.map(p => p.replace(/\\/g, '')) : patterns;
+	    }
+	  }
+
+	  return matches;
+	};
+
+	/**
+	 * Backwards compatibility
+	 */
+
+	micromatch.match = micromatch;
+
+	/**
+	 * Returns a matcher function from the given glob `pattern` and `options`.
+	 * The returned function takes a string to match as its only argument and returns
+	 * true if the string is a match.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.matcher(pattern[, options]);
+	 *
+	 * const isMatch = mm.matcher('*.!(*a)');
+	 * console.log(isMatch('a.a')); //=> false
+	 * console.log(isMatch('a.b')); //=> true
+	 * ```
+	 * @param {String} `pattern` Glob pattern
+	 * @param {Object} `options`
+	 * @return {Function} Returns a matcher function.
+	 * @api public
+	 */
+
+	micromatch.matcher = (pattern, options) => picomatch(pattern, options);
+
+	/**
+	 * Returns true if **any** of the given glob `patterns` match the specified `string`.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.isMatch(string, patterns[, options]);
+	 *
+	 * console.log(mm.isMatch('a.a', ['b.*', '*.a'])); //=> true
+	 * console.log(mm.isMatch('a.a', 'b.*')); //=> false
+	 * ```
+	 * @param {String} `str` The string to test.
+	 * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+	 * @param {Object} `[options]` See available [options](#options).
+	 * @return {Boolean} Returns true if any patterns match `str`
+	 * @api public
+	 */
+
+	micromatch.isMatch = (str, patterns, options) => picomatch(patterns, options)(str);
+
+	/**
+	 * Backwards compatibility
+	 */
+
+	micromatch.any = micromatch.isMatch;
+
+	/**
+	 * Returns a list of strings that _**do not match any**_ of the given `patterns`.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.not(list, patterns[, options]);
+	 *
+	 * console.log(mm.not(['a.a', 'b.b', 'c.c'], '*.a'));
+	 * //=> ['b.b', 'c.c']
+	 * ```
+	 * @param {Array} `list` Array of strings to match.
+	 * @param {String|Array} `patterns` One or more glob pattern to use for matching.
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Array} Returns an array of strings that **do not match** the given patterns.
+	 * @api public
+	 */
+
+	micromatch.not = (list, patterns, options = {}) => {
+	  patterns = [].concat(patterns).map(String);
+	  let result = new Set();
+	  let items = [];
+
+	  let onResult = state => {
+	    if (options.onResult) options.onResult(state);
+	    items.push(state.output);
+	  };
+
+	  let matches = new Set(micromatch(list, patterns, { ...options, onResult }));
+
+	  for (let item of items) {
+	    if (!matches.has(item)) {
+	      result.add(item);
+	    }
+	  }
+	  return [...result];
+	};
+
+	/**
+	 * Returns true if the given `string` contains the given pattern. Similar
+	 * to [.isMatch](#isMatch) but the pattern can match any part of the string.
+	 *
+	 * ```js
+	 * var mm = require('micromatch');
+	 * // mm.contains(string, pattern[, options]);
+	 *
+	 * console.log(mm.contains('aa/bb/cc', '*b'));
+	 * //=> true
+	 * console.log(mm.contains('aa/bb/cc', '*d'));
+	 * //=> false
+	 * ```
+	 * @param {String} `str` The string to match.
+	 * @param {String|Array} `patterns` Glob pattern to use for matching.
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Boolean} Returns true if any of the patterns matches any part of `str`.
+	 * @api public
+	 */
+
+	micromatch.contains = (str, pattern, options) => {
+	  if (typeof str !== 'string') {
+	    throw new TypeError(`Expected a string: "${util.inspect(str)}"`);
+	  }
+
+	  if (Array.isArray(pattern)) {
+	    return pattern.some(p => micromatch.contains(str, p, options));
+	  }
+
+	  if (typeof pattern === 'string') {
+	    if (isEmptyString(str) || isEmptyString(pattern)) {
+	      return false;
+	    }
+
+	    if (str.includes(pattern) || (str.startsWith('./') && str.slice(2).includes(pattern))) {
+	      return true;
+	    }
+	  }
+
+	  return micromatch.isMatch(str, pattern, { ...options, contains: true });
+	};
+
+	/**
+	 * Filter the keys of the given object with the given `glob` pattern
+	 * and `options`. Does not attempt to match nested keys. If you need this feature,
+	 * use [glob-object][] instead.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.matchKeys(object, patterns[, options]);
+	 *
+	 * const obj = { aa: 'a', ab: 'b', ac: 'c' };
+	 * console.log(mm.matchKeys(obj, '*b'));
+	 * //=> { ab: 'b' }
+	 * ```
+	 * @param {Object} `object` The object with keys to filter.
+	 * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Object} Returns an object with only keys that match the given patterns.
+	 * @api public
+	 */
+
+	micromatch.matchKeys = (obj, patterns, options) => {
+	  if (!utils.isObject(obj)) {
+	    throw new TypeError('Expected the first argument to be an object');
+	  }
+	  let keys = micromatch(Object.keys(obj), patterns, options);
+	  let res = {};
+	  for (let key of keys) res[key] = obj[key];
+	  return res;
+	};
+
+	/**
+	 * Returns true if some of the strings in the given `list` match any of the given glob `patterns`.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.some(list, patterns[, options]);
+	 *
+	 * console.log(mm.some(['foo.js', 'bar.js'], ['*.js', '!foo.js']));
+	 * // true
+	 * console.log(mm.some(['foo.js'], ['*.js', '!foo.js']));
+	 * // false
+	 * ```
+	 * @param {String|Array} `list` The string or array of strings to test. Returns as soon as the first match is found.
+	 * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Boolean} Returns true if any `patterns` matches any of the strings in `list`
+	 * @api public
+	 */
+
+	micromatch.some = (list, patterns, options) => {
+	  let items = [].concat(list);
+
+	  for (let pattern of [].concat(patterns)) {
+	    let isMatch = picomatch(String(pattern), options);
+	    if (items.some(item => isMatch(item))) {
+	      return true;
+	    }
+	  }
+	  return false;
+	};
+
+	/**
+	 * Returns true if every string in the given `list` matches
+	 * any of the given glob `patterns`.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.every(list, patterns[, options]);
+	 *
+	 * console.log(mm.every('foo.js', ['foo.js']));
+	 * // true
+	 * console.log(mm.every(['foo.js', 'bar.js'], ['*.js']));
+	 * // true
+	 * console.log(mm.every(['foo.js', 'bar.js'], ['*.js', '!foo.js']));
+	 * // false
+	 * console.log(mm.every(['foo.js'], ['*.js', '!foo.js']));
+	 * // false
+	 * ```
+	 * @param {String|Array} `list` The string or array of strings to test.
+	 * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Boolean} Returns true if all `patterns` matches all of the strings in `list`
+	 * @api public
+	 */
+
+	micromatch.every = (list, patterns, options) => {
+	  let items = [].concat(list);
+
+	  for (let pattern of [].concat(patterns)) {
+	    let isMatch = picomatch(String(pattern), options);
+	    if (!items.every(item => isMatch(item))) {
+	      return false;
+	    }
+	  }
+	  return true;
+	};
+
+	/**
+	 * Returns true if **all** of the given `patterns` match
+	 * the specified string.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.all(string, patterns[, options]);
+	 *
+	 * console.log(mm.all('foo.js', ['foo.js']));
+	 * // true
+	 *
+	 * console.log(mm.all('foo.js', ['*.js', '!foo.js']));
+	 * // false
+	 *
+	 * console.log(mm.all('foo.js', ['*.js', 'foo.js']));
+	 * // true
+	 *
+	 * console.log(mm.all('foo.js', ['*.js', 'f*', '*o*', '*o.js']));
+	 * // true
+	 * ```
+	 * @param {String|Array} `str` The string to test.
+	 * @param {String|Array} `patterns` One or more glob patterns to use for matching.
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Boolean} Returns true if any patterns match `str`
+	 * @api public
+	 */
+
+	micromatch.all = (str, patterns, options) => {
+	  if (typeof str !== 'string') {
+	    throw new TypeError(`Expected a string: "${util.inspect(str)}"`);
+	  }
+
+	  return [].concat(patterns).every(p => picomatch(p, options)(str));
+	};
+
+	/**
+	 * Returns an array of matches captured by `pattern` in `string, or `null` if the pattern did not match.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.capture(pattern, string[, options]);
+	 *
+	 * console.log(mm.capture('test/*.js', 'test/foo.js'));
+	 * //=> ['foo']
+	 * console.log(mm.capture('test/*.js', 'foo/bar.css'));
+	 * //=> null
+	 * ```
+	 * @param {String} `glob` Glob pattern to use for matching.
+	 * @param {String} `input` String to match
+	 * @param {Object} `options` See available [options](#options) for changing how matches are performed
+	 * @return {Array|null} Returns an array of captures if the input matches the glob pattern, otherwise `null`.
+	 * @api public
+	 */
+
+	micromatch.capture = (glob, input, options) => {
+	  let posix = utils.isWindows(options);
+	  let regex = picomatch.makeRe(String(glob), { ...options, capture: true });
+	  let match = regex.exec(posix ? utils.toPosixSlashes(input) : input);
+
+	  if (match) {
+	    return match.slice(1).map(v => v === void 0 ? '' : v);
+	  }
+	};
+
+	/**
+	 * Create a regular expression from the given glob `pattern`.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * // mm.makeRe(pattern[, options]);
+	 *
+	 * console.log(mm.makeRe('*.js'));
+	 * //=> /^(?:(\.[\\\/])?(?!\.)(?=.)[^\/]*?\.js)$/
+	 * ```
+	 * @param {String} `pattern` A glob pattern to convert to regex.
+	 * @param {Object} `options`
+	 * @return {RegExp} Returns a regex created from the given pattern.
+	 * @api public
+	 */
+
+	micromatch.makeRe = (...args) => picomatch.makeRe(...args);
+
+	/**
+	 * Scan a glob pattern to separate the pattern into segments. Used
+	 * by the [split](#split) method.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * const state = mm.scan(pattern[, options]);
+	 * ```
+	 * @param {String} `pattern`
+	 * @param {Object} `options`
+	 * @return {Object} Returns an object with
+	 * @api public
+	 */
+
+	micromatch.scan = (...args) => picomatch.scan(...args);
+
+	/**
+	 * Parse a glob pattern to create the source string for a regular
+	 * expression.
+	 *
+	 * ```js
+	 * const mm = require('micromatch');
+	 * const state = mm.parse(pattern[, options]);
+	 * ```
+	 * @param {String} `glob`
+	 * @param {Object} `options`
+	 * @return {Object} Returns an object with useful properties and output to be used as regex source string.
+	 * @api public
+	 */
+
+	micromatch.parse = (patterns, options) => {
+	  let res = [];
+	  for (let pattern of [].concat(patterns || [])) {
+	    for (let str of braces(String(pattern), options)) {
+	      res.push(picomatch.parse(str, options));
+	    }
+	  }
+	  return res;
+	};
+
+	/**
+	 * Process the given brace `pattern`.
+	 *
+	 * ```js
+	 * const { braces } = require('micromatch');
+	 * console.log(braces('foo/{a,b,c}/bar'));
+	 * //=> [ 'foo/(a|b|c)/bar' ]
+	 *
+	 * console.log(braces('foo/{a,b,c}/bar', { expand: true }));
+	 * //=> [ 'foo/a/bar', 'foo/b/bar', 'foo/c/bar' ]
+	 * ```
+	 * @param {String} `pattern` String with brace pattern to process.
+	 * @param {Object} `options` Any [options](#options) to change how expansion is performed. See the [braces][] library for all available options.
+	 * @return {Array}
+	 * @api public
+	 */
+
+	micromatch.braces = (pattern, options) => {
+	  if (typeof pattern !== 'string') throw new TypeError('Expected a string');
+	  if ((options && options.nobrace === true) || !hasBraces(pattern)) {
+	    return [pattern];
+	  }
+	  return braces(pattern, options);
+	};
+
+	/**
+	 * Expand braces
+	 */
+
+	micromatch.braceExpand = (pattern, options) => {
+	  if (typeof pattern !== 'string') throw new TypeError('Expected a string');
+	  return micromatch.braces(pattern, { ...options, expand: true });
+	};
+
+	/**
+	 * Expose micromatch
+	 */
+
+	// exposed for tests
+	micromatch.hasBraces = hasBraces;
+	micromatch_1 = micromatch;
+	return micromatch_1;
+}
+
+var micromatchExports = requireMicromatch();
+var micromatch = /*@__PURE__*/getDefaultExportFromCjs(micromatchExports);
+
+var github$2 = {};
+
+var context = {};
+
+var hasRequiredContext;
+
+function requireContext () {
+	if (hasRequiredContext) return context;
+	hasRequiredContext = 1;
+	Object.defineProperty(context, "__esModule", { value: true });
+	context.Context = void 0;
+	const fs_1 = fs__default;
+	const os_1 = require$$0;
+	class Context {
+	    /**
+	     * Hydrate the context from the environment
+	     */
+	    constructor() {
+	        var _a, _b, _c;
+	        this.payload = {};
+	        if (process.env.GITHUB_EVENT_PATH) {
+	            if ((0, fs_1.existsSync)(process.env.GITHUB_EVENT_PATH)) {
+	                this.payload = JSON.parse((0, fs_1.readFileSync)(process.env.GITHUB_EVENT_PATH, { encoding: 'utf8' }));
+	            }
+	            else {
+	                const path = process.env.GITHUB_EVENT_PATH;
+	                process.stdout.write(`GITHUB_EVENT_PATH ${path} does not exist${os_1.EOL}`);
+	            }
+	        }
+	        this.eventName = process.env.GITHUB_EVENT_NAME;
+	        this.sha = process.env.GITHUB_SHA;
+	        this.ref = process.env.GITHUB_REF;
+	        this.workflow = process.env.GITHUB_WORKFLOW;
+	        this.action = process.env.GITHUB_ACTION;
+	        this.actor = process.env.GITHUB_ACTOR;
+	        this.job = process.env.GITHUB_JOB;
+	        this.runNumber = parseInt(process.env.GITHUB_RUN_NUMBER, 10);
+	        this.runId = parseInt(process.env.GITHUB_RUN_ID, 10);
+	        this.apiUrl = (_a = process.env.GITHUB_API_URL) !== null && _a !== void 0 ? _a : `https://api.github.com`;
+	        this.serverUrl = (_b = process.env.GITHUB_SERVER_URL) !== null && _b !== void 0 ? _b : `https://github.com`;
+	        this.graphqlUrl =
+	            (_c = process.env.GITHUB_GRAPHQL_URL) !== null && _c !== void 0 ? _c : `https://api.github.com/graphql`;
+	    }
+	    get issue() {
+	        const payload = this.payload;
+	        return Object.assign(Object.assign({}, this.repo), { number: (payload.issue || payload.pull_request || payload).number });
+	    }
+	    get repo() {
+	        if (process.env.GITHUB_REPOSITORY) {
+	            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+	            return { owner, repo };
+	        }
+	        if (this.payload.repository) {
+	            return {
+	                owner: this.payload.repository.owner.login,
+	                repo: this.payload.repository.name
+	            };
+	        }
+	        throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
+	    }
+	}
+	context.Context = Context;
+	
+	return context;
+}
+
+var utils$1 = {};
+
+var utils = {};
+
+var hasRequiredUtils$1;
+
+function requireUtils$1 () {
+	if (hasRequiredUtils$1) return utils;
+	hasRequiredUtils$1 = 1;
+	var __createBinding = (utils && utils.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __setModuleDefault = (utils && utils.__setModuleDefault) || (Object.create ? (function(o, v) {
+	    Object.defineProperty(o, "default", { enumerable: true, value: v });
+	}) : function(o, v) {
+	    o["default"] = v;
+	});
+	var __importStar = (utils && utils.__importStar) || function (mod) {
+	    if (mod && mod.__esModule) return mod;
+	    var result = {};
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    __setModuleDefault(result, mod);
+	    return result;
+	};
+	var __awaiter = (utils && utils.__awaiter) || function (thisArg, _arguments, P, generator) {
+	    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+	        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
+	    });
+	};
+	Object.defineProperty(utils, "__esModule", { value: true });
+	utils.getApiBaseUrl = utils.getProxyFetch = utils.getProxyAgentDispatcher = utils.getProxyAgent = utils.getAuthString = void 0;
+	const httpClient = __importStar(requireLib());
+	const undici_1 = requireUndici();
+	function getAuthString(token, options) {
+	    if (!token && !options.auth) {
+	        throw new Error('Parameter token or opts.auth is required');
+	    }
+	    else if (token && options.auth) {
+	        throw new Error('Parameters token and opts.auth may not both be specified');
+	    }
+	    return typeof options.auth === 'string' ? options.auth : `token ${token}`;
+	}
+	utils.getAuthString = getAuthString;
+	function getProxyAgent(destinationUrl) {
+	    const hc = new httpClient.HttpClient();
+	    return hc.getAgent(destinationUrl);
+	}
+	utils.getProxyAgent = getProxyAgent;
+	function getProxyAgentDispatcher(destinationUrl) {
+	    const hc = new httpClient.HttpClient();
+	    return hc.getAgentDispatcher(destinationUrl);
+	}
+	utils.getProxyAgentDispatcher = getProxyAgentDispatcher;
+	function getProxyFetch(destinationUrl) {
+	    const httpDispatcher = getProxyAgentDispatcher(destinationUrl);
+	    const proxyFetch = (url, opts) => __awaiter(this, void 0, void 0, function* () {
+	        return (0, undici_1.fetch)(url, Object.assign(Object.assign({}, opts), { dispatcher: httpDispatcher }));
+	    });
+	    return proxyFetch;
+	}
+	utils.getProxyFetch = getProxyFetch;
+	function getApiBaseUrl() {
+	    return process.env['GITHUB_API_URL'] || 'https://api.github.com';
+	}
+	utils.getApiBaseUrl = getApiBaseUrl;
+	
+	return utils;
+}
+
+function getUserAgent() {
+    if (typeof navigator === "object" && "userAgent" in navigator) {
+        return navigator.userAgent;
+    }
+    if (typeof process === "object" && process.version !== undefined) {
+        return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
+    }
+    return "<environment undetectable>";
+}
+
+var beforeAfterHook = {exports: {}};
+
+var register_1;
+var hasRequiredRegister;
+
+function requireRegister () {
+	if (hasRequiredRegister) return register_1;
+	hasRequiredRegister = 1;
+	register_1 = register;
+
+	function register(state, name, method, options) {
+	  if (typeof method !== "function") {
+	    throw new Error("method for before hook must be a function");
+	  }
+
+	  if (!options) {
+	    options = {};
+	  }
+
+	  if (Array.isArray(name)) {
+	    return name.reverse().reduce(function (callback, name) {
+	      return register.bind(null, state, name, callback, options);
+	    }, method)();
+	  }
+
+	  return Promise.resolve().then(function () {
+	    if (!state.registry[name]) {
+	      return method(options);
+	    }
+
+	    return state.registry[name].reduce(function (method, registered) {
+	      return registered.hook.bind(null, method, options);
+	    }, method)();
+	  });
+	}
+	return register_1;
+}
+
+var add;
+var hasRequiredAdd;
+
+function requireAdd () {
+	if (hasRequiredAdd) return add;
+	hasRequiredAdd = 1;
+	add = addHook;
+
+	function addHook(state, kind, name, hook) {
+	  var orig = hook;
+	  if (!state.registry[name]) {
+	    state.registry[name] = [];
+	  }
+
+	  if (kind === "before") {
+	    hook = function (method, options) {
+	      return Promise.resolve()
+	        .then(orig.bind(null, options))
+	        .then(method.bind(null, options));
+	    };
+	  }
+
+	  if (kind === "after") {
+	    hook = function (method, options) {
+	      var result;
+	      return Promise.resolve()
+	        .then(method.bind(null, options))
+	        .then(function (result_) {
+	          result = result_;
+	          return orig(result, options);
+	        })
+	        .then(function () {
+	          return result;
+	        });
+	    };
+	  }
+
+	  if (kind === "error") {
+	    hook = function (method, options) {
+	      return Promise.resolve()
+	        .then(method.bind(null, options))
+	        .catch(function (error) {
+	          return orig(error, options);
+	        });
+	    };
+	  }
+
+	  state.registry[name].push({
+	    hook: hook,
+	    orig: orig,
+	  });
+	}
+	return add;
+}
+
+var remove;
+var hasRequiredRemove;
+
+function requireRemove () {
+	if (hasRequiredRemove) return remove;
+	hasRequiredRemove = 1;
+	remove = removeHook;
+
+	function removeHook(state, name, method) {
+	  if (!state.registry[name]) {
+	    return;
+	  }
+
+	  var index = state.registry[name]
+	    .map(function (registered) {
+	      return registered.orig;
+	    })
+	    .indexOf(method);
+
+	  if (index === -1) {
+	    return;
+	  }
+
+	  state.registry[name].splice(index, 1);
+	}
+	return remove;
+}
+
+var hasRequiredBeforeAfterHook;
+
+function requireBeforeAfterHook () {
+	if (hasRequiredBeforeAfterHook) return beforeAfterHook.exports;
+	hasRequiredBeforeAfterHook = 1;
+	var register = requireRegister();
+	var addHook = requireAdd();
+	var removeHook = requireRemove();
+
+	// bind with array of arguments: https://stackoverflow.com/a/21792913
+	var bind = Function.bind;
+	var bindable = bind.bind(bind);
+
+	function bindApi(hook, state, name) {
+	  var removeHookRef = bindable(removeHook, null).apply(
+	    null,
+	    name ? [state, name] : [state]
+	  );
+	  hook.api = { remove: removeHookRef };
+	  hook.remove = removeHookRef;
+	  ["before", "error", "after", "wrap"].forEach(function (kind) {
+	    var args = name ? [state, kind, name] : [state, kind];
+	    hook[kind] = hook.api[kind] = bindable(addHook, null).apply(null, args);
+	  });
+	}
+
+	function HookSingular() {
+	  var singularHookName = "h";
+	  var singularHookState = {
+	    registry: {},
+	  };
+	  var singularHook = register.bind(null, singularHookState, singularHookName);
+	  bindApi(singularHook, singularHookState, singularHookName);
+	  return singularHook;
+	}
+
+	function HookCollection() {
+	  var state = {
+	    registry: {},
+	  };
+
+	  var hook = register.bind(null, state);
+	  bindApi(hook, state);
+
+	  return hook;
+	}
+
+	var collectionHookDeprecationMessageDisplayed = false;
+	function Hook() {
+	  if (!collectionHookDeprecationMessageDisplayed) {
+	    console.warn(
+	      '[before-after-hook]: "Hook()" repurposing warning, use "Hook.Collection()". Read more: https://git.io/upgrade-before-after-hook-to-1.4'
+	    );
+	    collectionHookDeprecationMessageDisplayed = true;
+	  }
+	  return HookCollection();
+	}
+
+	Hook.Singular = HookSingular.bind();
+	Hook.Collection = HookCollection.bind();
+
+	beforeAfterHook.exports = Hook;
+	// expose constructors as a named property for TypeScript
+	beforeAfterHook.exports.Hook = Hook;
+	beforeAfterHook.exports.Singular = Hook.Singular;
+	beforeAfterHook.exports.Collection = Hook.Collection;
+	return beforeAfterHook.exports;
+}
+
+var beforeAfterHookExports = requireBeforeAfterHook();
+
+const VERSION$5 = "9.0.6";
+
+const userAgent = `octokit-endpoint.js/${VERSION$5} ${getUserAgent()}`;
+const DEFAULTS = {
+  method: "GET",
+  baseUrl: "https://api.github.com",
+  headers: {
+    accept: "application/vnd.github.v3+json",
+    "user-agent": userAgent
+  },
+  mediaType: {
+    format: ""
+  }
+};
+
+function lowercaseKeys(object) {
+  if (!object) {
+    return {};
+  }
+  return Object.keys(object).reduce((newObj, key) => {
+    newObj[key.toLowerCase()] = object[key];
+    return newObj;
+  }, {});
+}
+
+function isPlainObject$1(value) {
+  if (typeof value !== "object" || value === null)
+    return false;
+  if (Object.prototype.toString.call(value) !== "[object Object]")
+    return false;
+  const proto = Object.getPrototypeOf(value);
+  if (proto === null)
+    return true;
+  const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
+  return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
+}
+
+function mergeDeep(defaults, options) {
+  const result = Object.assign({}, defaults);
+  Object.keys(options).forEach((key) => {
+    if (isPlainObject$1(options[key])) {
+      if (!(key in defaults))
+        Object.assign(result, { [key]: options[key] });
+      else
+        result[key] = mergeDeep(defaults[key], options[key]);
+    } else {
+      Object.assign(result, { [key]: options[key] });
+    }
+  });
+  return result;
+}
+
+function removeUndefinedProperties(obj) {
+  for (const key in obj) {
+    if (obj[key] === void 0) {
+      delete obj[key];
+    }
+  }
+  return obj;
+}
+
+function merge(defaults, route, options) {
+  if (typeof route === "string") {
+    let [method, url] = route.split(" ");
+    options = Object.assign(url ? { method, url } : { url: method }, options);
+  } else {
+    options = Object.assign({}, route);
+  }
+  options.headers = lowercaseKeys(options.headers);
+  removeUndefinedProperties(options);
+  removeUndefinedProperties(options.headers);
+  const mergedOptions = mergeDeep(defaults || {}, options);
+  if (options.url === "/graphql") {
+    if (defaults && defaults.mediaType.previews?.length) {
+      mergedOptions.mediaType.previews = defaults.mediaType.previews.filter(
+        (preview) => !mergedOptions.mediaType.previews.includes(preview)
+      ).concat(mergedOptions.mediaType.previews);
+    }
+    mergedOptions.mediaType.previews = (mergedOptions.mediaType.previews || []).map((preview) => preview.replace(/-preview/, ""));
+  }
+  return mergedOptions;
+}
+
+function addQueryParameters(url, parameters) {
+  const separator = /\?/.test(url) ? "&" : "?";
+  const names = Object.keys(parameters);
+  if (names.length === 0) {
+    return url;
+  }
+  return url + separator + names.map((name) => {
+    if (name === "q") {
+      return "q=" + parameters.q.split("+").map(encodeURIComponent).join("+");
+    }
+    return `${name}=${encodeURIComponent(parameters[name])}`;
+  }).join("&");
+}
+
+const urlVariableRegex = /\{[^{}}]+\}/g;
+function removeNonChars(variableName) {
+  return variableName.replace(/(?:^\W+)|(?:(?<!\W)\W+$)/g, "").split(/,/);
+}
+function extractUrlVariableNames(url) {
+  const matches = url.match(urlVariableRegex);
+  if (!matches) {
+    return [];
+  }
+  return matches.map(removeNonChars).reduce((a, b) => a.concat(b), []);
+}
+
+function omit(object, keysToOmit) {
+  const result = { __proto__: null };
+  for (const key of Object.keys(object)) {
+    if (keysToOmit.indexOf(key) === -1) {
+      result[key] = object[key];
+    }
+  }
+  return result;
+}
+
+function encodeReserved(str) {
+  return str.split(/(%[0-9A-Fa-f]{2})/g).map(function(part) {
+    if (!/%[0-9A-Fa-f]/.test(part)) {
+      part = encodeURI(part).replace(/%5B/g, "[").replace(/%5D/g, "]");
+    }
+    return part;
+  }).join("");
+}
+function encodeUnreserved(str) {
+  return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+    return "%" + c.charCodeAt(0).toString(16).toUpperCase();
+  });
+}
+function encodeValue(operator, value, key) {
+  value = operator === "+" || operator === "#" ? encodeReserved(value) : encodeUnreserved(value);
+  if (key) {
+    return encodeUnreserved(key) + "=" + value;
+  } else {
+    return value;
+  }
+}
+function isDefined(value) {
+  return value !== void 0 && value !== null;
+}
+function isKeyOperator(operator) {
+  return operator === ";" || operator === "&" || operator === "?";
+}
+function getValues(context, operator, key, modifier) {
+  var value = context[key], result = [];
+  if (isDefined(value) && value !== "") {
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+      value = value.toString();
+      if (modifier && modifier !== "*") {
+        value = value.substring(0, parseInt(modifier, 10));
+      }
+      result.push(
+        encodeValue(operator, value, isKeyOperator(operator) ? key : "")
+      );
+    } else {
+      if (modifier === "*") {
+        if (Array.isArray(value)) {
+          value.filter(isDefined).forEach(function(value2) {
+            result.push(
+              encodeValue(operator, value2, isKeyOperator(operator) ? key : "")
+            );
+          });
+        } else {
+          Object.keys(value).forEach(function(k) {
+            if (isDefined(value[k])) {
+              result.push(encodeValue(operator, value[k], k));
+            }
+          });
+        }
+      } else {
+        const tmp = [];
+        if (Array.isArray(value)) {
+          value.filter(isDefined).forEach(function(value2) {
+            tmp.push(encodeValue(operator, value2));
+          });
+        } else {
+          Object.keys(value).forEach(function(k) {
+            if (isDefined(value[k])) {
+              tmp.push(encodeUnreserved(k));
+              tmp.push(encodeValue(operator, value[k].toString()));
+            }
+          });
+        }
+        if (isKeyOperator(operator)) {
+          result.push(encodeUnreserved(key) + "=" + tmp.join(","));
+        } else if (tmp.length !== 0) {
+          result.push(tmp.join(","));
+        }
+      }
+    }
+  } else {
+    if (operator === ";") {
+      if (isDefined(value)) {
+        result.push(encodeUnreserved(key));
+      }
+    } else if (value === "" && (operator === "&" || operator === "?")) {
+      result.push(encodeUnreserved(key) + "=");
+    } else if (value === "") {
+      result.push("");
+    }
+  }
+  return result;
+}
+function parseUrl(template) {
+  return {
+    expand: expand.bind(null, template)
+  };
+}
+function expand(template, context) {
+  var operators = ["+", "#", ".", "/", ";", "?", "&"];
+  template = template.replace(
+    /\{([^\{\}]+)\}|([^\{\}]+)/g,
+    function(_, expression, literal) {
+      if (expression) {
+        let operator = "";
+        const values = [];
+        if (operators.indexOf(expression.charAt(0)) !== -1) {
+          operator = expression.charAt(0);
+          expression = expression.substr(1);
+        }
+        expression.split(/,/g).forEach(function(variable) {
+          var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
+          values.push(getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
+        });
+        if (operator && operator !== "+") {
+          var separator = ",";
+          if (operator === "?") {
+            separator = "&";
+          } else if (operator !== "#") {
+            separator = operator;
+          }
+          return (values.length !== 0 ? operator : "") + values.join(separator);
+        } else {
+          return values.join(",");
+        }
+      } else {
+        return encodeReserved(literal);
+      }
+    }
+  );
+  if (template === "/") {
+    return template;
+  } else {
+    return template.replace(/\/$/, "");
+  }
+}
+
+function parse(options) {
+  let method = options.method.toUpperCase();
+  let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
+  let headers = Object.assign({}, options.headers);
+  let body;
+  let parameters = omit(options, [
+    "method",
+    "baseUrl",
+    "url",
+    "headers",
+    "request",
+    "mediaType"
+  ]);
+  const urlVariableNames = extractUrlVariableNames(url);
+  url = parseUrl(url).expand(parameters);
+  if (!/^http/.test(url)) {
+    url = options.baseUrl + url;
+  }
+  const omittedParameters = Object.keys(options).filter((option) => urlVariableNames.includes(option)).concat("baseUrl");
+  const remainingParameters = omit(parameters, omittedParameters);
+  const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
+  if (!isBinaryRequest) {
+    if (options.mediaType.format) {
+      headers.accept = headers.accept.split(/,/).map(
+        (format) => format.replace(
+          /application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/,
+          `application/vnd$1$2.${options.mediaType.format}`
+        )
+      ).join(",");
+    }
+    if (url.endsWith("/graphql")) {
+      if (options.mediaType.previews?.length) {
+        const previewsFromAcceptHeader = headers.accept.match(/(?<![\w-])[\w-]+(?=-preview)/g) || [];
+        headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map((preview) => {
+          const format = options.mediaType.format ? `.${options.mediaType.format}` : "+json";
+          return `application/vnd.github.${preview}-preview${format}`;
+        }).join(",");
+      }
+    }
+  }
+  if (["GET", "HEAD"].includes(method)) {
+    url = addQueryParameters(url, remainingParameters);
+  } else {
+    if ("data" in remainingParameters) {
+      body = remainingParameters.data;
+    } else {
+      if (Object.keys(remainingParameters).length) {
+        body = remainingParameters;
+      }
+    }
+  }
+  if (!headers["content-type"] && typeof body !== "undefined") {
+    headers["content-type"] = "application/json; charset=utf-8";
+  }
+  if (["PATCH", "PUT"].includes(method) && typeof body === "undefined") {
+    body = "";
+  }
+  return Object.assign(
+    { method, url, headers },
+    typeof body !== "undefined" ? { body } : null,
+    options.request ? { request: options.request } : null
+  );
+}
+
+function endpointWithDefaults(defaults, route, options) {
+  return parse(merge(defaults, route, options));
+}
+
+function withDefaults$2(oldDefaults, newDefaults) {
+  const DEFAULTS = merge(oldDefaults, newDefaults);
+  const endpoint = endpointWithDefaults.bind(null, DEFAULTS);
+  return Object.assign(endpoint, {
+    DEFAULTS,
+    defaults: withDefaults$2.bind(null, DEFAULTS),
+    merge: merge.bind(null, DEFAULTS),
+    parse
+  });
+}
+
+const endpoint = withDefaults$2(null, DEFAULTS);
+
+const VERSION$4 = "8.4.1";
+
+function isPlainObject(value) {
+  if (typeof value !== "object" || value === null)
+    return false;
+  if (Object.prototype.toString.call(value) !== "[object Object]")
+    return false;
+  const proto = Object.getPrototypeOf(value);
+  if (proto === null)
+    return true;
+  const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
+  return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
+}
+
+class Deprecation extends Error {
+  constructor(message) {
+    super(message); // Maintains proper stack trace (only available on V8)
+
+    /* istanbul ignore next */
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+
+    this.name = 'Deprecation';
+  }
+
+}
+
+var once$1 = {exports: {}};
+
+var wrappy_1;
+var hasRequiredWrappy;
+
+function requireWrappy () {
+	if (hasRequiredWrappy) return wrappy_1;
+	hasRequiredWrappy = 1;
+	// Returns a wrapper function that returns a wrapped callback
+	// The wrapper function should do some stuff, and return a
+	// presumably different callback function.
+	// This makes sure that own properties are retained, so that
+	// decorations and such are not lost along the way.
+	wrappy_1 = wrappy;
+	function wrappy (fn, cb) {
+	  if (fn && cb) return wrappy(fn)(cb)
+
+	  if (typeof fn !== 'function')
+	    throw new TypeError('need wrapper function')
+
+	  Object.keys(fn).forEach(function (k) {
+	    wrapper[k] = fn[k];
+	  });
+
+	  return wrapper
+
+	  function wrapper() {
+	    var args = new Array(arguments.length);
+	    for (var i = 0; i < args.length; i++) {
+	      args[i] = arguments[i];
+	    }
+	    var ret = fn.apply(this, args);
+	    var cb = args[args.length-1];
+	    if (typeof ret === 'function' && ret !== cb) {
+	      Object.keys(cb).forEach(function (k) {
+	        ret[k] = cb[k];
+	      });
+	    }
+	    return ret
+	  }
+	}
+	return wrappy_1;
+}
+
+var hasRequiredOnce;
+
+function requireOnce () {
+	if (hasRequiredOnce) return once$1.exports;
+	hasRequiredOnce = 1;
+	var wrappy = requireWrappy();
+	once$1.exports = wrappy(once);
+	once$1.exports.strict = wrappy(onceStrict);
+
+	once.proto = once(function () {
+	  Object.defineProperty(Function.prototype, 'once', {
+	    value: function () {
+	      return once(this)
+	    },
+	    configurable: true
+	  });
+
+	  Object.defineProperty(Function.prototype, 'onceStrict', {
+	    value: function () {
+	      return onceStrict(this)
+	    },
+	    configurable: true
+	  });
+	});
+
+	function once (fn) {
+	  var f = function () {
+	    if (f.called) return f.value
+	    f.called = true;
+	    return f.value = fn.apply(this, arguments)
+	  };
+	  f.called = false;
+	  return f
+	}
+
+	function onceStrict (fn) {
+	  var f = function () {
+	    if (f.called)
+	      throw new Error(f.onceError)
+	    f.called = true;
+	    return f.value = fn.apply(this, arguments)
+	  };
+	  var name = fn.name || 'Function wrapped with `once`';
+	  f.onceError = name + " shouldn't be called more than once";
+	  f.called = false;
+	  return f
+	}
+	return once$1.exports;
+}
+
+var onceExports = requireOnce();
+var once = /*@__PURE__*/getDefaultExportFromCjs(onceExports);
+
+const logOnceCode = once((deprecation) => console.warn(deprecation));
+const logOnceHeaders = once((deprecation) => console.warn(deprecation));
+class RequestError extends Error {
+  constructor(message, statusCode, options) {
+    super(message);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+    this.name = "HttpError";
+    this.status = statusCode;
+    let headers;
+    if ("headers" in options && typeof options.headers !== "undefined") {
+      headers = options.headers;
+    }
+    if ("response" in options) {
+      this.response = options.response;
+      headers = options.response.headers;
+    }
+    const requestCopy = Object.assign({}, options.request);
+    if (options.request.headers.authorization) {
+      requestCopy.headers = Object.assign({}, options.request.headers, {
+        authorization: options.request.headers.authorization.replace(
+          /(?<! ) .*$/,
+          " [REDACTED]"
+        )
+      });
+    }
+    requestCopy.url = requestCopy.url.replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]").replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
+    this.request = requestCopy;
+    Object.defineProperty(this, "code", {
+      get() {
+        logOnceCode(
+          new Deprecation(
+            "[@octokit/request-error] `error.code` is deprecated, use `error.status`."
+          )
+        );
+        return statusCode;
+      }
+    });
+    Object.defineProperty(this, "headers", {
+      get() {
+        logOnceHeaders(
+          new Deprecation(
+            "[@octokit/request-error] `error.headers` is deprecated, use `error.response.headers`."
+          )
+        );
+        return headers || {};
+      }
+    });
+  }
+}
+
+function getBufferResponse(response) {
+  return response.arrayBuffer();
+}
+
+function fetchWrapper(requestOptions) {
+  const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
+  const parseSuccessResponseBody = requestOptions.request?.parseSuccessResponseBody !== false;
+  if (isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
+    requestOptions.body = JSON.stringify(requestOptions.body);
+  }
+  let headers = {};
+  let status;
+  let url;
+  let { fetch } = globalThis;
+  if (requestOptions.request?.fetch) {
+    fetch = requestOptions.request.fetch;
+  }
+  if (!fetch) {
+    throw new Error(
+      "fetch is not set. Please pass a fetch implementation as new Octokit({ request: { fetch }}). Learn more at https://github.com/octokit/octokit.js/#fetch-missing"
+    );
+  }
+  return fetch(requestOptions.url, {
+    method: requestOptions.method,
+    body: requestOptions.body,
+    redirect: requestOptions.request?.redirect,
+    headers: requestOptions.headers,
+    signal: requestOptions.request?.signal,
+    // duplex must be set if request.body is ReadableStream or Async Iterables.
+    // See https://fetch.spec.whatwg.org/#dom-requestinit-duplex.
+    ...requestOptions.body && { duplex: "half" }
+  }).then(async (response) => {
+    url = response.url;
+    status = response.status;
+    for (const keyAndValue of response.headers) {
+      headers[keyAndValue[0]] = keyAndValue[1];
+    }
+    if ("deprecation" in headers) {
+      const matches = headers.link && headers.link.match(/<([^<>]+)>; rel="deprecation"/);
+      const deprecationLink = matches && matches.pop();
+      log.warn(
+        `[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`
+      );
+    }
+    if (status === 204 || status === 205) {
+      return;
+    }
+    if (requestOptions.method === "HEAD") {
+      if (status < 400) {
+        return;
+      }
+      throw new RequestError(response.statusText, status, {
+        response: {
+          url,
+          status,
+          headers,
+          data: void 0
+        },
+        request: requestOptions
+      });
+    }
+    if (status === 304) {
+      throw new RequestError("Not modified", status, {
+        response: {
+          url,
+          status,
+          headers,
+          data: await getResponseData(response)
+        },
+        request: requestOptions
+      });
+    }
+    if (status >= 400) {
+      const data = await getResponseData(response);
+      const error = new RequestError(toErrorMessage(data), status, {
+        response: {
+          url,
+          status,
+          headers,
+          data
+        },
+        request: requestOptions
+      });
+      throw error;
+    }
+    return parseSuccessResponseBody ? await getResponseData(response) : response.body;
+  }).then((data) => {
+    return {
+      status,
+      url,
+      headers,
+      data
+    };
+  }).catch((error) => {
+    if (error instanceof RequestError)
+      throw error;
+    else if (error.name === "AbortError")
+      throw error;
+    let message = error.message;
+    if (error.name === "TypeError" && "cause" in error) {
+      if (error.cause instanceof Error) {
+        message = error.cause.message;
+      } else if (typeof error.cause === "string") {
+        message = error.cause;
+      }
+    }
+    throw new RequestError(message, 500, {
+      request: requestOptions
+    });
+  });
+}
+async function getResponseData(response) {
+  const contentType = response.headers.get("content-type");
+  if (/application\/json/.test(contentType)) {
+    return response.json().catch(() => response.text()).catch(() => "");
+  }
+  if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
+    return response.text();
+  }
+  return getBufferResponse(response);
+}
+function toErrorMessage(data) {
+  if (typeof data === "string")
+    return data;
+  let suffix;
+  if ("documentation_url" in data) {
+    suffix = ` - ${data.documentation_url}`;
+  } else {
+    suffix = "";
+  }
+  if ("message" in data) {
+    if (Array.isArray(data.errors)) {
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}${suffix}`;
+    }
+    return `${data.message}${suffix}`;
+  }
+  return `Unknown error: ${JSON.stringify(data)}`;
+}
+
+function withDefaults$1(oldEndpoint, newDefaults) {
+  const endpoint = oldEndpoint.defaults(newDefaults);
+  const newApi = function(route, parameters) {
+    const endpointOptions = endpoint.merge(route, parameters);
+    if (!endpointOptions.request || !endpointOptions.request.hook) {
+      return fetchWrapper(endpoint.parse(endpointOptions));
+    }
+    const request = (route2, parameters2) => {
+      return fetchWrapper(
+        endpoint.parse(endpoint.merge(route2, parameters2))
+      );
+    };
+    Object.assign(request, {
+      endpoint,
+      defaults: withDefaults$1.bind(null, endpoint)
+    });
+    return endpointOptions.request.hook(request, endpointOptions);
+  };
+  return Object.assign(newApi, {
+    endpoint,
+    defaults: withDefaults$1.bind(null, endpoint)
+  });
+}
+
+const request = withDefaults$1(endpoint, {
+  headers: {
+    "user-agent": `octokit-request.js/${VERSION$4} ${getUserAgent()}`
+  }
+});
+
+// pkg/dist-src/index.js
+
+// pkg/dist-src/version.js
+var VERSION$3 = "7.1.1";
+
+// pkg/dist-src/error.js
+function _buildMessageForResponseErrors(data) {
+  return `Request failed due to following response errors:
+` + data.errors.map((e) => ` - ${e.message}`).join("\n");
+}
+var GraphqlResponseError = class extends Error {
+  constructor(request2, headers, response) {
+    super(_buildMessageForResponseErrors(response));
+    this.request = request2;
+    this.headers = headers;
+    this.response = response;
+    this.name = "GraphqlResponseError";
+    this.errors = response.errors;
+    this.data = response.data;
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+  }
+};
+
+// pkg/dist-src/graphql.js
+var NON_VARIABLE_OPTIONS = [
+  "method",
+  "baseUrl",
+  "url",
+  "headers",
+  "request",
+  "query",
+  "mediaType"
+];
+var FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];
+var GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
+function graphql(request2, query, options) {
+  if (options) {
+    if (typeof query === "string" && "query" in options) {
+      return Promise.reject(
+        new Error(`[@octokit/graphql] "query" cannot be used as variable name`)
+      );
+    }
+    for (const key in options) {
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
+      return Promise.reject(
+        new Error(
+          `[@octokit/graphql] "${key}" cannot be used as variable name`
+        )
+      );
+    }
+  }
+  const parsedOptions = typeof query === "string" ? Object.assign({ query }, options) : query;
+  const requestOptions = Object.keys(
+    parsedOptions
+  ).reduce((result, key) => {
+    if (NON_VARIABLE_OPTIONS.includes(key)) {
+      result[key] = parsedOptions[key];
+      return result;
+    }
+    if (!result.variables) {
+      result.variables = {};
+    }
+    result.variables[key] = parsedOptions[key];
+    return result;
+  }, {});
+  const baseUrl = parsedOptions.baseUrl || request2.endpoint.DEFAULTS.baseUrl;
+  if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
+    requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
+  }
+  return request2(requestOptions).then((response) => {
+    if (response.data.errors) {
+      const headers = {};
+      for (const key of Object.keys(response.headers)) {
+        headers[key] = response.headers[key];
+      }
+      throw new GraphqlResponseError(
+        requestOptions,
+        headers,
+        response.data
+      );
+    }
+    return response.data.data;
+  });
+}
+
+// pkg/dist-src/with-defaults.js
+function withDefaults(request2, newDefaults) {
+  const newRequest = request2.defaults(newDefaults);
+  const newApi = (query, options) => {
+    return graphql(newRequest, query, options);
+  };
+  return Object.assign(newApi, {
+    defaults: withDefaults.bind(null, newRequest),
+    endpoint: newRequest.endpoint
+  });
+}
+
+// pkg/dist-src/index.js
+withDefaults(request, {
+  headers: {
+    "user-agent": `octokit-graphql.js/${VERSION$3} ${getUserAgent()}`
+  },
+  method: "POST",
+  url: "/graphql"
+});
+function withCustomRequest(customRequest) {
+  return withDefaults(customRequest, {
+    method: "POST",
+    url: "/graphql"
+  });
+}
+
+const REGEX_IS_INSTALLATION_LEGACY = /^v1\./;
+const REGEX_IS_INSTALLATION = /^ghs_/;
+const REGEX_IS_USER_TO_SERVER = /^ghu_/;
+async function auth(token) {
+  const isApp = token.split(/\./).length === 3;
+  const isInstallation = REGEX_IS_INSTALLATION_LEGACY.test(token) || REGEX_IS_INSTALLATION.test(token);
+  const isUserToServer = REGEX_IS_USER_TO_SERVER.test(token);
+  const tokenType = isApp ? "app" : isInstallation ? "installation" : isUserToServer ? "user-to-server" : "oauth";
+  return {
+    type: "token",
+    token,
+    tokenType
+  };
+}
+
+function withAuthorizationPrefix(token) {
+  if (token.split(/\./).length === 3) {
+    return `bearer ${token}`;
+  }
+  return `token ${token}`;
+}
+
+async function hook(token, request, route, parameters) {
+  const endpoint = request.endpoint.merge(
+    route,
+    parameters
+  );
+  endpoint.headers.authorization = withAuthorizationPrefix(token);
+  return request(endpoint);
+}
+
+const createTokenAuth = function createTokenAuth2(token) {
+  if (!token) {
+    throw new Error("[@octokit/auth-token] No token passed to createTokenAuth");
+  }
+  if (typeof token !== "string") {
+    throw new Error(
+      "[@octokit/auth-token] Token passed to createTokenAuth is not a string"
+    );
+  }
+  token = token.replace(/^(token|bearer) +/i, "");
+  return Object.assign(auth.bind(null, token), {
+    hook: hook.bind(null, token)
+  });
+};
+
+// pkg/dist-src/index.js
+
+// pkg/dist-src/version.js
+var VERSION$2 = "5.2.0";
+
+// pkg/dist-src/index.js
+var noop = () => {
+};
+var consoleWarn = console.warn.bind(console);
+var consoleError = console.error.bind(console);
+var userAgentTrail = `octokit-core.js/${VERSION$2} ${getUserAgent()}`;
+var Octokit = class {
+  static {
+    this.VERSION = VERSION$2;
+  }
+  static defaults(defaults) {
+    const OctokitWithDefaults = class extends this {
+      constructor(...args) {
+        const options = args[0] || {};
+        if (typeof defaults === "function") {
+          super(defaults(options));
+          return;
+        }
+        super(
+          Object.assign(
+            {},
+            defaults,
+            options,
+            options.userAgent && defaults.userAgent ? {
+              userAgent: `${options.userAgent} ${defaults.userAgent}`
+            } : null
+          )
+        );
+      }
+    };
+    return OctokitWithDefaults;
+  }
+  static {
+    this.plugins = [];
+  }
+  /**
+   * Attach a plugin (or many) to your Octokit instance.
+   *
+   * @example
+   * const API = Octokit.plugin(plugin1, plugin2, plugin3, ...)
+   */
+  static plugin(...newPlugins) {
+    const currentPlugins = this.plugins;
+    const NewOctokit = class extends this {
+      static {
+        this.plugins = currentPlugins.concat(
+          newPlugins.filter((plugin) => !currentPlugins.includes(plugin))
+        );
+      }
+    };
+    return NewOctokit;
+  }
+  constructor(options = {}) {
+    const hook = new beforeAfterHookExports.Collection();
+    const requestDefaults = {
+      baseUrl: request.endpoint.DEFAULTS.baseUrl,
+      headers: {},
+      request: Object.assign({}, options.request, {
+        // @ts-ignore internal usage only, no need to type
+        hook: hook.bind(null, "request")
+      }),
+      mediaType: {
+        previews: [],
+        format: ""
+      }
+    };
+    requestDefaults.headers["user-agent"] = options.userAgent ? `${options.userAgent} ${userAgentTrail}` : userAgentTrail;
+    if (options.baseUrl) {
+      requestDefaults.baseUrl = options.baseUrl;
+    }
+    if (options.previews) {
+      requestDefaults.mediaType.previews = options.previews;
+    }
+    if (options.timeZone) {
+      requestDefaults.headers["time-zone"] = options.timeZone;
+    }
+    this.request = request.defaults(requestDefaults);
+    this.graphql = withCustomRequest(this.request).defaults(requestDefaults);
+    this.log = Object.assign(
+      {
+        debug: noop,
+        info: noop,
+        warn: consoleWarn,
+        error: consoleError
+      },
+      options.log
+    );
+    this.hook = hook;
+    if (!options.authStrategy) {
+      if (!options.auth) {
+        this.auth = async () => ({
+          type: "unauthenticated"
+        });
+      } else {
+        const auth = createTokenAuth(options.auth);
+        hook.wrap("request", auth.hook);
+        this.auth = auth;
+      }
+    } else {
+      const { authStrategy, ...otherOptions } = options;
+      const auth = authStrategy(
+        Object.assign(
+          {
+            request: this.request,
+            log: this.log,
+            // we pass the current octokit instance as well as its constructor options
+            // to allow for authentication strategies that return a new octokit instance
+            // that shares the same internal state as the current one. The original
+            // requirement for this was the "event-octokit" authentication strategy
+            // of https://github.com/probot/octokit-auth-probot.
+            octokit: this,
+            octokitOptions: otherOptions
+          },
+          options.auth
+        )
+      );
+      hook.wrap("request", auth.hook);
+      this.auth = auth;
+    }
+    const classConstructor = this.constructor;
+    for (let i = 0; i < classConstructor.plugins.length; ++i) {
+      Object.assign(this, classConstructor.plugins[i](this, options));
+    }
+  }
+};
+
+var distWeb$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
+	Octokit: Octokit
+});
+
+var require$$2 = /*@__PURE__*/getAugmentedNamespace(distWeb$1);
+
+const VERSION$1 = "10.4.1";
+
+const Endpoints = {
+  actions: {
+    addCustomLabelsToSelfHostedRunnerForOrg: [
+      "POST /orgs/{org}/actions/runners/{runner_id}/labels"
+    ],
+    addCustomLabelsToSelfHostedRunnerForRepo: [
+      "POST /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+    ],
+    addSelectedRepoToOrgSecret: [
+      "PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    addSelectedRepoToOrgVariable: [
+      "PUT /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
+    ],
+    approveWorkflowRun: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve"
+    ],
+    cancelWorkflowRun: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel"
+    ],
+    createEnvironmentVariable: [
+      "POST /repositories/{repository_id}/environments/{environment_name}/variables"
+    ],
+    createOrUpdateEnvironmentSecret: [
+      "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"
+    ],
+    createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
+    createOrUpdateRepoSecret: [
+      "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}"
+    ],
+    createOrgVariable: ["POST /orgs/{org}/actions/variables"],
+    createRegistrationTokenForOrg: [
+      "POST /orgs/{org}/actions/runners/registration-token"
+    ],
+    createRegistrationTokenForRepo: [
+      "POST /repos/{owner}/{repo}/actions/runners/registration-token"
+    ],
+    createRemoveTokenForOrg: ["POST /orgs/{org}/actions/runners/remove-token"],
+    createRemoveTokenForRepo: [
+      "POST /repos/{owner}/{repo}/actions/runners/remove-token"
+    ],
+    createRepoVariable: ["POST /repos/{owner}/{repo}/actions/variables"],
+    createWorkflowDispatch: [
+      "POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"
+    ],
+    deleteActionsCacheById: [
+      "DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}"
+    ],
+    deleteActionsCacheByKey: [
+      "DELETE /repos/{owner}/{repo}/actions/caches{?key,ref}"
+    ],
+    deleteArtifact: [
+      "DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"
+    ],
+    deleteEnvironmentSecret: [
+      "DELETE /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"
+    ],
+    deleteEnvironmentVariable: [
+      "DELETE /repositories/{repository_id}/environments/{environment_name}/variables/{name}"
+    ],
+    deleteOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}"],
+    deleteOrgVariable: ["DELETE /orgs/{org}/actions/variables/{name}"],
+    deleteRepoSecret: [
+      "DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}"
+    ],
+    deleteRepoVariable: [
+      "DELETE /repos/{owner}/{repo}/actions/variables/{name}"
+    ],
+    deleteSelfHostedRunnerFromOrg: [
+      "DELETE /orgs/{org}/actions/runners/{runner_id}"
+    ],
+    deleteSelfHostedRunnerFromRepo: [
+      "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"
+    ],
+    deleteWorkflowRun: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}"],
+    deleteWorkflowRunLogs: [
+      "DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs"
+    ],
+    disableSelectedRepositoryGithubActionsOrganization: [
+      "DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}"
+    ],
+    disableWorkflow: [
+      "PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable"
+    ],
+    downloadArtifact: [
+      "GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}"
+    ],
+    downloadJobLogsForWorkflowRun: [
+      "GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs"
+    ],
+    downloadWorkflowRunAttemptLogs: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/logs"
+    ],
+    downloadWorkflowRunLogs: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs"
+    ],
+    enableSelectedRepositoryGithubActionsOrganization: [
+      "PUT /orgs/{org}/actions/permissions/repositories/{repository_id}"
+    ],
+    enableWorkflow: [
+      "PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable"
+    ],
+    forceCancelWorkflowRun: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/force-cancel"
+    ],
+    generateRunnerJitconfigForOrg: [
+      "POST /orgs/{org}/actions/runners/generate-jitconfig"
+    ],
+    generateRunnerJitconfigForRepo: [
+      "POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig"
+    ],
+    getActionsCacheList: ["GET /repos/{owner}/{repo}/actions/caches"],
+    getActionsCacheUsage: ["GET /repos/{owner}/{repo}/actions/cache/usage"],
+    getActionsCacheUsageByRepoForOrg: [
+      "GET /orgs/{org}/actions/cache/usage-by-repository"
+    ],
+    getActionsCacheUsageForOrg: ["GET /orgs/{org}/actions/cache/usage"],
+    getAllowedActionsOrganization: [
+      "GET /orgs/{org}/actions/permissions/selected-actions"
+    ],
+    getAllowedActionsRepository: [
+      "GET /repos/{owner}/{repo}/actions/permissions/selected-actions"
+    ],
+    getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    getCustomOidcSubClaimForRepo: [
+      "GET /repos/{owner}/{repo}/actions/oidc/customization/sub"
+    ],
+    getEnvironmentPublicKey: [
+      "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"
+    ],
+    getEnvironmentSecret: [
+      "GET /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"
+    ],
+    getEnvironmentVariable: [
+      "GET /repositories/{repository_id}/environments/{environment_name}/variables/{name}"
+    ],
+    getGithubActionsDefaultWorkflowPermissionsOrganization: [
+      "GET /orgs/{org}/actions/permissions/workflow"
+    ],
+    getGithubActionsDefaultWorkflowPermissionsRepository: [
+      "GET /repos/{owner}/{repo}/actions/permissions/workflow"
+    ],
+    getGithubActionsPermissionsOrganization: [
+      "GET /orgs/{org}/actions/permissions"
+    ],
+    getGithubActionsPermissionsRepository: [
+      "GET /repos/{owner}/{repo}/actions/permissions"
+    ],
+    getJobForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}"],
+    getOrgPublicKey: ["GET /orgs/{org}/actions/secrets/public-key"],
+    getOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}"],
+    getOrgVariable: ["GET /orgs/{org}/actions/variables/{name}"],
+    getPendingDeploymentsForRun: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"
+    ],
+    getRepoPermissions: [
+      "GET /repos/{owner}/{repo}/actions/permissions",
+      {},
+      { renamed: ["actions", "getGithubActionsPermissionsRepository"] }
+    ],
+    getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
+    getRepoSecret: ["GET /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
+    getRepoVariable: ["GET /repos/{owner}/{repo}/actions/variables/{name}"],
+    getReviewsForRun: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals"
+    ],
+    getSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}"],
+    getSelfHostedRunnerForRepo: [
+      "GET /repos/{owner}/{repo}/actions/runners/{runner_id}"
+    ],
+    getWorkflow: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}"],
+    getWorkflowAccessToRepository: [
+      "GET /repos/{owner}/{repo}/actions/permissions/access"
+    ],
+    getWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}"],
+    getWorkflowRunAttempt: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}"
+    ],
+    getWorkflowRunUsage: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing"
+    ],
+    getWorkflowUsage: [
+      "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing"
+    ],
+    listArtifactsForRepo: ["GET /repos/{owner}/{repo}/actions/artifacts"],
+    listEnvironmentSecrets: [
+      "GET /repositories/{repository_id}/environments/{environment_name}/secrets"
+    ],
+    listEnvironmentVariables: [
+      "GET /repositories/{repository_id}/environments/{environment_name}/variables"
+    ],
+    listJobsForWorkflowRun: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
+    ],
+    listJobsForWorkflowRunAttempt: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
+    ],
+    listLabelsForSelfHostedRunnerForOrg: [
+      "GET /orgs/{org}/actions/runners/{runner_id}/labels"
+    ],
+    listLabelsForSelfHostedRunnerForRepo: [
+      "GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+    ],
+    listOrgSecrets: ["GET /orgs/{org}/actions/secrets"],
+    listOrgVariables: ["GET /orgs/{org}/actions/variables"],
+    listRepoOrganizationSecrets: [
+      "GET /repos/{owner}/{repo}/actions/organization-secrets"
+    ],
+    listRepoOrganizationVariables: [
+      "GET /repos/{owner}/{repo}/actions/organization-variables"
+    ],
+    listRepoSecrets: ["GET /repos/{owner}/{repo}/actions/secrets"],
+    listRepoVariables: ["GET /repos/{owner}/{repo}/actions/variables"],
+    listRepoWorkflows: ["GET /repos/{owner}/{repo}/actions/workflows"],
+    listRunnerApplicationsForOrg: ["GET /orgs/{org}/actions/runners/downloads"],
+    listRunnerApplicationsForRepo: [
+      "GET /repos/{owner}/{repo}/actions/runners/downloads"
+    ],
+    listSelectedReposForOrgSecret: [
+      "GET /orgs/{org}/actions/secrets/{secret_name}/repositories"
+    ],
+    listSelectedReposForOrgVariable: [
+      "GET /orgs/{org}/actions/variables/{name}/repositories"
+    ],
+    listSelectedRepositoriesEnabledGithubActionsOrganization: [
+      "GET /orgs/{org}/actions/permissions/repositories"
+    ],
+    listSelfHostedRunnersForOrg: ["GET /orgs/{org}/actions/runners"],
+    listSelfHostedRunnersForRepo: ["GET /repos/{owner}/{repo}/actions/runners"],
+    listWorkflowRunArtifacts: [
+      "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"
+    ],
+    listWorkflowRuns: [
+      "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"
+    ],
+    listWorkflowRunsForRepo: ["GET /repos/{owner}/{repo}/actions/runs"],
+    reRunJobForWorkflowRun: [
+      "POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun"
+    ],
+    reRunWorkflow: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun"],
+    reRunWorkflowFailedJobs: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs"
+    ],
+    removeAllCustomLabelsFromSelfHostedRunnerForOrg: [
+      "DELETE /orgs/{org}/actions/runners/{runner_id}/labels"
+    ],
+    removeAllCustomLabelsFromSelfHostedRunnerForRepo: [
+      "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+    ],
+    removeCustomLabelFromSelfHostedRunnerForOrg: [
+      "DELETE /orgs/{org}/actions/runners/{runner_id}/labels/{name}"
+    ],
+    removeCustomLabelFromSelfHostedRunnerForRepo: [
+      "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}"
+    ],
+    removeSelectedRepoFromOrgSecret: [
+      "DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    removeSelectedRepoFromOrgVariable: [
+      "DELETE /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
+    ],
+    reviewCustomGatesForRun: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule"
+    ],
+    reviewPendingDeploymentsForRun: [
+      "POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"
+    ],
+    setAllowedActionsOrganization: [
+      "PUT /orgs/{org}/actions/permissions/selected-actions"
+    ],
+    setAllowedActionsRepository: [
+      "PUT /repos/{owner}/{repo}/actions/permissions/selected-actions"
+    ],
+    setCustomLabelsForSelfHostedRunnerForOrg: [
+      "PUT /orgs/{org}/actions/runners/{runner_id}/labels"
+    ],
+    setCustomLabelsForSelfHostedRunnerForRepo: [
+      "PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+    ],
+    setCustomOidcSubClaimForRepo: [
+      "PUT /repos/{owner}/{repo}/actions/oidc/customization/sub"
+    ],
+    setGithubActionsDefaultWorkflowPermissionsOrganization: [
+      "PUT /orgs/{org}/actions/permissions/workflow"
+    ],
+    setGithubActionsDefaultWorkflowPermissionsRepository: [
+      "PUT /repos/{owner}/{repo}/actions/permissions/workflow"
+    ],
+    setGithubActionsPermissionsOrganization: [
+      "PUT /orgs/{org}/actions/permissions"
+    ],
+    setGithubActionsPermissionsRepository: [
+      "PUT /repos/{owner}/{repo}/actions/permissions"
+    ],
+    setSelectedReposForOrgSecret: [
+      "PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"
+    ],
+    setSelectedReposForOrgVariable: [
+      "PUT /orgs/{org}/actions/variables/{name}/repositories"
+    ],
+    setSelectedRepositoriesEnabledGithubActionsOrganization: [
+      "PUT /orgs/{org}/actions/permissions/repositories"
+    ],
+    setWorkflowAccessToRepository: [
+      "PUT /repos/{owner}/{repo}/actions/permissions/access"
+    ],
+    updateEnvironmentVariable: [
+      "PATCH /repositories/{repository_id}/environments/{environment_name}/variables/{name}"
+    ],
+    updateOrgVariable: ["PATCH /orgs/{org}/actions/variables/{name}"],
+    updateRepoVariable: [
+      "PATCH /repos/{owner}/{repo}/actions/variables/{name}"
+    ]
+  },
+  activity: {
+    checkRepoIsStarredByAuthenticatedUser: ["GET /user/starred/{owner}/{repo}"],
+    deleteRepoSubscription: ["DELETE /repos/{owner}/{repo}/subscription"],
+    deleteThreadSubscription: [
+      "DELETE /notifications/threads/{thread_id}/subscription"
+    ],
+    getFeeds: ["GET /feeds"],
+    getRepoSubscription: ["GET /repos/{owner}/{repo}/subscription"],
+    getThread: ["GET /notifications/threads/{thread_id}"],
+    getThreadSubscriptionForAuthenticatedUser: [
+      "GET /notifications/threads/{thread_id}/subscription"
+    ],
+    listEventsForAuthenticatedUser: ["GET /users/{username}/events"],
+    listNotificationsForAuthenticatedUser: ["GET /notifications"],
+    listOrgEventsForAuthenticatedUser: [
+      "GET /users/{username}/events/orgs/{org}"
+    ],
+    listPublicEvents: ["GET /events"],
+    listPublicEventsForRepoNetwork: ["GET /networks/{owner}/{repo}/events"],
+    listPublicEventsForUser: ["GET /users/{username}/events/public"],
+    listPublicOrgEvents: ["GET /orgs/{org}/events"],
+    listReceivedEventsForUser: ["GET /users/{username}/received_events"],
+    listReceivedPublicEventsForUser: [
+      "GET /users/{username}/received_events/public"
+    ],
+    listRepoEvents: ["GET /repos/{owner}/{repo}/events"],
+    listRepoNotificationsForAuthenticatedUser: [
+      "GET /repos/{owner}/{repo}/notifications"
+    ],
+    listReposStarredByAuthenticatedUser: ["GET /user/starred"],
+    listReposStarredByUser: ["GET /users/{username}/starred"],
+    listReposWatchedByUser: ["GET /users/{username}/subscriptions"],
+    listStargazersForRepo: ["GET /repos/{owner}/{repo}/stargazers"],
+    listWatchedReposForAuthenticatedUser: ["GET /user/subscriptions"],
+    listWatchersForRepo: ["GET /repos/{owner}/{repo}/subscribers"],
+    markNotificationsAsRead: ["PUT /notifications"],
+    markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
+    markThreadAsDone: ["DELETE /notifications/threads/{thread_id}"],
+    markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
+    setRepoSubscription: ["PUT /repos/{owner}/{repo}/subscription"],
+    setThreadSubscription: [
+      "PUT /notifications/threads/{thread_id}/subscription"
+    ],
+    starRepoForAuthenticatedUser: ["PUT /user/starred/{owner}/{repo}"],
+    unstarRepoForAuthenticatedUser: ["DELETE /user/starred/{owner}/{repo}"]
+  },
+  apps: {
+    addRepoToInstallation: [
+      "PUT /user/installations/{installation_id}/repositories/{repository_id}",
+      {},
+      { renamed: ["apps", "addRepoToInstallationForAuthenticatedUser"] }
+    ],
+    addRepoToInstallationForAuthenticatedUser: [
+      "PUT /user/installations/{installation_id}/repositories/{repository_id}"
+    ],
+    checkToken: ["POST /applications/{client_id}/token"],
+    createFromManifest: ["POST /app-manifests/{code}/conversions"],
+    createInstallationAccessToken: [
+      "POST /app/installations/{installation_id}/access_tokens"
+    ],
+    deleteAuthorization: ["DELETE /applications/{client_id}/grant"],
+    deleteInstallation: ["DELETE /app/installations/{installation_id}"],
+    deleteToken: ["DELETE /applications/{client_id}/token"],
+    getAuthenticated: ["GET /app"],
+    getBySlug: ["GET /apps/{app_slug}"],
+    getInstallation: ["GET /app/installations/{installation_id}"],
+    getOrgInstallation: ["GET /orgs/{org}/installation"],
+    getRepoInstallation: ["GET /repos/{owner}/{repo}/installation"],
+    getSubscriptionPlanForAccount: [
+      "GET /marketplace_listing/accounts/{account_id}"
+    ],
+    getSubscriptionPlanForAccountStubbed: [
+      "GET /marketplace_listing/stubbed/accounts/{account_id}"
+    ],
+    getUserInstallation: ["GET /users/{username}/installation"],
+    getWebhookConfigForApp: ["GET /app/hook/config"],
+    getWebhookDelivery: ["GET /app/hook/deliveries/{delivery_id}"],
+    listAccountsForPlan: ["GET /marketplace_listing/plans/{plan_id}/accounts"],
+    listAccountsForPlanStubbed: [
+      "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts"
+    ],
+    listInstallationReposForAuthenticatedUser: [
+      "GET /user/installations/{installation_id}/repositories"
+    ],
+    listInstallationRequestsForAuthenticatedApp: [
+      "GET /app/installation-requests"
+    ],
+    listInstallations: ["GET /app/installations"],
+    listInstallationsForAuthenticatedUser: ["GET /user/installations"],
+    listPlans: ["GET /marketplace_listing/plans"],
+    listPlansStubbed: ["GET /marketplace_listing/stubbed/plans"],
+    listReposAccessibleToInstallation: ["GET /installation/repositories"],
+    listSubscriptionsForAuthenticatedUser: ["GET /user/marketplace_purchases"],
+    listSubscriptionsForAuthenticatedUserStubbed: [
+      "GET /user/marketplace_purchases/stubbed"
+    ],
+    listWebhookDeliveries: ["GET /app/hook/deliveries"],
+    redeliverWebhookDelivery: [
+      "POST /app/hook/deliveries/{delivery_id}/attempts"
+    ],
+    removeRepoFromInstallation: [
+      "DELETE /user/installations/{installation_id}/repositories/{repository_id}",
+      {},
+      { renamed: ["apps", "removeRepoFromInstallationForAuthenticatedUser"] }
+    ],
+    removeRepoFromInstallationForAuthenticatedUser: [
+      "DELETE /user/installations/{installation_id}/repositories/{repository_id}"
+    ],
+    resetToken: ["PATCH /applications/{client_id}/token"],
+    revokeInstallationAccessToken: ["DELETE /installation/token"],
+    scopeToken: ["POST /applications/{client_id}/token/scoped"],
+    suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
+    unsuspendInstallation: [
+      "DELETE /app/installations/{installation_id}/suspended"
+    ],
+    updateWebhookConfigForApp: ["PATCH /app/hook/config"]
+  },
+  billing: {
+    getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
+    getGithubActionsBillingUser: [
+      "GET /users/{username}/settings/billing/actions"
+    ],
+    getGithubPackagesBillingOrg: ["GET /orgs/{org}/settings/billing/packages"],
+    getGithubPackagesBillingUser: [
+      "GET /users/{username}/settings/billing/packages"
+    ],
+    getSharedStorageBillingOrg: [
+      "GET /orgs/{org}/settings/billing/shared-storage"
+    ],
+    getSharedStorageBillingUser: [
+      "GET /users/{username}/settings/billing/shared-storage"
+    ]
+  },
+  checks: {
+    create: ["POST /repos/{owner}/{repo}/check-runs"],
+    createSuite: ["POST /repos/{owner}/{repo}/check-suites"],
+    get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}"],
+    getSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}"],
+    listAnnotations: [
+      "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations"
+    ],
+    listForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-runs"],
+    listForSuite: [
+      "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs"
+    ],
+    listSuitesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-suites"],
+    rerequestRun: [
+      "POST /repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest"
+    ],
+    rerequestSuite: [
+      "POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest"
+    ],
+    setSuitesPreferences: [
+      "PATCH /repos/{owner}/{repo}/check-suites/preferences"
+    ],
+    update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}"]
+  },
+  codeScanning: {
+    deleteAnalysis: [
+      "DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}{?confirm_delete}"
+    ],
+    getAlert: [
+      "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}",
+      {},
+      { renamedParameters: { alert_id: "alert_number" } }
+    ],
+    getAnalysis: [
+      "GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+    ],
+    getCodeqlDatabase: [
+      "GET /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+    ],
+    getDefaultSetup: ["GET /repos/{owner}/{repo}/code-scanning/default-setup"],
+    getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
+    listAlertInstances: [
+      "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"
+    ],
+    listAlertsForOrg: ["GET /orgs/{org}/code-scanning/alerts"],
+    listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
+    listAlertsInstances: [
+      "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances",
+      {},
+      { renamed: ["codeScanning", "listAlertInstances"] }
+    ],
+    listCodeqlDatabases: [
+      "GET /repos/{owner}/{repo}/code-scanning/codeql/databases"
+    ],
+    listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
+    updateAlert: [
+      "PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"
+    ],
+    updateDefaultSetup: [
+      "PATCH /repos/{owner}/{repo}/code-scanning/default-setup"
+    ],
+    uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"]
+  },
+  codesOfConduct: {
+    getAllCodesOfConduct: ["GET /codes_of_conduct"],
+    getConductCode: ["GET /codes_of_conduct/{key}"]
+  },
+  codespaces: {
+    addRepositoryForSecretForAuthenticatedUser: [
+      "PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    addSelectedRepoToOrgSecret: [
+      "PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    checkPermissionsForDevcontainer: [
+      "GET /repos/{owner}/{repo}/codespaces/permissions_check"
+    ],
+    codespaceMachinesForAuthenticatedUser: [
+      "GET /user/codespaces/{codespace_name}/machines"
+    ],
+    createForAuthenticatedUser: ["POST /user/codespaces"],
+    createOrUpdateOrgSecret: [
+      "PUT /orgs/{org}/codespaces/secrets/{secret_name}"
+    ],
+    createOrUpdateRepoSecret: [
+      "PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"
+    ],
+    createOrUpdateSecretForAuthenticatedUser: [
+      "PUT /user/codespaces/secrets/{secret_name}"
+    ],
+    createWithPrForAuthenticatedUser: [
+      "POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces"
+    ],
+    createWithRepoForAuthenticatedUser: [
+      "POST /repos/{owner}/{repo}/codespaces"
+    ],
+    deleteForAuthenticatedUser: ["DELETE /user/codespaces/{codespace_name}"],
+    deleteFromOrganization: [
+      "DELETE /orgs/{org}/members/{username}/codespaces/{codespace_name}"
+    ],
+    deleteOrgSecret: ["DELETE /orgs/{org}/codespaces/secrets/{secret_name}"],
+    deleteRepoSecret: [
+      "DELETE /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"
+    ],
+    deleteSecretForAuthenticatedUser: [
+      "DELETE /user/codespaces/secrets/{secret_name}"
+    ],
+    exportForAuthenticatedUser: [
+      "POST /user/codespaces/{codespace_name}/exports"
+    ],
+    getCodespacesForUserInOrg: [
+      "GET /orgs/{org}/members/{username}/codespaces"
+    ],
+    getExportDetailsForAuthenticatedUser: [
+      "GET /user/codespaces/{codespace_name}/exports/{export_id}"
+    ],
+    getForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}"],
+    getOrgPublicKey: ["GET /orgs/{org}/codespaces/secrets/public-key"],
+    getOrgSecret: ["GET /orgs/{org}/codespaces/secrets/{secret_name}"],
+    getPublicKeyForAuthenticatedUser: [
+      "GET /user/codespaces/secrets/public-key"
+    ],
+    getRepoPublicKey: [
+      "GET /repos/{owner}/{repo}/codespaces/secrets/public-key"
+    ],
+    getRepoSecret: [
+      "GET /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"
+    ],
+    getSecretForAuthenticatedUser: [
+      "GET /user/codespaces/secrets/{secret_name}"
+    ],
+    listDevcontainersInRepositoryForAuthenticatedUser: [
+      "GET /repos/{owner}/{repo}/codespaces/devcontainers"
+    ],
+    listForAuthenticatedUser: ["GET /user/codespaces"],
+    listInOrganization: [
+      "GET /orgs/{org}/codespaces",
+      {},
+      { renamedParameters: { org_id: "org" } }
+    ],
+    listInRepositoryForAuthenticatedUser: [
+      "GET /repos/{owner}/{repo}/codespaces"
+    ],
+    listOrgSecrets: ["GET /orgs/{org}/codespaces/secrets"],
+    listRepoSecrets: ["GET /repos/{owner}/{repo}/codespaces/secrets"],
+    listRepositoriesForSecretForAuthenticatedUser: [
+      "GET /user/codespaces/secrets/{secret_name}/repositories"
+    ],
+    listSecretsForAuthenticatedUser: ["GET /user/codespaces/secrets"],
+    listSelectedReposForOrgSecret: [
+      "GET /orgs/{org}/codespaces/secrets/{secret_name}/repositories"
+    ],
+    preFlightWithRepoForAuthenticatedUser: [
+      "GET /repos/{owner}/{repo}/codespaces/new"
+    ],
+    publishForAuthenticatedUser: [
+      "POST /user/codespaces/{codespace_name}/publish"
+    ],
+    removeRepositoryForSecretForAuthenticatedUser: [
+      "DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    removeSelectedRepoFromOrgSecret: [
+      "DELETE /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    repoMachinesForAuthenticatedUser: [
+      "GET /repos/{owner}/{repo}/codespaces/machines"
+    ],
+    setRepositoriesForSecretForAuthenticatedUser: [
+      "PUT /user/codespaces/secrets/{secret_name}/repositories"
+    ],
+    setSelectedReposForOrgSecret: [
+      "PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories"
+    ],
+    startForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/start"],
+    stopForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/stop"],
+    stopInOrganization: [
+      "POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop"
+    ],
+    updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
+  },
+  copilot: {
+    addCopilotSeatsForTeams: [
+      "POST /orgs/{org}/copilot/billing/selected_teams"
+    ],
+    addCopilotSeatsForUsers: [
+      "POST /orgs/{org}/copilot/billing/selected_users"
+    ],
+    cancelCopilotSeatAssignmentForTeams: [
+      "DELETE /orgs/{org}/copilot/billing/selected_teams"
+    ],
+    cancelCopilotSeatAssignmentForUsers: [
+      "DELETE /orgs/{org}/copilot/billing/selected_users"
+    ],
+    getCopilotOrganizationDetails: ["GET /orgs/{org}/copilot/billing"],
+    getCopilotSeatDetailsForUser: [
+      "GET /orgs/{org}/members/{username}/copilot"
+    ],
+    listCopilotSeats: ["GET /orgs/{org}/copilot/billing/seats"]
+  },
+  dependabot: {
+    addSelectedRepoToOrgSecret: [
+      "PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    createOrUpdateOrgSecret: [
+      "PUT /orgs/{org}/dependabot/secrets/{secret_name}"
+    ],
+    createOrUpdateRepoSecret: [
+      "PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"
+    ],
+    deleteOrgSecret: ["DELETE /orgs/{org}/dependabot/secrets/{secret_name}"],
+    deleteRepoSecret: [
+      "DELETE /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"
+    ],
+    getAlert: ["GET /repos/{owner}/{repo}/dependabot/alerts/{alert_number}"],
+    getOrgPublicKey: ["GET /orgs/{org}/dependabot/secrets/public-key"],
+    getOrgSecret: ["GET /orgs/{org}/dependabot/secrets/{secret_name}"],
+    getRepoPublicKey: [
+      "GET /repos/{owner}/{repo}/dependabot/secrets/public-key"
+    ],
+    getRepoSecret: [
+      "GET /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"
+    ],
+    listAlertsForEnterprise: [
+      "GET /enterprises/{enterprise}/dependabot/alerts"
+    ],
+    listAlertsForOrg: ["GET /orgs/{org}/dependabot/alerts"],
+    listAlertsForRepo: ["GET /repos/{owner}/{repo}/dependabot/alerts"],
+    listOrgSecrets: ["GET /orgs/{org}/dependabot/secrets"],
+    listRepoSecrets: ["GET /repos/{owner}/{repo}/dependabot/secrets"],
+    listSelectedReposForOrgSecret: [
+      "GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories"
+    ],
+    removeSelectedRepoFromOrgSecret: [
+      "DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"
+    ],
+    setSelectedReposForOrgSecret: [
+      "PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories"
+    ],
+    updateAlert: [
+      "PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}"
+    ]
+  },
+  dependencyGraph: {
+    createRepositorySnapshot: [
+      "POST /repos/{owner}/{repo}/dependency-graph/snapshots"
+    ],
+    diffRange: [
+      "GET /repos/{owner}/{repo}/dependency-graph/compare/{basehead}"
+    ],
+    exportSbom: ["GET /repos/{owner}/{repo}/dependency-graph/sbom"]
+  },
+  emojis: { get: ["GET /emojis"] },
+  gists: {
+    checkIsStarred: ["GET /gists/{gist_id}/star"],
+    create: ["POST /gists"],
+    createComment: ["POST /gists/{gist_id}/comments"],
+    delete: ["DELETE /gists/{gist_id}"],
+    deleteComment: ["DELETE /gists/{gist_id}/comments/{comment_id}"],
+    fork: ["POST /gists/{gist_id}/forks"],
+    get: ["GET /gists/{gist_id}"],
+    getComment: ["GET /gists/{gist_id}/comments/{comment_id}"],
+    getRevision: ["GET /gists/{gist_id}/{sha}"],
+    list: ["GET /gists"],
+    listComments: ["GET /gists/{gist_id}/comments"],
+    listCommits: ["GET /gists/{gist_id}/commits"],
+    listForUser: ["GET /users/{username}/gists"],
+    listForks: ["GET /gists/{gist_id}/forks"],
+    listPublic: ["GET /gists/public"],
+    listStarred: ["GET /gists/starred"],
+    star: ["PUT /gists/{gist_id}/star"],
+    unstar: ["DELETE /gists/{gist_id}/star"],
+    update: ["PATCH /gists/{gist_id}"],
+    updateComment: ["PATCH /gists/{gist_id}/comments/{comment_id}"]
+  },
+  git: {
+    createBlob: ["POST /repos/{owner}/{repo}/git/blobs"],
+    createCommit: ["POST /repos/{owner}/{repo}/git/commits"],
+    createRef: ["POST /repos/{owner}/{repo}/git/refs"],
+    createTag: ["POST /repos/{owner}/{repo}/git/tags"],
+    createTree: ["POST /repos/{owner}/{repo}/git/trees"],
+    deleteRef: ["DELETE /repos/{owner}/{repo}/git/refs/{ref}"],
+    getBlob: ["GET /repos/{owner}/{repo}/git/blobs/{file_sha}"],
+    getCommit: ["GET /repos/{owner}/{repo}/git/commits/{commit_sha}"],
+    getRef: ["GET /repos/{owner}/{repo}/git/ref/{ref}"],
+    getTag: ["GET /repos/{owner}/{repo}/git/tags/{tag_sha}"],
+    getTree: ["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"],
+    listMatchingRefs: ["GET /repos/{owner}/{repo}/git/matching-refs/{ref}"],
+    updateRef: ["PATCH /repos/{owner}/{repo}/git/refs/{ref}"]
+  },
+  gitignore: {
+    getAllTemplates: ["GET /gitignore/templates"],
+    getTemplate: ["GET /gitignore/templates/{name}"]
+  },
+  interactions: {
+    getRestrictionsForAuthenticatedUser: ["GET /user/interaction-limits"],
+    getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits"],
+    getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits"],
+    getRestrictionsForYourPublicRepos: [
+      "GET /user/interaction-limits",
+      {},
+      { renamed: ["interactions", "getRestrictionsForAuthenticatedUser"] }
+    ],
+    removeRestrictionsForAuthenticatedUser: ["DELETE /user/interaction-limits"],
+    removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits"],
+    removeRestrictionsForRepo: [
+      "DELETE /repos/{owner}/{repo}/interaction-limits"
+    ],
+    removeRestrictionsForYourPublicRepos: [
+      "DELETE /user/interaction-limits",
+      {},
+      { renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"] }
+    ],
+    setRestrictionsForAuthenticatedUser: ["PUT /user/interaction-limits"],
+    setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits"],
+    setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits"],
+    setRestrictionsForYourPublicRepos: [
+      "PUT /user/interaction-limits",
+      {},
+      { renamed: ["interactions", "setRestrictionsForAuthenticatedUser"] }
+    ]
+  },
+  issues: {
+    addAssignees: [
+      "POST /repos/{owner}/{repo}/issues/{issue_number}/assignees"
+    ],
+    addLabels: ["POST /repos/{owner}/{repo}/issues/{issue_number}/labels"],
+    checkUserCanBeAssigned: ["GET /repos/{owner}/{repo}/assignees/{assignee}"],
+    checkUserCanBeAssignedToIssue: [
+      "GET /repos/{owner}/{repo}/issues/{issue_number}/assignees/{assignee}"
+    ],
+    create: ["POST /repos/{owner}/{repo}/issues"],
+    createComment: [
+      "POST /repos/{owner}/{repo}/issues/{issue_number}/comments"
+    ],
+    createLabel: ["POST /repos/{owner}/{repo}/labels"],
+    createMilestone: ["POST /repos/{owner}/{repo}/milestones"],
+    deleteComment: [
+      "DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}"
+    ],
+    deleteLabel: ["DELETE /repos/{owner}/{repo}/labels/{name}"],
+    deleteMilestone: [
+      "DELETE /repos/{owner}/{repo}/milestones/{milestone_number}"
+    ],
+    get: ["GET /repos/{owner}/{repo}/issues/{issue_number}"],
+    getComment: ["GET /repos/{owner}/{repo}/issues/comments/{comment_id}"],
+    getEvent: ["GET /repos/{owner}/{repo}/issues/events/{event_id}"],
+    getLabel: ["GET /repos/{owner}/{repo}/labels/{name}"],
+    getMilestone: ["GET /repos/{owner}/{repo}/milestones/{milestone_number}"],
+    list: ["GET /issues"],
+    listAssignees: ["GET /repos/{owner}/{repo}/assignees"],
+    listComments: ["GET /repos/{owner}/{repo}/issues/{issue_number}/comments"],
+    listCommentsForRepo: ["GET /repos/{owner}/{repo}/issues/comments"],
+    listEvents: ["GET /repos/{owner}/{repo}/issues/{issue_number}/events"],
+    listEventsForRepo: ["GET /repos/{owner}/{repo}/issues/events"],
+    listEventsForTimeline: [
+      "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline"
+    ],
+    listForAuthenticatedUser: ["GET /user/issues"],
+    listForOrg: ["GET /orgs/{org}/issues"],
+    listForRepo: ["GET /repos/{owner}/{repo}/issues"],
+    listLabelsForMilestone: [
+      "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels"
+    ],
+    listLabelsForRepo: ["GET /repos/{owner}/{repo}/labels"],
+    listLabelsOnIssue: [
+      "GET /repos/{owner}/{repo}/issues/{issue_number}/labels"
+    ],
+    listMilestones: ["GET /repos/{owner}/{repo}/milestones"],
+    lock: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/lock"],
+    removeAllLabels: [
+      "DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels"
+    ],
+    removeAssignees: [
+      "DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees"
+    ],
+    removeLabel: [
+      "DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"
+    ],
+    setLabels: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/labels"],
+    unlock: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock"],
+    update: ["PATCH /repos/{owner}/{repo}/issues/{issue_number}"],
+    updateComment: ["PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}"],
+    updateLabel: ["PATCH /repos/{owner}/{repo}/labels/{name}"],
+    updateMilestone: [
+      "PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"
+    ]
+  },
+  licenses: {
+    get: ["GET /licenses/{license}"],
+    getAllCommonlyUsed: ["GET /licenses"],
+    getForRepo: ["GET /repos/{owner}/{repo}/license"]
+  },
+  markdown: {
+    render: ["POST /markdown"],
+    renderRaw: [
+      "POST /markdown/raw",
+      { headers: { "content-type": "text/plain; charset=utf-8" } }
+    ]
+  },
+  meta: {
+    get: ["GET /meta"],
+    getAllVersions: ["GET /versions"],
+    getOctocat: ["GET /octocat"],
+    getZen: ["GET /zen"],
+    root: ["GET /"]
+  },
+  migrations: {
+    cancelImport: [
+      "DELETE /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.cancelImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#cancel-an-import"
+      }
+    ],
+    deleteArchiveForAuthenticatedUser: [
+      "DELETE /user/migrations/{migration_id}/archive"
+    ],
+    deleteArchiveForOrg: [
+      "DELETE /orgs/{org}/migrations/{migration_id}/archive"
+    ],
+    downloadArchiveForOrg: [
+      "GET /orgs/{org}/migrations/{migration_id}/archive"
+    ],
+    getArchiveForAuthenticatedUser: [
+      "GET /user/migrations/{migration_id}/archive"
+    ],
+    getCommitAuthors: [
+      "GET /repos/{owner}/{repo}/import/authors",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.getCommitAuthors() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-commit-authors"
+      }
+    ],
+    getImportStatus: [
+      "GET /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.getImportStatus() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-an-import-status"
+      }
+    ],
+    getLargeFiles: [
+      "GET /repos/{owner}/{repo}/import/large_files",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.getLargeFiles() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-large-files"
+      }
+    ],
+    getStatusForAuthenticatedUser: ["GET /user/migrations/{migration_id}"],
+    getStatusForOrg: ["GET /orgs/{org}/migrations/{migration_id}"],
+    listForAuthenticatedUser: ["GET /user/migrations"],
+    listForOrg: ["GET /orgs/{org}/migrations"],
+    listReposForAuthenticatedUser: [
+      "GET /user/migrations/{migration_id}/repositories"
+    ],
+    listReposForOrg: ["GET /orgs/{org}/migrations/{migration_id}/repositories"],
+    listReposForUser: [
+      "GET /user/migrations/{migration_id}/repositories",
+      {},
+      { renamed: ["migrations", "listReposForAuthenticatedUser"] }
+    ],
+    mapCommitAuthor: [
+      "PATCH /repos/{owner}/{repo}/import/authors/{author_id}",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.mapCommitAuthor() is deprecated, see https://docs.github.com/rest/migrations/source-imports#map-a-commit-author"
+      }
+    ],
+    setLfsPreference: [
+      "PATCH /repos/{owner}/{repo}/import/lfs",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.setLfsPreference() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-git-lfs-preference"
+      }
+    ],
+    startForAuthenticatedUser: ["POST /user/migrations"],
+    startForOrg: ["POST /orgs/{org}/migrations"],
+    startImport: [
+      "PUT /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.startImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#start-an-import"
+      }
+    ],
+    unlockRepoForAuthenticatedUser: [
+      "DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock"
+    ],
+    unlockRepoForOrg: [
+      "DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock"
+    ],
+    updateImport: [
+      "PATCH /repos/{owner}/{repo}/import",
+      {},
+      {
+        deprecated: "octokit.rest.migrations.updateImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-an-import"
+      }
+    ]
+  },
+  oidc: {
+    getOidcCustomSubTemplateForOrg: [
+      "GET /orgs/{org}/actions/oidc/customization/sub"
+    ],
+    updateOidcCustomSubTemplateForOrg: [
+      "PUT /orgs/{org}/actions/oidc/customization/sub"
+    ]
+  },
+  orgs: {
+    addSecurityManagerTeam: [
+      "PUT /orgs/{org}/security-managers/teams/{team_slug}"
+    ],
+    assignTeamToOrgRole: [
+      "PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+    ],
+    assignUserToOrgRole: [
+      "PUT /orgs/{org}/organization-roles/users/{username}/{role_id}"
+    ],
+    blockUser: ["PUT /orgs/{org}/blocks/{username}"],
+    cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
+    checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
+    checkMembershipForUser: ["GET /orgs/{org}/members/{username}"],
+    checkPublicMembershipForUser: ["GET /orgs/{org}/public_members/{username}"],
+    convertMemberToOutsideCollaborator: [
+      "PUT /orgs/{org}/outside_collaborators/{username}"
+    ],
+    createCustomOrganizationRole: ["POST /orgs/{org}/organization-roles"],
+    createInvitation: ["POST /orgs/{org}/invitations"],
+    createOrUpdateCustomProperties: ["PATCH /orgs/{org}/properties/schema"],
+    createOrUpdateCustomPropertiesValuesForRepos: [
+      "PATCH /orgs/{org}/properties/values"
+    ],
+    createOrUpdateCustomProperty: [
+      "PUT /orgs/{org}/properties/schema/{custom_property_name}"
+    ],
+    createWebhook: ["POST /orgs/{org}/hooks"],
+    delete: ["DELETE /orgs/{org}"],
+    deleteCustomOrganizationRole: [
+      "DELETE /orgs/{org}/organization-roles/{role_id}"
+    ],
+    deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
+    enableOrDisableSecurityProductOnAllOrgRepos: [
+      "POST /orgs/{org}/{security_product}/{enablement}"
+    ],
+    get: ["GET /orgs/{org}"],
+    getAllCustomProperties: ["GET /orgs/{org}/properties/schema"],
+    getCustomProperty: [
+      "GET /orgs/{org}/properties/schema/{custom_property_name}"
+    ],
+    getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
+    getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
+    getOrgRole: ["GET /orgs/{org}/organization-roles/{role_id}"],
+    getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
+    getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
+    getWebhookDelivery: [
+      "GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}"
+    ],
+    list: ["GET /organizations"],
+    listAppInstallations: ["GET /orgs/{org}/installations"],
+    listBlockedUsers: ["GET /orgs/{org}/blocks"],
+    listCustomPropertiesValuesForRepos: ["GET /orgs/{org}/properties/values"],
+    listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
+    listForAuthenticatedUser: ["GET /user/orgs"],
+    listForUser: ["GET /users/{username}/orgs"],
+    listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
+    listMembers: ["GET /orgs/{org}/members"],
+    listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
+    listOrgRoleTeams: ["GET /orgs/{org}/organization-roles/{role_id}/teams"],
+    listOrgRoleUsers: ["GET /orgs/{org}/organization-roles/{role_id}/users"],
+    listOrgRoles: ["GET /orgs/{org}/organization-roles"],
+    listOrganizationFineGrainedPermissions: [
+      "GET /orgs/{org}/organization-fine-grained-permissions"
+    ],
+    listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
+    listPatGrantRepositories: [
+      "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories"
+    ],
+    listPatGrantRequestRepositories: [
+      "GET /orgs/{org}/personal-access-token-requests/{pat_request_id}/repositories"
+    ],
+    listPatGrantRequests: ["GET /orgs/{org}/personal-access-token-requests"],
+    listPatGrants: ["GET /orgs/{org}/personal-access-tokens"],
+    listPendingInvitations: ["GET /orgs/{org}/invitations"],
+    listPublicMembers: ["GET /orgs/{org}/public_members"],
+    listSecurityManagerTeams: ["GET /orgs/{org}/security-managers"],
+    listWebhookDeliveries: ["GET /orgs/{org}/hooks/{hook_id}/deliveries"],
+    listWebhooks: ["GET /orgs/{org}/hooks"],
+    patchCustomOrganizationRole: [
+      "PATCH /orgs/{org}/organization-roles/{role_id}"
+    ],
+    pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
+    redeliverWebhookDelivery: [
+      "POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"
+    ],
+    removeCustomProperty: [
+      "DELETE /orgs/{org}/properties/schema/{custom_property_name}"
+    ],
+    removeMember: ["DELETE /orgs/{org}/members/{username}"],
+    removeMembershipForUser: ["DELETE /orgs/{org}/memberships/{username}"],
+    removeOutsideCollaborator: [
+      "DELETE /orgs/{org}/outside_collaborators/{username}"
+    ],
+    removePublicMembershipForAuthenticatedUser: [
+      "DELETE /orgs/{org}/public_members/{username}"
+    ],
+    removeSecurityManagerTeam: [
+      "DELETE /orgs/{org}/security-managers/teams/{team_slug}"
+    ],
+    reviewPatGrantRequest: [
+      "POST /orgs/{org}/personal-access-token-requests/{pat_request_id}"
+    ],
+    reviewPatGrantRequestsInBulk: [
+      "POST /orgs/{org}/personal-access-token-requests"
+    ],
+    revokeAllOrgRolesTeam: [
+      "DELETE /orgs/{org}/organization-roles/teams/{team_slug}"
+    ],
+    revokeAllOrgRolesUser: [
+      "DELETE /orgs/{org}/organization-roles/users/{username}"
+    ],
+    revokeOrgRoleTeam: [
+      "DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+    ],
+    revokeOrgRoleUser: [
+      "DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}"
+    ],
+    setMembershipForUser: ["PUT /orgs/{org}/memberships/{username}"],
+    setPublicMembershipForAuthenticatedUser: [
+      "PUT /orgs/{org}/public_members/{username}"
+    ],
+    unblockUser: ["DELETE /orgs/{org}/blocks/{username}"],
+    update: ["PATCH /orgs/{org}"],
+    updateMembershipForAuthenticatedUser: [
+      "PATCH /user/memberships/orgs/{org}"
+    ],
+    updatePatAccess: ["POST /orgs/{org}/personal-access-tokens/{pat_id}"],
+    updatePatAccesses: ["POST /orgs/{org}/personal-access-tokens"],
+    updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
+    updateWebhookConfigForOrg: ["PATCH /orgs/{org}/hooks/{hook_id}/config"]
+  },
+  packages: {
+    deletePackageForAuthenticatedUser: [
+      "DELETE /user/packages/{package_type}/{package_name}"
+    ],
+    deletePackageForOrg: [
+      "DELETE /orgs/{org}/packages/{package_type}/{package_name}"
+    ],
+    deletePackageForUser: [
+      "DELETE /users/{username}/packages/{package_type}/{package_name}"
+    ],
+    deletePackageVersionForAuthenticatedUser: [
+      "DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}"
+    ],
+    deletePackageVersionForOrg: [
+      "DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
+    ],
+    deletePackageVersionForUser: [
+      "DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"
+    ],
+    getAllPackageVersionsForAPackageOwnedByAnOrg: [
+      "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
+      {},
+      { renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"] }
+    ],
+    getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser: [
+      "GET /user/packages/{package_type}/{package_name}/versions",
+      {},
+      {
+        renamed: [
+          "packages",
+          "getAllPackageVersionsForPackageOwnedByAuthenticatedUser"
+        ]
+      }
+    ],
+    getAllPackageVersionsForPackageOwnedByAuthenticatedUser: [
+      "GET /user/packages/{package_type}/{package_name}/versions"
+    ],
+    getAllPackageVersionsForPackageOwnedByOrg: [
+      "GET /orgs/{org}/packages/{package_type}/{package_name}/versions"
+    ],
+    getAllPackageVersionsForPackageOwnedByUser: [
+      "GET /users/{username}/packages/{package_type}/{package_name}/versions"
+    ],
+    getPackageForAuthenticatedUser: [
+      "GET /user/packages/{package_type}/{package_name}"
+    ],
+    getPackageForOrganization: [
+      "GET /orgs/{org}/packages/{package_type}/{package_name}"
+    ],
+    getPackageForUser: [
+      "GET /users/{username}/packages/{package_type}/{package_name}"
+    ],
+    getPackageVersionForAuthenticatedUser: [
+      "GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}"
+    ],
+    getPackageVersionForOrganization: [
+      "GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
+    ],
+    getPackageVersionForUser: [
+      "GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"
+    ],
+    listDockerMigrationConflictingPackagesForAuthenticatedUser: [
+      "GET /user/docker/conflicts"
+    ],
+    listDockerMigrationConflictingPackagesForOrganization: [
+      "GET /orgs/{org}/docker/conflicts"
+    ],
+    listDockerMigrationConflictingPackagesForUser: [
+      "GET /users/{username}/docker/conflicts"
+    ],
+    listPackagesForAuthenticatedUser: ["GET /user/packages"],
+    listPackagesForOrganization: ["GET /orgs/{org}/packages"],
+    listPackagesForUser: ["GET /users/{username}/packages"],
+    restorePackageForAuthenticatedUser: [
+      "POST /user/packages/{package_type}/{package_name}/restore{?token}"
+    ],
+    restorePackageForOrg: [
+      "POST /orgs/{org}/packages/{package_type}/{package_name}/restore{?token}"
+    ],
+    restorePackageForUser: [
+      "POST /users/{username}/packages/{package_type}/{package_name}/restore{?token}"
+    ],
+    restorePackageVersionForAuthenticatedUser: [
+      "POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
+    ],
+    restorePackageVersionForOrg: [
+      "POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
+    ],
+    restorePackageVersionForUser: [
+      "POST /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
+    ]
+  },
+  projects: {
+    addCollaborator: ["PUT /projects/{project_id}/collaborators/{username}"],
+    createCard: ["POST /projects/columns/{column_id}/cards"],
+    createColumn: ["POST /projects/{project_id}/columns"],
+    createForAuthenticatedUser: ["POST /user/projects"],
+    createForOrg: ["POST /orgs/{org}/projects"],
+    createForRepo: ["POST /repos/{owner}/{repo}/projects"],
+    delete: ["DELETE /projects/{project_id}"],
+    deleteCard: ["DELETE /projects/columns/cards/{card_id}"],
+    deleteColumn: ["DELETE /projects/columns/{column_id}"],
+    get: ["GET /projects/{project_id}"],
+    getCard: ["GET /projects/columns/cards/{card_id}"],
+    getColumn: ["GET /projects/columns/{column_id}"],
+    getPermissionForUser: [
+      "GET /projects/{project_id}/collaborators/{username}/permission"
+    ],
+    listCards: ["GET /projects/columns/{column_id}/cards"],
+    listCollaborators: ["GET /projects/{project_id}/collaborators"],
+    listColumns: ["GET /projects/{project_id}/columns"],
+    listForOrg: ["GET /orgs/{org}/projects"],
+    listForRepo: ["GET /repos/{owner}/{repo}/projects"],
+    listForUser: ["GET /users/{username}/projects"],
+    moveCard: ["POST /projects/columns/cards/{card_id}/moves"],
+    moveColumn: ["POST /projects/columns/{column_id}/moves"],
+    removeCollaborator: [
+      "DELETE /projects/{project_id}/collaborators/{username}"
+    ],
+    update: ["PATCH /projects/{project_id}"],
+    updateCard: ["PATCH /projects/columns/cards/{card_id}"],
+    updateColumn: ["PATCH /projects/columns/{column_id}"]
+  },
+  pulls: {
+    checkIfMerged: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
+    create: ["POST /repos/{owner}/{repo}/pulls"],
+    createReplyForReviewComment: [
+      "POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"
+    ],
+    createReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
+    createReviewComment: [
+      "POST /repos/{owner}/{repo}/pulls/{pull_number}/comments"
+    ],
+    deletePendingReview: [
+      "DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+    ],
+    deleteReviewComment: [
+      "DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}"
+    ],
+    dismissReview: [
+      "PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals"
+    ],
+    get: ["GET /repos/{owner}/{repo}/pulls/{pull_number}"],
+    getReview: [
+      "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+    ],
+    getReviewComment: ["GET /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
+    list: ["GET /repos/{owner}/{repo}/pulls"],
+    listCommentsForReview: [
+      "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"
+    ],
+    listCommits: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"],
+    listFiles: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"],
+    listRequestedReviewers: [
+      "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+    ],
+    listReviewComments: [
+      "GET /repos/{owner}/{repo}/pulls/{pull_number}/comments"
+    ],
+    listReviewCommentsForRepo: ["GET /repos/{owner}/{repo}/pulls/comments"],
+    listReviews: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
+    merge: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
+    removeRequestedReviewers: [
+      "DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+    ],
+    requestReviewers: [
+      "POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+    ],
+    submitReview: [
+      "POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events"
+    ],
+    update: ["PATCH /repos/{owner}/{repo}/pulls/{pull_number}"],
+    updateBranch: [
+      "PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch"
+    ],
+    updateReview: [
+      "PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+    ],
+    updateReviewComment: [
+      "PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}"
+    ]
+  },
+  rateLimit: { get: ["GET /rate_limit"] },
+  reactions: {
+    createForCommitComment: [
+      "POST /repos/{owner}/{repo}/comments/{comment_id}/reactions"
+    ],
+    createForIssue: [
+      "POST /repos/{owner}/{repo}/issues/{issue_number}/reactions"
+    ],
+    createForIssueComment: [
+      "POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"
+    ],
+    createForPullRequestReviewComment: [
+      "POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions"
+    ],
+    createForRelease: [
+      "POST /repos/{owner}/{repo}/releases/{release_id}/reactions"
+    ],
+    createForTeamDiscussionCommentInOrg: [
+      "POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"
+    ],
+    createForTeamDiscussionInOrg: [
+      "POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"
+    ],
+    deleteForCommitComment: [
+      "DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}"
+    ],
+    deleteForIssue: [
+      "DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}"
+    ],
+    deleteForIssueComment: [
+      "DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}"
+    ],
+    deleteForPullRequestComment: [
+      "DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}"
+    ],
+    deleteForRelease: [
+      "DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}"
+    ],
+    deleteForTeamDiscussion: [
+      "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}"
+    ],
+    deleteForTeamDiscussionComment: [
+      "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}"
+    ],
+    listForCommitComment: [
+      "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions"
+    ],
+    listForIssue: ["GET /repos/{owner}/{repo}/issues/{issue_number}/reactions"],
+    listForIssueComment: [
+      "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"
+    ],
+    listForPullRequestReviewComment: [
+      "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions"
+    ],
+    listForRelease: [
+      "GET /repos/{owner}/{repo}/releases/{release_id}/reactions"
+    ],
+    listForTeamDiscussionCommentInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"
+    ],
+    listForTeamDiscussionInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"
+    ]
+  },
+  repos: {
+    acceptInvitation: [
+      "PATCH /user/repository_invitations/{invitation_id}",
+      {},
+      { renamed: ["repos", "acceptInvitationForAuthenticatedUser"] }
+    ],
+    acceptInvitationForAuthenticatedUser: [
+      "PATCH /user/repository_invitations/{invitation_id}"
+    ],
+    addAppAccessRestrictions: [
+      "POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
+      {},
+      { mapToData: "apps" }
+    ],
+    addCollaborator: ["PUT /repos/{owner}/{repo}/collaborators/{username}"],
+    addStatusCheckContexts: [
+      "POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
+      {},
+      { mapToData: "contexts" }
+    ],
+    addTeamAccessRestrictions: [
+      "POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
+      {},
+      { mapToData: "teams" }
+    ],
+    addUserAccessRestrictions: [
+      "POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
+      {},
+      { mapToData: "users" }
+    ],
+    cancelPagesDeployment: [
+      "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
+    ],
+    checkAutomatedSecurityFixes: [
+      "GET /repos/{owner}/{repo}/automated-security-fixes"
+    ],
+    checkCollaborator: ["GET /repos/{owner}/{repo}/collaborators/{username}"],
+    checkVulnerabilityAlerts: [
+      "GET /repos/{owner}/{repo}/vulnerability-alerts"
+    ],
+    codeownersErrors: ["GET /repos/{owner}/{repo}/codeowners/errors"],
+    compareCommits: ["GET /repos/{owner}/{repo}/compare/{base}...{head}"],
+    compareCommitsWithBasehead: [
+      "GET /repos/{owner}/{repo}/compare/{basehead}"
+    ],
+    createAutolink: ["POST /repos/{owner}/{repo}/autolinks"],
+    createCommitComment: [
+      "POST /repos/{owner}/{repo}/commits/{commit_sha}/comments"
+    ],
+    createCommitSignatureProtection: [
+      "POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"
+    ],
+    createCommitStatus: ["POST /repos/{owner}/{repo}/statuses/{sha}"],
+    createDeployKey: ["POST /repos/{owner}/{repo}/keys"],
+    createDeployment: ["POST /repos/{owner}/{repo}/deployments"],
+    createDeploymentBranchPolicy: [
+      "POST /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies"
+    ],
+    createDeploymentProtectionRule: [
+      "POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
+    ],
+    createDeploymentStatus: [
+      "POST /repos/{owner}/{repo}/deployments/{deployment_id}/statuses"
+    ],
+    createDispatchEvent: ["POST /repos/{owner}/{repo}/dispatches"],
+    createForAuthenticatedUser: ["POST /user/repos"],
+    createFork: ["POST /repos/{owner}/{repo}/forks"],
+    createInOrg: ["POST /orgs/{org}/repos"],
+    createOrUpdateCustomPropertiesValues: [
+      "PATCH /repos/{owner}/{repo}/properties/values"
+    ],
+    createOrUpdateEnvironment: [
+      "PUT /repos/{owner}/{repo}/environments/{environment_name}"
+    ],
+    createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
+    createOrgRuleset: ["POST /orgs/{org}/rulesets"],
+    createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployments"],
+    createPagesSite: ["POST /repos/{owner}/{repo}/pages"],
+    createRelease: ["POST /repos/{owner}/{repo}/releases"],
+    createRepoRuleset: ["POST /repos/{owner}/{repo}/rulesets"],
+    createTagProtection: ["POST /repos/{owner}/{repo}/tags/protection"],
+    createUsingTemplate: [
+      "POST /repos/{template_owner}/{template_repo}/generate"
+    ],
+    createWebhook: ["POST /repos/{owner}/{repo}/hooks"],
+    declineInvitation: [
+      "DELETE /user/repository_invitations/{invitation_id}",
+      {},
+      { renamed: ["repos", "declineInvitationForAuthenticatedUser"] }
+    ],
+    declineInvitationForAuthenticatedUser: [
+      "DELETE /user/repository_invitations/{invitation_id}"
+    ],
+    delete: ["DELETE /repos/{owner}/{repo}"],
+    deleteAccessRestrictions: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"
+    ],
+    deleteAdminBranchProtection: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"
+    ],
+    deleteAnEnvironment: [
+      "DELETE /repos/{owner}/{repo}/environments/{environment_name}"
+    ],
+    deleteAutolink: ["DELETE /repos/{owner}/{repo}/autolinks/{autolink_id}"],
+    deleteBranchProtection: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection"
+    ],
+    deleteCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}"],
+    deleteCommitSignatureProtection: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"
+    ],
+    deleteDeployKey: ["DELETE /repos/{owner}/{repo}/keys/{key_id}"],
+    deleteDeployment: [
+      "DELETE /repos/{owner}/{repo}/deployments/{deployment_id}"
+    ],
+    deleteDeploymentBranchPolicy: [
+      "DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}"
+    ],
+    deleteFile: ["DELETE /repos/{owner}/{repo}/contents/{path}"],
+    deleteInvitation: [
+      "DELETE /repos/{owner}/{repo}/invitations/{invitation_id}"
+    ],
+    deleteOrgRuleset: ["DELETE /orgs/{org}/rulesets/{ruleset_id}"],
+    deletePagesSite: ["DELETE /repos/{owner}/{repo}/pages"],
+    deletePullRequestReviewProtection: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+    ],
+    deleteRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}"],
+    deleteReleaseAsset: [
+      "DELETE /repos/{owner}/{repo}/releases/assets/{asset_id}"
+    ],
+    deleteRepoRuleset: ["DELETE /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
+    deleteTagProtection: [
+      "DELETE /repos/{owner}/{repo}/tags/protection/{tag_protection_id}"
+    ],
+    deleteWebhook: ["DELETE /repos/{owner}/{repo}/hooks/{hook_id}"],
+    disableAutomatedSecurityFixes: [
+      "DELETE /repos/{owner}/{repo}/automated-security-fixes"
+    ],
+    disableDeploymentProtectionRule: [
+      "DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
+    ],
+    disablePrivateVulnerabilityReporting: [
+      "DELETE /repos/{owner}/{repo}/private-vulnerability-reporting"
+    ],
+    disableVulnerabilityAlerts: [
+      "DELETE /repos/{owner}/{repo}/vulnerability-alerts"
+    ],
+    downloadArchive: [
+      "GET /repos/{owner}/{repo}/zipball/{ref}",
+      {},
+      { renamed: ["repos", "downloadZipballArchive"] }
+    ],
+    downloadTarballArchive: ["GET /repos/{owner}/{repo}/tarball/{ref}"],
+    downloadZipballArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}"],
+    enableAutomatedSecurityFixes: [
+      "PUT /repos/{owner}/{repo}/automated-security-fixes"
+    ],
+    enablePrivateVulnerabilityReporting: [
+      "PUT /repos/{owner}/{repo}/private-vulnerability-reporting"
+    ],
+    enableVulnerabilityAlerts: [
+      "PUT /repos/{owner}/{repo}/vulnerability-alerts"
+    ],
+    generateReleaseNotes: [
+      "POST /repos/{owner}/{repo}/releases/generate-notes"
+    ],
+    get: ["GET /repos/{owner}/{repo}"],
+    getAccessRestrictions: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"
+    ],
+    getAdminBranchProtection: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"
+    ],
+    getAllDeploymentProtectionRules: [
+      "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
+    ],
+    getAllEnvironments: ["GET /repos/{owner}/{repo}/environments"],
+    getAllStatusCheckContexts: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts"
+    ],
+    getAllTopics: ["GET /repos/{owner}/{repo}/topics"],
+    getAppsWithAccessToProtectedBranch: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps"
+    ],
+    getAutolink: ["GET /repos/{owner}/{repo}/autolinks/{autolink_id}"],
+    getBranch: ["GET /repos/{owner}/{repo}/branches/{branch}"],
+    getBranchProtection: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection"
+    ],
+    getBranchRules: ["GET /repos/{owner}/{repo}/rules/branches/{branch}"],
+    getClones: ["GET /repos/{owner}/{repo}/traffic/clones"],
+    getCodeFrequencyStats: ["GET /repos/{owner}/{repo}/stats/code_frequency"],
+    getCollaboratorPermissionLevel: [
+      "GET /repos/{owner}/{repo}/collaborators/{username}/permission"
+    ],
+    getCombinedStatusForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/status"],
+    getCommit: ["GET /repos/{owner}/{repo}/commits/{ref}"],
+    getCommitActivityStats: ["GET /repos/{owner}/{repo}/stats/commit_activity"],
+    getCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}"],
+    getCommitSignatureProtection: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"
+    ],
+    getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
+    getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
+    getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
+    getCustomDeploymentProtectionRule: [
+      "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
+    ],
+    getCustomPropertiesValues: ["GET /repos/{owner}/{repo}/properties/values"],
+    getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
+    getDeployment: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}"],
+    getDeploymentBranchPolicy: [
+      "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}"
+    ],
+    getDeploymentStatus: [
+      "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}"
+    ],
+    getEnvironment: [
+      "GET /repos/{owner}/{repo}/environments/{environment_name}"
+    ],
+    getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
+    getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
+    getOrgRuleSuite: ["GET /orgs/{org}/rulesets/rule-suites/{rule_suite_id}"],
+    getOrgRuleSuites: ["GET /orgs/{org}/rulesets/rule-suites"],
+    getOrgRuleset: ["GET /orgs/{org}/rulesets/{ruleset_id}"],
+    getOrgRulesets: ["GET /orgs/{org}/rulesets"],
+    getPages: ["GET /repos/{owner}/{repo}/pages"],
+    getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
+    getPagesDeployment: [
+      "GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+    ],
+    getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
+    getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
+    getPullRequestReviewProtection: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+    ],
+    getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
+    getReadme: ["GET /repos/{owner}/{repo}/readme"],
+    getReadmeInDirectory: ["GET /repos/{owner}/{repo}/readme/{dir}"],
+    getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
+    getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
+    getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
+    getRepoRuleSuite: [
+      "GET /repos/{owner}/{repo}/rulesets/rule-suites/{rule_suite_id}"
+    ],
+    getRepoRuleSuites: ["GET /repos/{owner}/{repo}/rulesets/rule-suites"],
+    getRepoRuleset: ["GET /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
+    getRepoRulesets: ["GET /repos/{owner}/{repo}/rulesets"],
+    getStatusChecksProtection: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+    ],
+    getTeamsWithAccessToProtectedBranch: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"
+    ],
+    getTopPaths: ["GET /repos/{owner}/{repo}/traffic/popular/paths"],
+    getTopReferrers: ["GET /repos/{owner}/{repo}/traffic/popular/referrers"],
+    getUsersWithAccessToProtectedBranch: [
+      "GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users"
+    ],
+    getViews: ["GET /repos/{owner}/{repo}/traffic/views"],
+    getWebhook: ["GET /repos/{owner}/{repo}/hooks/{hook_id}"],
+    getWebhookConfigForRepo: [
+      "GET /repos/{owner}/{repo}/hooks/{hook_id}/config"
+    ],
+    getWebhookDelivery: [
+      "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}"
+    ],
+    listActivities: ["GET /repos/{owner}/{repo}/activity"],
+    listAutolinks: ["GET /repos/{owner}/{repo}/autolinks"],
+    listBranches: ["GET /repos/{owner}/{repo}/branches"],
+    listBranchesForHeadCommit: [
+      "GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head"
+    ],
+    listCollaborators: ["GET /repos/{owner}/{repo}/collaborators"],
+    listCommentsForCommit: [
+      "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments"
+    ],
+    listCommitCommentsForRepo: ["GET /repos/{owner}/{repo}/comments"],
+    listCommitStatusesForRef: [
+      "GET /repos/{owner}/{repo}/commits/{ref}/statuses"
+    ],
+    listCommits: ["GET /repos/{owner}/{repo}/commits"],
+    listContributors: ["GET /repos/{owner}/{repo}/contributors"],
+    listCustomDeploymentRuleIntegrations: [
+      "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps"
+    ],
+    listDeployKeys: ["GET /repos/{owner}/{repo}/keys"],
+    listDeploymentBranchPolicies: [
+      "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies"
+    ],
+    listDeploymentStatuses: [
+      "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses"
+    ],
+    listDeployments: ["GET /repos/{owner}/{repo}/deployments"],
+    listForAuthenticatedUser: ["GET /user/repos"],
+    listForOrg: ["GET /orgs/{org}/repos"],
+    listForUser: ["GET /users/{username}/repos"],
+    listForks: ["GET /repos/{owner}/{repo}/forks"],
+    listInvitations: ["GET /repos/{owner}/{repo}/invitations"],
+    listInvitationsForAuthenticatedUser: ["GET /user/repository_invitations"],
+    listLanguages: ["GET /repos/{owner}/{repo}/languages"],
+    listPagesBuilds: ["GET /repos/{owner}/{repo}/pages/builds"],
+    listPublic: ["GET /repositories"],
+    listPullRequestsAssociatedWithCommit: [
+      "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls"
+    ],
+    listReleaseAssets: [
+      "GET /repos/{owner}/{repo}/releases/{release_id}/assets"
+    ],
+    listReleases: ["GET /repos/{owner}/{repo}/releases"],
+    listTagProtection: ["GET /repos/{owner}/{repo}/tags/protection"],
+    listTags: ["GET /repos/{owner}/{repo}/tags"],
+    listTeams: ["GET /repos/{owner}/{repo}/teams"],
+    listWebhookDeliveries: [
+      "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries"
+    ],
+    listWebhooks: ["GET /repos/{owner}/{repo}/hooks"],
+    merge: ["POST /repos/{owner}/{repo}/merges"],
+    mergeUpstream: ["POST /repos/{owner}/{repo}/merge-upstream"],
+    pingWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/pings"],
+    redeliverWebhookDelivery: [
+      "POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"
+    ],
+    removeAppAccessRestrictions: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
+      {},
+      { mapToData: "apps" }
+    ],
+    removeCollaborator: [
+      "DELETE /repos/{owner}/{repo}/collaborators/{username}"
+    ],
+    removeStatusCheckContexts: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
+      {},
+      { mapToData: "contexts" }
+    ],
+    removeStatusCheckProtection: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+    ],
+    removeTeamAccessRestrictions: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
+      {},
+      { mapToData: "teams" }
+    ],
+    removeUserAccessRestrictions: [
+      "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
+      {},
+      { mapToData: "users" }
+    ],
+    renameBranch: ["POST /repos/{owner}/{repo}/branches/{branch}/rename"],
+    replaceAllTopics: ["PUT /repos/{owner}/{repo}/topics"],
+    requestPagesBuild: ["POST /repos/{owner}/{repo}/pages/builds"],
+    setAdminBranchProtection: [
+      "POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"
+    ],
+    setAppAccessRestrictions: [
+      "PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
+      {},
+      { mapToData: "apps" }
+    ],
+    setStatusCheckContexts: [
+      "PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
+      {},
+      { mapToData: "contexts" }
+    ],
+    setTeamAccessRestrictions: [
+      "PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
+      {},
+      { mapToData: "teams" }
+    ],
+    setUserAccessRestrictions: [
+      "PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
+      {},
+      { mapToData: "users" }
+    ],
+    testPushWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/tests"],
+    transfer: ["POST /repos/{owner}/{repo}/transfer"],
+    update: ["PATCH /repos/{owner}/{repo}"],
+    updateBranchProtection: [
+      "PUT /repos/{owner}/{repo}/branches/{branch}/protection"
+    ],
+    updateCommitComment: ["PATCH /repos/{owner}/{repo}/comments/{comment_id}"],
+    updateDeploymentBranchPolicy: [
+      "PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}"
+    ],
+    updateInformationAboutPagesSite: ["PUT /repos/{owner}/{repo}/pages"],
+    updateInvitation: [
+      "PATCH /repos/{owner}/{repo}/invitations/{invitation_id}"
+    ],
+    updateOrgRuleset: ["PUT /orgs/{org}/rulesets/{ruleset_id}"],
+    updatePullRequestReviewProtection: [
+      "PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+    ],
+    updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
+    updateReleaseAsset: [
+      "PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}"
+    ],
+    updateRepoRuleset: ["PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
+    updateStatusCheckPotection: [
+      "PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
+      {},
+      { renamed: ["repos", "updateStatusCheckProtection"] }
+    ],
+    updateStatusCheckProtection: [
+      "PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+    ],
+    updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
+    updateWebhookConfigForRepo: [
+      "PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config"
+    ],
+    uploadReleaseAsset: [
+      "POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}",
+      { baseUrl: "https://uploads.github.com" }
+    ]
+  },
+  search: {
+    code: ["GET /search/code"],
+    commits: ["GET /search/commits"],
+    issuesAndPullRequests: ["GET /search/issues"],
+    labels: ["GET /search/labels"],
+    repos: ["GET /search/repositories"],
+    topics: ["GET /search/topics"],
+    users: ["GET /search/users"]
+  },
+  secretScanning: {
+    getAlert: [
+      "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"
+    ],
+    listAlertsForEnterprise: [
+      "GET /enterprises/{enterprise}/secret-scanning/alerts"
+    ],
+    listAlertsForOrg: ["GET /orgs/{org}/secret-scanning/alerts"],
+    listAlertsForRepo: ["GET /repos/{owner}/{repo}/secret-scanning/alerts"],
+    listLocationsForAlert: [
+      "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations"
+    ],
+    updateAlert: [
+      "PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"
+    ]
+  },
+  securityAdvisories: {
+    createFork: [
+      "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+    ],
+    createPrivateVulnerabilityReport: [
+      "POST /repos/{owner}/{repo}/security-advisories/reports"
+    ],
+    createRepositoryAdvisory: [
+      "POST /repos/{owner}/{repo}/security-advisories"
+    ],
+    createRepositoryAdvisoryCveRequest: [
+      "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"
+    ],
+    getGlobalAdvisory: ["GET /advisories/{ghsa_id}"],
+    getRepositoryAdvisory: [
+      "GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}"
+    ],
+    listGlobalAdvisories: ["GET /advisories"],
+    listOrgRepositoryAdvisories: ["GET /orgs/{org}/security-advisories"],
+    listRepositoryAdvisories: ["GET /repos/{owner}/{repo}/security-advisories"],
+    updateRepositoryAdvisory: [
+      "PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}"
+    ]
+  },
+  teams: {
+    addOrUpdateMembershipForUserInOrg: [
+      "PUT /orgs/{org}/teams/{team_slug}/memberships/{username}"
+    ],
+    addOrUpdateProjectPermissionsInOrg: [
+      "PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}"
+    ],
+    addOrUpdateRepoPermissionsInOrg: [
+      "PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"
+    ],
+    checkPermissionsForProjectInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/projects/{project_id}"
+    ],
+    checkPermissionsForRepoInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"
+    ],
+    create: ["POST /orgs/{org}/teams"],
+    createDiscussionCommentInOrg: [
+      "POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
+    ],
+    createDiscussionInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions"],
+    deleteDiscussionCommentInOrg: [
+      "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+    ],
+    deleteDiscussionInOrg: [
+      "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+    ],
+    deleteInOrg: ["DELETE /orgs/{org}/teams/{team_slug}"],
+    getByName: ["GET /orgs/{org}/teams/{team_slug}"],
+    getDiscussionCommentInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+    ],
+    getDiscussionInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+    ],
+    getMembershipForUserInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/memberships/{username}"
+    ],
+    list: ["GET /orgs/{org}/teams"],
+    listChildInOrg: ["GET /orgs/{org}/teams/{team_slug}/teams"],
+    listDiscussionCommentsInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
+    ],
+    listDiscussionsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions"],
+    listForAuthenticatedUser: ["GET /user/teams"],
+    listMembersInOrg: ["GET /orgs/{org}/teams/{team_slug}/members"],
+    listPendingInvitationsInOrg: [
+      "GET /orgs/{org}/teams/{team_slug}/invitations"
+    ],
+    listProjectsInOrg: ["GET /orgs/{org}/teams/{team_slug}/projects"],
+    listReposInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos"],
+    removeMembershipForUserInOrg: [
+      "DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}"
+    ],
+    removeProjectInOrg: [
+      "DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}"
+    ],
+    removeRepoInOrg: [
+      "DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"
+    ],
+    updateDiscussionCommentInOrg: [
+      "PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+    ],
+    updateDiscussionInOrg: [
+      "PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+    ],
+    updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"]
+  },
+  users: {
+    addEmailForAuthenticated: [
+      "POST /user/emails",
+      {},
+      { renamed: ["users", "addEmailForAuthenticatedUser"] }
+    ],
+    addEmailForAuthenticatedUser: ["POST /user/emails"],
+    addSocialAccountForAuthenticatedUser: ["POST /user/social_accounts"],
+    block: ["PUT /user/blocks/{username}"],
+    checkBlocked: ["GET /user/blocks/{username}"],
+    checkFollowingForUser: ["GET /users/{username}/following/{target_user}"],
+    checkPersonIsFollowedByAuthenticated: ["GET /user/following/{username}"],
+    createGpgKeyForAuthenticated: [
+      "POST /user/gpg_keys",
+      {},
+      { renamed: ["users", "createGpgKeyForAuthenticatedUser"] }
+    ],
+    createGpgKeyForAuthenticatedUser: ["POST /user/gpg_keys"],
+    createPublicSshKeyForAuthenticated: [
+      "POST /user/keys",
+      {},
+      { renamed: ["users", "createPublicSshKeyForAuthenticatedUser"] }
+    ],
+    createPublicSshKeyForAuthenticatedUser: ["POST /user/keys"],
+    createSshSigningKeyForAuthenticatedUser: ["POST /user/ssh_signing_keys"],
+    deleteEmailForAuthenticated: [
+      "DELETE /user/emails",
+      {},
+      { renamed: ["users", "deleteEmailForAuthenticatedUser"] }
+    ],
+    deleteEmailForAuthenticatedUser: ["DELETE /user/emails"],
+    deleteGpgKeyForAuthenticated: [
+      "DELETE /user/gpg_keys/{gpg_key_id}",
+      {},
+      { renamed: ["users", "deleteGpgKeyForAuthenticatedUser"] }
+    ],
+    deleteGpgKeyForAuthenticatedUser: ["DELETE /user/gpg_keys/{gpg_key_id}"],
+    deletePublicSshKeyForAuthenticated: [
+      "DELETE /user/keys/{key_id}",
+      {},
+      { renamed: ["users", "deletePublicSshKeyForAuthenticatedUser"] }
+    ],
+    deletePublicSshKeyForAuthenticatedUser: ["DELETE /user/keys/{key_id}"],
+    deleteSocialAccountForAuthenticatedUser: ["DELETE /user/social_accounts"],
+    deleteSshSigningKeyForAuthenticatedUser: [
+      "DELETE /user/ssh_signing_keys/{ssh_signing_key_id}"
+    ],
+    follow: ["PUT /user/following/{username}"],
+    getAuthenticated: ["GET /user"],
+    getByUsername: ["GET /users/{username}"],
+    getContextForUser: ["GET /users/{username}/hovercard"],
+    getGpgKeyForAuthenticated: [
+      "GET /user/gpg_keys/{gpg_key_id}",
+      {},
+      { renamed: ["users", "getGpgKeyForAuthenticatedUser"] }
+    ],
+    getGpgKeyForAuthenticatedUser: ["GET /user/gpg_keys/{gpg_key_id}"],
+    getPublicSshKeyForAuthenticated: [
+      "GET /user/keys/{key_id}",
+      {},
+      { renamed: ["users", "getPublicSshKeyForAuthenticatedUser"] }
+    ],
+    getPublicSshKeyForAuthenticatedUser: ["GET /user/keys/{key_id}"],
+    getSshSigningKeyForAuthenticatedUser: [
+      "GET /user/ssh_signing_keys/{ssh_signing_key_id}"
+    ],
+    list: ["GET /users"],
+    listBlockedByAuthenticated: [
+      "GET /user/blocks",
+      {},
+      { renamed: ["users", "listBlockedByAuthenticatedUser"] }
+    ],
+    listBlockedByAuthenticatedUser: ["GET /user/blocks"],
+    listEmailsForAuthenticated: [
+      "GET /user/emails",
+      {},
+      { renamed: ["users", "listEmailsForAuthenticatedUser"] }
+    ],
+    listEmailsForAuthenticatedUser: ["GET /user/emails"],
+    listFollowedByAuthenticated: [
+      "GET /user/following",
+      {},
+      { renamed: ["users", "listFollowedByAuthenticatedUser"] }
+    ],
+    listFollowedByAuthenticatedUser: ["GET /user/following"],
+    listFollowersForAuthenticatedUser: ["GET /user/followers"],
+    listFollowersForUser: ["GET /users/{username}/followers"],
+    listFollowingForUser: ["GET /users/{username}/following"],
+    listGpgKeysForAuthenticated: [
+      "GET /user/gpg_keys",
+      {},
+      { renamed: ["users", "listGpgKeysForAuthenticatedUser"] }
+    ],
+    listGpgKeysForAuthenticatedUser: ["GET /user/gpg_keys"],
+    listGpgKeysForUser: ["GET /users/{username}/gpg_keys"],
+    listPublicEmailsForAuthenticated: [
+      "GET /user/public_emails",
+      {},
+      { renamed: ["users", "listPublicEmailsForAuthenticatedUser"] }
+    ],
+    listPublicEmailsForAuthenticatedUser: ["GET /user/public_emails"],
+    listPublicKeysForUser: ["GET /users/{username}/keys"],
+    listPublicSshKeysForAuthenticated: [
+      "GET /user/keys",
+      {},
+      { renamed: ["users", "listPublicSshKeysForAuthenticatedUser"] }
+    ],
+    listPublicSshKeysForAuthenticatedUser: ["GET /user/keys"],
+    listSocialAccountsForAuthenticatedUser: ["GET /user/social_accounts"],
+    listSocialAccountsForUser: ["GET /users/{username}/social_accounts"],
+    listSshSigningKeysForAuthenticatedUser: ["GET /user/ssh_signing_keys"],
+    listSshSigningKeysForUser: ["GET /users/{username}/ssh_signing_keys"],
+    setPrimaryEmailVisibilityForAuthenticated: [
+      "PATCH /user/email/visibility",
+      {},
+      { renamed: ["users", "setPrimaryEmailVisibilityForAuthenticatedUser"] }
+    ],
+    setPrimaryEmailVisibilityForAuthenticatedUser: [
+      "PATCH /user/email/visibility"
+    ],
+    unblock: ["DELETE /user/blocks/{username}"],
+    unfollow: ["DELETE /user/following/{username}"],
+    updateAuthenticated: ["PATCH /user"]
+  }
+};
+var endpoints_default = Endpoints;
+
+const endpointMethodsMap = /* @__PURE__ */ new Map();
+for (const [scope, endpoints] of Object.entries(endpoints_default)) {
+  for (const [methodName, endpoint] of Object.entries(endpoints)) {
+    const [route, defaults, decorations] = endpoint;
+    const [method, url] = route.split(/ /);
+    const endpointDefaults = Object.assign(
+      {
+        method,
+        url
+      },
+      defaults
+    );
+    if (!endpointMethodsMap.has(scope)) {
+      endpointMethodsMap.set(scope, /* @__PURE__ */ new Map());
+    }
+    endpointMethodsMap.get(scope).set(methodName, {
+      scope,
+      methodName,
+      endpointDefaults,
+      decorations
+    });
+  }
+}
+const handler = {
+  has({ scope }, methodName) {
+    return endpointMethodsMap.get(scope).has(methodName);
+  },
+  getOwnPropertyDescriptor(target, methodName) {
+    return {
+      value: this.get(target, methodName),
+      // ensures method is in the cache
+      configurable: true,
+      writable: true,
+      enumerable: true
+    };
+  },
+  defineProperty(target, methodName, descriptor) {
+    Object.defineProperty(target.cache, methodName, descriptor);
+    return true;
+  },
+  deleteProperty(target, methodName) {
+    delete target.cache[methodName];
+    return true;
+  },
+  ownKeys({ scope }) {
+    return [...endpointMethodsMap.get(scope).keys()];
+  },
+  set(target, methodName, value) {
+    return target.cache[methodName] = value;
+  },
+  get({ octokit, scope, cache }, methodName) {
+    if (cache[methodName]) {
+      return cache[methodName];
+    }
+    const method = endpointMethodsMap.get(scope).get(methodName);
+    if (!method) {
+      return void 0;
+    }
+    const { endpointDefaults, decorations } = method;
+    if (decorations) {
+      cache[methodName] = decorate(
+        octokit,
+        scope,
+        methodName,
+        endpointDefaults,
+        decorations
+      );
+    } else {
+      cache[methodName] = octokit.request.defaults(endpointDefaults);
+    }
+    return cache[methodName];
+  }
+};
+function endpointsToMethods(octokit) {
+  const newMethods = {};
+  for (const scope of endpointMethodsMap.keys()) {
+    newMethods[scope] = new Proxy({ octokit, scope, cache: {} }, handler);
+  }
+  return newMethods;
+}
+function decorate(octokit, scope, methodName, defaults, decorations) {
+  const requestWithDefaults = octokit.request.defaults(defaults);
+  function withDecorations(...args) {
+    let options = requestWithDefaults.endpoint.merge(...args);
+    if (decorations.mapToData) {
+      options = Object.assign({}, options, {
+        data: options[decorations.mapToData],
+        [decorations.mapToData]: void 0
+      });
+      return requestWithDefaults(options);
+    }
+    if (decorations.renamed) {
+      const [newScope, newMethodName] = decorations.renamed;
+      octokit.log.warn(
+        `octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`
+      );
+    }
+    if (decorations.deprecated) {
+      octokit.log.warn(decorations.deprecated);
+    }
+    if (decorations.renamedParameters) {
+      const options2 = requestWithDefaults.endpoint.merge(...args);
+      for (const [name, alias] of Object.entries(
+        decorations.renamedParameters
+      )) {
+        if (name in options2) {
+          octokit.log.warn(
+            `"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`
+          );
+          if (!(alias in options2)) {
+            options2[alias] = options2[name];
+          }
+          delete options2[name];
+        }
+      }
+      return requestWithDefaults(options2);
+    }
+    return requestWithDefaults(...args);
+  }
+  return Object.assign(withDecorations, requestWithDefaults);
+}
+
+function restEndpointMethods(octokit) {
+  const api = endpointsToMethods(octokit);
+  return {
+    rest: api
+  };
+}
+restEndpointMethods.VERSION = VERSION$1;
+function legacyRestEndpointMethods(octokit) {
+  const api = endpointsToMethods(octokit);
+  return {
+    ...api,
+    rest: api
+  };
+}
+legacyRestEndpointMethods.VERSION = VERSION$1;
+
+var distSrc = /*#__PURE__*/Object.freeze({
+	__proto__: null,
+	legacyRestEndpointMethods: legacyRestEndpointMethods,
+	restEndpointMethods: restEndpointMethods
+});
+
+var require$$3 = /*@__PURE__*/getAugmentedNamespace(distSrc);
+
+// pkg/dist-src/version.js
+var VERSION = "9.2.2";
+
+// pkg/dist-src/normalize-paginated-list-response.js
+function normalizePaginatedListResponse(response) {
+  if (!response.data) {
+    return {
+      ...response,
+      data: []
+    };
+  }
+  const responseNeedsNormalization = "total_count" in response.data && !("url" in response.data);
+  if (!responseNeedsNormalization)
+    return response;
+  const incompleteResults = response.data.incomplete_results;
+  const repositorySelection = response.data.repository_selection;
+  const totalCount = response.data.total_count;
+  delete response.data.incomplete_results;
+  delete response.data.repository_selection;
+  delete response.data.total_count;
+  const namespaceKey = Object.keys(response.data)[0];
+  const data = response.data[namespaceKey];
+  response.data = data;
+  if (typeof incompleteResults !== "undefined") {
+    response.data.incomplete_results = incompleteResults;
+  }
+  if (typeof repositorySelection !== "undefined") {
+    response.data.repository_selection = repositorySelection;
+  }
+  response.data.total_count = totalCount;
+  return response;
+}
+
+// pkg/dist-src/iterator.js
+function iterator(octokit, route, parameters) {
+  const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
+  const requestMethod = typeof route === "function" ? route : octokit.request;
+  const method = options.method;
+  const headers = options.headers;
+  let url = options.url;
+  return {
+    [Symbol.asyncIterator]: () => ({
+      async next() {
+        if (!url)
+          return { done: true };
+        try {
+          const response = await requestMethod({ method, url, headers });
+          const normalizedResponse = normalizePaginatedListResponse(response);
+          url = ((normalizedResponse.headers.link || "").match(
+            /<([^<>]+)>;\s*rel="next"/
+          ) || [])[1];
+          return { value: normalizedResponse };
+        } catch (error) {
+          if (error.status !== 409)
+            throw error;
+          url = "";
+          return {
+            value: {
+              status: 200,
+              headers: {},
+              data: []
+            }
+          };
+        }
+      }
+    })
+  };
+}
+
+// pkg/dist-src/paginate.js
+function paginate(octokit, route, parameters, mapFn) {
+  if (typeof parameters === "function") {
+    mapFn = parameters;
+    parameters = void 0;
+  }
+  return gather(
+    octokit,
+    [],
+    iterator(octokit, route, parameters)[Symbol.asyncIterator](),
+    mapFn
+  );
+}
+function gather(octokit, results, iterator2, mapFn) {
+  return iterator2.next().then((result) => {
+    if (result.done) {
+      return results;
+    }
+    let earlyExit = false;
+    function done() {
+      earlyExit = true;
+    }
+    results = results.concat(
+      mapFn ? mapFn(result.value, done) : result.value.data
+    );
+    if (earlyExit) {
+      return results;
+    }
+    return gather(octokit, results, iterator2, mapFn);
+  });
+}
+
+// pkg/dist-src/compose-paginate.js
+var composePaginateRest = Object.assign(paginate, {
+  iterator
+});
+
+// pkg/dist-src/generated/paginating-endpoints.js
+var paginatingEndpoints = [
+  "GET /advisories",
+  "GET /app/hook/deliveries",
+  "GET /app/installation-requests",
+  "GET /app/installations",
+  "GET /assignments/{assignment_id}/accepted_assignments",
+  "GET /classrooms",
+  "GET /classrooms/{classroom_id}/assignments",
+  "GET /enterprises/{enterprise}/dependabot/alerts",
+  "GET /enterprises/{enterprise}/secret-scanning/alerts",
+  "GET /events",
+  "GET /gists",
+  "GET /gists/public",
+  "GET /gists/starred",
+  "GET /gists/{gist_id}/comments",
+  "GET /gists/{gist_id}/commits",
+  "GET /gists/{gist_id}/forks",
+  "GET /installation/repositories",
+  "GET /issues",
+  "GET /licenses",
+  "GET /marketplace_listing/plans",
+  "GET /marketplace_listing/plans/{plan_id}/accounts",
+  "GET /marketplace_listing/stubbed/plans",
+  "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts",
+  "GET /networks/{owner}/{repo}/events",
+  "GET /notifications",
+  "GET /organizations",
+  "GET /orgs/{org}/actions/cache/usage-by-repository",
+  "GET /orgs/{org}/actions/permissions/repositories",
+  "GET /orgs/{org}/actions/runners",
+  "GET /orgs/{org}/actions/secrets",
+  "GET /orgs/{org}/actions/secrets/{secret_name}/repositories",
+  "GET /orgs/{org}/actions/variables",
+  "GET /orgs/{org}/actions/variables/{name}/repositories",
+  "GET /orgs/{org}/blocks",
+  "GET /orgs/{org}/code-scanning/alerts",
+  "GET /orgs/{org}/codespaces",
+  "GET /orgs/{org}/codespaces/secrets",
+  "GET /orgs/{org}/codespaces/secrets/{secret_name}/repositories",
+  "GET /orgs/{org}/copilot/billing/seats",
+  "GET /orgs/{org}/dependabot/alerts",
+  "GET /orgs/{org}/dependabot/secrets",
+  "GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories",
+  "GET /orgs/{org}/events",
+  "GET /orgs/{org}/failed_invitations",
+  "GET /orgs/{org}/hooks",
+  "GET /orgs/{org}/hooks/{hook_id}/deliveries",
+  "GET /orgs/{org}/installations",
+  "GET /orgs/{org}/invitations",
+  "GET /orgs/{org}/invitations/{invitation_id}/teams",
+  "GET /orgs/{org}/issues",
+  "GET /orgs/{org}/members",
+  "GET /orgs/{org}/members/{username}/codespaces",
+  "GET /orgs/{org}/migrations",
+  "GET /orgs/{org}/migrations/{migration_id}/repositories",
+  "GET /orgs/{org}/organization-roles/{role_id}/teams",
+  "GET /orgs/{org}/organization-roles/{role_id}/users",
+  "GET /orgs/{org}/outside_collaborators",
+  "GET /orgs/{org}/packages",
+  "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
+  "GET /orgs/{org}/personal-access-token-requests",
+  "GET /orgs/{org}/personal-access-token-requests/{pat_request_id}/repositories",
+  "GET /orgs/{org}/personal-access-tokens",
+  "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories",
+  "GET /orgs/{org}/projects",
+  "GET /orgs/{org}/properties/values",
+  "GET /orgs/{org}/public_members",
+  "GET /orgs/{org}/repos",
+  "GET /orgs/{org}/rulesets",
+  "GET /orgs/{org}/rulesets/rule-suites",
+  "GET /orgs/{org}/secret-scanning/alerts",
+  "GET /orgs/{org}/security-advisories",
+  "GET /orgs/{org}/teams",
+  "GET /orgs/{org}/teams/{team_slug}/discussions",
+  "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments",
+  "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions",
+  "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
+  "GET /orgs/{org}/teams/{team_slug}/invitations",
+  "GET /orgs/{org}/teams/{team_slug}/members",
+  "GET /orgs/{org}/teams/{team_slug}/projects",
+  "GET /orgs/{org}/teams/{team_slug}/repos",
+  "GET /orgs/{org}/teams/{team_slug}/teams",
+  "GET /projects/columns/{column_id}/cards",
+  "GET /projects/{project_id}/collaborators",
+  "GET /projects/{project_id}/columns",
+  "GET /repos/{owner}/{repo}/actions/artifacts",
+  "GET /repos/{owner}/{repo}/actions/caches",
+  "GET /repos/{owner}/{repo}/actions/organization-secrets",
+  "GET /repos/{owner}/{repo}/actions/organization-variables",
+  "GET /repos/{owner}/{repo}/actions/runners",
+  "GET /repos/{owner}/{repo}/actions/runs",
+  "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts",
+  "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs",
+  "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs",
+  "GET /repos/{owner}/{repo}/actions/secrets",
+  "GET /repos/{owner}/{repo}/actions/variables",
+  "GET /repos/{owner}/{repo}/actions/workflows",
+  "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs",
+  "GET /repos/{owner}/{repo}/activity",
+  "GET /repos/{owner}/{repo}/assignees",
+  "GET /repos/{owner}/{repo}/branches",
+  "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations",
+  "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs",
+  "GET /repos/{owner}/{repo}/code-scanning/alerts",
+  "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances",
+  "GET /repos/{owner}/{repo}/code-scanning/analyses",
+  "GET /repos/{owner}/{repo}/codespaces",
+  "GET /repos/{owner}/{repo}/codespaces/devcontainers",
+  "GET /repos/{owner}/{repo}/codespaces/secrets",
+  "GET /repos/{owner}/{repo}/collaborators",
+  "GET /repos/{owner}/{repo}/comments",
+  "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions",
+  "GET /repos/{owner}/{repo}/commits",
+  "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments",
+  "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls",
+  "GET /repos/{owner}/{repo}/commits/{ref}/check-runs",
+  "GET /repos/{owner}/{repo}/commits/{ref}/check-suites",
+  "GET /repos/{owner}/{repo}/commits/{ref}/status",
+  "GET /repos/{owner}/{repo}/commits/{ref}/statuses",
+  "GET /repos/{owner}/{repo}/contributors",
+  "GET /repos/{owner}/{repo}/dependabot/alerts",
+  "GET /repos/{owner}/{repo}/dependabot/secrets",
+  "GET /repos/{owner}/{repo}/deployments",
+  "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses",
+  "GET /repos/{owner}/{repo}/environments",
+  "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies",
+  "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps",
+  "GET /repos/{owner}/{repo}/events",
+  "GET /repos/{owner}/{repo}/forks",
+  "GET /repos/{owner}/{repo}/hooks",
+  "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries",
+  "GET /repos/{owner}/{repo}/invitations",
+  "GET /repos/{owner}/{repo}/issues",
+  "GET /repos/{owner}/{repo}/issues/comments",
+  "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions",
+  "GET /repos/{owner}/{repo}/issues/events",
+  "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
+  "GET /repos/{owner}/{repo}/issues/{issue_number}/events",
+  "GET /repos/{owner}/{repo}/issues/{issue_number}/labels",
+  "GET /repos/{owner}/{repo}/issues/{issue_number}/reactions",
+  "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline",
+  "GET /repos/{owner}/{repo}/keys",
+  "GET /repos/{owner}/{repo}/labels",
+  "GET /repos/{owner}/{repo}/milestones",
+  "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels",
+  "GET /repos/{owner}/{repo}/notifications",
+  "GET /repos/{owner}/{repo}/pages/builds",
+  "GET /repos/{owner}/{repo}/projects",
+  "GET /repos/{owner}/{repo}/pulls",
+  "GET /repos/{owner}/{repo}/pulls/comments",
+  "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions",
+  "GET /repos/{owner}/{repo}/pulls/{pull_number}/comments",
+  "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits",
+  "GET /repos/{owner}/{repo}/pulls/{pull_number}/files",
+  "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews",
+  "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments",
+  "GET /repos/{owner}/{repo}/releases",
+  "GET /repos/{owner}/{repo}/releases/{release_id}/assets",
+  "GET /repos/{owner}/{repo}/releases/{release_id}/reactions",
+  "GET /repos/{owner}/{repo}/rules/branches/{branch}",
+  "GET /repos/{owner}/{repo}/rulesets",
+  "GET /repos/{owner}/{repo}/rulesets/rule-suites",
+  "GET /repos/{owner}/{repo}/secret-scanning/alerts",
+  "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations",
+  "GET /repos/{owner}/{repo}/security-advisories",
+  "GET /repos/{owner}/{repo}/stargazers",
+  "GET /repos/{owner}/{repo}/subscribers",
+  "GET /repos/{owner}/{repo}/tags",
+  "GET /repos/{owner}/{repo}/teams",
+  "GET /repos/{owner}/{repo}/topics",
+  "GET /repositories",
+  "GET /repositories/{repository_id}/environments/{environment_name}/secrets",
+  "GET /repositories/{repository_id}/environments/{environment_name}/variables",
+  "GET /search/code",
+  "GET /search/commits",
+  "GET /search/issues",
+  "GET /search/labels",
+  "GET /search/repositories",
+  "GET /search/topics",
+  "GET /search/users",
+  "GET /teams/{team_id}/discussions",
+  "GET /teams/{team_id}/discussions/{discussion_number}/comments",
+  "GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions",
+  "GET /teams/{team_id}/discussions/{discussion_number}/reactions",
+  "GET /teams/{team_id}/invitations",
+  "GET /teams/{team_id}/members",
+  "GET /teams/{team_id}/projects",
+  "GET /teams/{team_id}/repos",
+  "GET /teams/{team_id}/teams",
+  "GET /user/blocks",
+  "GET /user/codespaces",
+  "GET /user/codespaces/secrets",
+  "GET /user/emails",
+  "GET /user/followers",
+  "GET /user/following",
+  "GET /user/gpg_keys",
+  "GET /user/installations",
+  "GET /user/installations/{installation_id}/repositories",
+  "GET /user/issues",
+  "GET /user/keys",
+  "GET /user/marketplace_purchases",
+  "GET /user/marketplace_purchases/stubbed",
+  "GET /user/memberships/orgs",
+  "GET /user/migrations",
+  "GET /user/migrations/{migration_id}/repositories",
+  "GET /user/orgs",
+  "GET /user/packages",
+  "GET /user/packages/{package_type}/{package_name}/versions",
+  "GET /user/public_emails",
+  "GET /user/repos",
+  "GET /user/repository_invitations",
+  "GET /user/social_accounts",
+  "GET /user/ssh_signing_keys",
+  "GET /user/starred",
+  "GET /user/subscriptions",
+  "GET /user/teams",
+  "GET /users",
+  "GET /users/{username}/events",
+  "GET /users/{username}/events/orgs/{org}",
+  "GET /users/{username}/events/public",
+  "GET /users/{username}/followers",
+  "GET /users/{username}/following",
+  "GET /users/{username}/gists",
+  "GET /users/{username}/gpg_keys",
+  "GET /users/{username}/keys",
+  "GET /users/{username}/orgs",
+  "GET /users/{username}/packages",
+  "GET /users/{username}/projects",
+  "GET /users/{username}/received_events",
+  "GET /users/{username}/received_events/public",
+  "GET /users/{username}/repos",
+  "GET /users/{username}/social_accounts",
+  "GET /users/{username}/ssh_signing_keys",
+  "GET /users/{username}/starred",
+  "GET /users/{username}/subscriptions"
+];
+
+// pkg/dist-src/paginating-endpoints.js
+function isPaginatingEndpoint(arg) {
+  if (typeof arg === "string") {
+    return paginatingEndpoints.includes(arg);
+  } else {
+    return false;
+  }
+}
+
+// pkg/dist-src/index.js
+function paginateRest(octokit) {
+  return {
+    paginate: Object.assign(paginate.bind(null, octokit), {
+      iterator: iterator.bind(null, octokit)
+    })
+  };
+}
+paginateRest.VERSION = VERSION;
+
+var distWeb = /*#__PURE__*/Object.freeze({
+	__proto__: null,
+	composePaginateRest: composePaginateRest,
+	isPaginatingEndpoint: isPaginatingEndpoint,
+	paginateRest: paginateRest,
+	paginatingEndpoints: paginatingEndpoints
+});
+
+var require$$4 = /*@__PURE__*/getAugmentedNamespace(distWeb);
+
+var hasRequiredUtils;
+
+function requireUtils () {
+	if (hasRequiredUtils) return utils$1;
+	hasRequiredUtils = 1;
+	(function (exports) {
+		var __createBinding = (utils$1 && utils$1.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+		    if (k2 === undefined) k2 = k;
+		    var desc = Object.getOwnPropertyDescriptor(m, k);
+		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+		      desc = { enumerable: true, get: function() { return m[k]; } };
+		    }
+		    Object.defineProperty(o, k2, desc);
+		}) : (function(o, m, k, k2) {
+		    if (k2 === undefined) k2 = k;
+		    o[k2] = m[k];
+		}));
+		var __setModuleDefault = (utils$1 && utils$1.__setModuleDefault) || (Object.create ? (function(o, v) {
+		    Object.defineProperty(o, "default", { enumerable: true, value: v });
+		}) : function(o, v) {
+		    o["default"] = v;
+		});
+		var __importStar = (utils$1 && utils$1.__importStar) || function (mod) {
+		    if (mod && mod.__esModule) return mod;
+		    var result = {};
+		    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+		    __setModuleDefault(result, mod);
+		    return result;
+		};
+		Object.defineProperty(exports, "__esModule", { value: true });
+		exports.getOctokitOptions = exports.GitHub = exports.defaults = exports.context = void 0;
+		const Context = __importStar(requireContext());
+		const Utils = __importStar(requireUtils$1());
+		// octokit + plugins
+		const core_1 = require$$2;
+		const plugin_rest_endpoint_methods_1 = require$$3;
+		const plugin_paginate_rest_1 = require$$4;
+		exports.context = new Context.Context();
+		const baseUrl = Utils.getApiBaseUrl();
+		exports.defaults = {
+		    baseUrl,
+		    request: {
+		        agent: Utils.getProxyAgent(baseUrl),
+		        fetch: Utils.getProxyFetch(baseUrl)
+		    }
+		};
+		exports.GitHub = core_1.Octokit.plugin(plugin_rest_endpoint_methods_1.restEndpointMethods, plugin_paginate_rest_1.paginateRest).defaults(exports.defaults);
+		/**
+		 * Convience function to correctly format Octokit Options to pass into the constructor.
+		 *
+		 * @param     token    the repo PAT or GITHUB_TOKEN
+		 * @param     options  other options to set
+		 */
+		function getOctokitOptions(token, options) {
+		    const opts = Object.assign({}, options || {}); // Shallow clone - don't mutate the object provided by the caller
+		    // Auth
+		    const auth = Utils.getAuthString(token, opts);
+		    if (auth) {
+		        opts.auth = auth;
+		    }
+		    return opts;
+		}
+		exports.getOctokitOptions = getOctokitOptions;
+		
+	} (utils$1));
+	return utils$1;
+}
+
+var hasRequiredGithub;
+
+function requireGithub () {
+	if (hasRequiredGithub) return github$2;
+	hasRequiredGithub = 1;
+	var __createBinding = (github$2 && github$2.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __setModuleDefault = (github$2 && github$2.__setModuleDefault) || (Object.create ? (function(o, v) {
+	    Object.defineProperty(o, "default", { enumerable: true, value: v });
+	}) : function(o, v) {
+	    o["default"] = v;
+	});
+	var __importStar = (github$2 && github$2.__importStar) || function (mod) {
+	    if (mod && mod.__esModule) return mod;
+	    var result = {};
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    __setModuleDefault(result, mod);
+	    return result;
+	};
+	Object.defineProperty(github$2, "__esModule", { value: true });
+	github$2.getOctokit = github$2.context = void 0;
+	const Context = __importStar(requireContext());
+	const utils_1 = requireUtils();
+	github$2.context = new Context.Context();
+	/**
+	 * Returns a hydrated octokit ready to use for GitHub Actions
+	 *
+	 * @param     token    the repo PAT or GITHUB_TOKEN
+	 * @param     options  other options to set
+	 */
+	function getOctokit(token, options, ...additionalPlugins) {
+	    const GitHubWithPlugins = utils_1.GitHub.plugin(...additionalPlugins);
+	    return new GitHubWithPlugins((0, utils_1.getOctokitOptions)(token, options));
+	}
+	github$2.getOctokit = getOctokit;
+	
+	return github$2;
+}
+
+var githubExports = requireGithub();
+var github = /*@__PURE__*/getDefaultExportFromCjs(githubExports);
+
+var github$1 = /*#__PURE__*/_mergeNamespaces({
+	__proto__: null,
+	default: github
+}, [githubExports]);
 
 /**
  * The main function for the action.
@@ -27267,20 +37670,192 @@ async function wait(milliseconds) {
  */
 async function run() {
     try {
-        const ms = coreExports.getInput('milliseconds');
+        // Get inputs from action.yml
+        const coberturaFile = coreExports.getInput('cobertura-file');
+        let outputFile = coreExports.getInput('output-file');
+        const mainBranch = coreExports.getInput('main-branch');
+        const currentBranch = coreExports.getInput('current-branch');
+        const fileFilters = coreExports.getInput('file-filters');
+        const coverageThresholds = coreExports.getInput('coverage-threshold');
+        const coverageChangeThresholds = coreExports.getInput('coverage-changes-threshold');
+        const { context } = github$1;
+        // For production code
+        const { owner, repo } = context.repo;
         // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-        coreExports.debug(`Waiting ${ms} milliseconds ...`);
-        // Log the current timestamp, wait, then log the new timestamp
-        coreExports.debug(new Date().toTimeString());
-        await wait(parseInt(ms, 10));
-        coreExports.debug(new Date().toTimeString());
+        coreExports.debug(`Reading Cobertura file: ${coberturaFile}`);
+        coreExports.debug(`Output file: ${outputFile}`);
+        coreExports.debug(`Main branch: ${mainBranch}`);
+        coreExports.debug(`Current branch: ${currentBranch}`);
+        coreExports.debug(`File filters: ${fileFilters}`);
+        // List all files in the current directory
+        const files = fs.readdirSync('.');
+        //  console.log(`Files in current directory: ${files.join(', ')}`)
+        //   console.log(`Current working directory: ${process.cwd()}`)
+        //  console.log(`Cobertura file: ${coberturaFile}`)
+        coreExports.debug(`Files in current directory: ${files.join(', ')}`);
+        // list current directory
+        coreExports.debug(`Current working directory: ${process.cwd()}`);
+        // output to jest output
+        coreExports.debug(`Cobertura file: ${coberturaFile}`);
+        // Check if the Cobertura file exists
+        if (!fs.existsSync(coberturaFile)) {
+            throw new Error(`Cobertura file not found: ${coberturaFile}`);
+        }
+        // Read the XML file
+        const xmlContent = fs.readFileSync(coberturaFile, 'utf-8');
+        coreExports.debug(`XML content length: ${xmlContent.length}`);
+        // Parse the XML
+        const parser = new XMLParser({
+            allowBooleanAttributes: true,
+            ignoreAttributes: false,
+            attributeNamePrefix: '_'
+        });
+        let xmlDoc = null;
+        try {
+            xmlDoc = parser.parse(xmlContent, true);
+        }
+        catch {
+            throw new Error(`XML parsing error`);
+        }
+        const modifiedCoverage = new CoberturaParser(xmlDoc);
+        const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage();
+        createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false);
+        coreExports.info(`Original coverage line rate: ${((coberuraOriginalCoverage['_line-rate'] || 0) * 100).toFixed(1)}%`);
+        const myToken = coreExports.getInput('github-token', { required: true });
+        const octokit = githubExports.getOctokit(myToken);
+        // You can also pass in additional options as a second parameter to getOctokit
+        // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
+        let changedFiles = [];
+        coreExports.info(`Context ${context.eventName}`);
+        if (context.eventName === 'pull_request') {
+            try {
+                // Get the current HEAD SHA
+                const headSha = context.sha;
+                coreExports.debug(`headSha ${headSha}`);
+                // Get the master/main branch SHA
+                const { data: masterBranch } = await octokit.rest.repos.getBranch({
+                    owner,
+                    repo,
+                    branch: mainBranch
+                });
+                const masterSha = masterBranch.commit.sha;
+                coreExports.debug(`masterSha ${masterSha}`);
+                coreExports.debug(`data ${JSON.stringify(masterBranch)}`);
+                // Find the merge base (equivalent to git merge-base HEAD origin/master)
+                const { data: mergeBase } = await octokit.rest.repos.compareCommits({
+                    owner,
+                    repo,
+                    base: masterSha,
+                    head: headSha
+                });
+                coreExports.debug(`mergeBase ${JSON.stringify(mergeBase)}`);
+                // Get the actual merge base SHA
+                const mergeBaseSha = mergeBase.merge_base_commit.sha;
+                coreExports.debug(`mergeBaseSha ${mergeBaseSha}`);
+                // Now compare from merge base to HEAD (equivalent to git diff --name-only)
+                const { data: comparison } = await octokit.rest.repos.compareCommits({
+                    owner,
+                    repo,
+                    base: mergeBaseSha,
+                    head: headSha
+                });
+                coreExports.debug(`comparison ${JSON.stringify(comparison)}`);
+                // Extract just the file names
+                changedFiles =
+                    comparison.files?.map((file) => {
+                        // Change \ to / for consistency
+                        file.filename = file.filename.replace(/\\/g, '/');
+                        return file.filename;
+                    }) || [];
+                // Get a listt of filtered files based on a regex pattern
+                const filterMap = fileFilters.split(',').map((f) => f.trim());
+                changedFiles = micromatch(changedFiles, filterMap);
+                coreExports.info(`Found ${changedFiles.length} changed files since branch creation with ${mainBranch}`);
+                coreExports.debug(`Changed files: ${changedFiles.join(', ')}`);
+            }
+            catch (error) {
+                coreExports.warning(`Failed to get changed files: ${error}`);
+                // Fallback to empty array or handle differently
+                changedFiles = [];
+            }
+            // Parse the Cobertura XML and filter based on changed files
+            const reducedCoverage = modifiedCoverage.parse(changedFiles);
+            coreExports.info(`Reduced coverage line rate: ${((reducedCoverage['_line-rate'] || 0) * 100).toFixed(1)}%`);
+            createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true);
+            if (outputFile != null && outputFile !== '') {
+                writeOutputFile(outputFile, reducedCoverage);
+            }
+        }
+        else {
+            if (outputFile !== '') {
+                coreExports.warning(`No change coverage file will be generated. Push request not detected.`);
+                outputFile = null;
+            }
+        }
         // Set outputs for other workflow steps to use
-        coreExports.setOutput('time', new Date().toTimeString());
+        //core.setOutput('time', new Date().toTimeString())
     }
     catch (error) {
         // Fail the workflow run if an error occurs
         if (error instanceof Error)
             coreExports.setFailed(error.message);
+    }
+}
+const writeOutputFile = (outputFile, reducedCoverage) => {
+    const builder = new Builder({
+        suppressBooleanAttributes: false,
+        arrayNodeName: 'coverage',
+        ignoreAttributes: false,
+        attributeNamePrefix: '_',
+        format: true,
+        indentBy: '  '
+    });
+    const outputXml = {
+        coverage: reducedCoverage
+    };
+    outputXml.coverage.sources = reducedCoverage.sources || [];
+    let output = builder.build(outputXml);
+    output = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">\n' + output;
+    // Write the modified XML to the output file
+    const outputDir = outputFile.substring(0, outputFile.lastIndexOf('/'));
+    if (outputDir && !fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+    fs.writeFileSync(outputFile, output, 'utf-8');
+    coreExports.info(`Filtered Cobertura file saved to: ${outputFile}`);
+};
+function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) {
+    // split thresholes by space in to 2 numbers
+    const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t));
+    const lineRate = coberuraCoverage['_line-rate'] || 0;
+    const branchRate = coberuraCoverage['_branch-rate'] || 0;
+    // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
+    const healthColor = lineRate >= thresholds[1] * 100 ? 'success' : lineRate >= thresholds[0] * 100 ? 'warning' : 'danger';
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage-${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
+    // Markdown table header
+    let markdown = `## Code Coverage Summary\n\n`;
+    markdown += `| Package | Line Rate | Branch Rate | Health |\n`;
+    markdown += `| ------- | --------- | ----------- | ------ |\n`;
+    // Always assume packages is an array
+    for (const pkg of coberuraCoverage.packages.package) {
+        const pkgLineRate = pkg['_line-rate'] ?? 0;
+        const pkgBranchRate = pkg['_branch-rate'] ?? 0;
+        const pkgHealthIcon = pkgLineRate * 100 >= thresholds[1] ? '✅' : pkgLineRate * 100 >= thresholds[0] ? '🔶' : '☠';
+        markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`;
+    }
+    // Summary row
+    const healthIcon = lineRate * 100 >= thresholds[1] ? '✅' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠';
+    markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['_lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`;
+    markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`;
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown);
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);
+    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0] * 100}`);
+    const failAction = coreExports.getInput('fail-action') === 'true';
+    if (failAction && lineRate * 100 < thresholds[0]) {
+        coreExports.setFailed(`${changes ? 'Changed ' : ''}Code coverage is below the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
+    }
+    else {
+        coreExports.info(`Code coverage is above the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
     }
 }
 

@@ -213,13 +213,13 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
   for (const pkg of coberuraCoverage.packages.package) {
     const pkgLineRate = pkg['_line-rate'] ?? 0
     const pkgBranchRate = pkg['_branch-rate'] ?? 0
-    const pkgHealthIcon = pkgLineRate * 100 >= thresholds[1] ? '✔' : pkgLineRate * 100 >= thresholds[0] ? '🔶' : '☠'
+    const pkgHealthIcon = pkgLineRate * 100 >= thresholds[1] ? '✅' : pkgLineRate * 100 >= thresholds[0] ? '🔶' : '☠'
 
     markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`
   }
 
   // Summary row
-  const healthIcon = lineRate * 100 >= thresholds[1] ? '✔' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠'
+  const healthIcon = lineRate * 100 >= thresholds[1] ? '✅' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠'
   markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`
   markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`
 

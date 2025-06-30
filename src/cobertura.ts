@@ -59,7 +59,7 @@ export interface LineData {
   _number: number
   _hits: number
   _branch: string
-  _conditionCoverage: string | undefined
+  '_condition-coverage': string | undefined
 }
 
 export class CoberturaParser {
@@ -116,8 +116,8 @@ export class CoberturaParser {
         let classBranchHitsCount = 0
 
         cls.lines.line.forEach((line) => {
-          if (line._branch == 'true' && line._conditionCoverage) {
-            const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/)
+          if (line._branch == 'true' && line['_condition-coverage']) {
+            const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/)
             if (match) {
               classBranchHitsCount += parseInt(match[1], 10)
               classBranchCount += parseInt(match[2], 10)
@@ -137,8 +137,8 @@ export class CoberturaParser {
           let methodBranchHitsCount = 0
 
           meth.lines.line.forEach((line) => {
-            if (line._branch == 'true' && line._conditionCoverage) {
-              const match = line._conditionCoverage.match(/\((\d+)\/(\d+)\)/)
+            if (line._branch == 'true' && line['_condition-coverage']) {
+              const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/)
               if (match) {
                 classBranchHitsCount += parseInt(match[1], 10)
                 classBranchCount += parseInt(match[2], 10)
@@ -262,7 +262,7 @@ export class CoberturaParser {
         _number: parseInt(line?._number || '0', 10),
         _hits: parseInt(line?._hits || '0', 10),
         _branch: line._branch,
-        _conditionCoverage: line['_condition-coverage']
+        '_condition-coverage': line['_condition-coverage']
       }))
     }
   }

@@ -132,9 +132,9 @@ To build and bundle this action:
 
 3. Format and lint the code
 
-  ```bash
-  npm run format:write
-  ```
+   ```bash
+   npm run format:write
+   ```
 
 4. Bundle the action for distribution
    ```bash

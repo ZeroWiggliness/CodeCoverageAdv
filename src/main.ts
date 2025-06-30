@@ -196,8 +196,8 @@ const writeOutputFile = (outputFile: string, reducedCoverage: any): void => {
 function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, coverageThresholds: string, changes: boolean): void {
   // split thresholes by space in to 2 numbers
   const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t))
-  const lineRate = coberuraCoverage['_lineRate'] || 0
-  const branchRate = coberuraCoverage['_branchRate'] || 0
+  const lineRate = coberuraCoverage['_line-rate'] || 0
+  const branchRate = coberuraCoverage['_branch-rate'] || 0
 
   // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
   const healthColor = lineRate >= thresholds[1] * 100 ? 'success' : lineRate >= thresholds[0] * 100 ? 'warning' : 'danger'

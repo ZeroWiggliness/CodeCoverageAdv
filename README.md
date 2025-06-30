@@ -1,10 +1,10 @@
 # Cobertura Change Only Action
 
-A GitHub Action that generates code coverage results. Additionally it generates code coverage for only changed files in PR. Also generates badges, passed/failed outputs.
+A GitHub Action that generates code coverage results from a commonly used coverage format. Additionally it generates code coverage for only changed files in PR. Also generates badges, passed/failed outputs.
 
 ## Description
 
-This action generates a Cobertura code coverage file only on the PR files that have changed. Perfect for teams who want to ensure that new or modified code meets coverage standards without being penalized for legacy code coverage issues. Takes a Cobertura file generated from many test frameworks as input.
+This action generates a Cobertura code coverage file only on the PR files that have changed. Perfect for teams who want to ensure that new or modified code meets coverage standards without being penalized for legacy code coverage issues. Takes a Cobertura file generated from many test frameworks as input and used but CircleCI, SonarQube, Codecov etc.
 
 ![Code Coverage](https://img.shields.io/badge/Code%20Coverage-91.0%25-danger?style=flat) ![Code Changes Coverage](https://img.shields.io/badge/Code%20Changes%20Coverage-91.1%25-danger?style=flat)
 
@@ -104,7 +104,9 @@ IMPORANT: If you find that changes are not detected, checkout the branch with a 
 
 ## Differences
 
-The quality of the calculations depends on the Cobertura file supplied to the action. For some reason I cant get it with exactly the same branch results. If you have an idea why please let me know.
+The quality of the calculations depends on the Cobertura file supplied to the action. For some reason I cant get it with exactly the same branch results but it generates the right results.
+
+dotCover/reportGenerator doesnt generate branch results. jest cobertura (as used for this) generates branch counts I cant replicate.
 
 ## Building and Bundling
 

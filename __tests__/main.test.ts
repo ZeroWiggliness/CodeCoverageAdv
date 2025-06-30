@@ -98,24 +98,6 @@ describe('main.ts', () => {
         }
       }
     }))
-
-    //const getOctokit = jest.fn<typeof github.getOctokit>()
-    /*
-    github.getOctokit.mockImplementation(() => ({
-      rest: {
-        repos: {
-          getBranch: jest.fn().mockImplementation(requestGetBranch), 
-      },),
-    ); */
-
-    // Mock the createCommitComment method
-
-    /*
-    github.getOctokit.mockImplementation  (() => ({
-      rest: { 
-        repos: { 
-          createCommitComment: jest.fn() } }
-    })) */
   })
 
   it('should process coverage file successfully', async () => {
@@ -125,7 +107,7 @@ describe('main.ts', () => {
     // expect(core.setOutput).toHaveBeenCalled()
     expect(core.setFailed).not.toHaveBeenCalled()
   })
-  /*
+
   it('should not write a file when not specified', async () => {
     core.getInput.mockImplementation((name: string) => {
       switch (name) {
@@ -155,19 +137,14 @@ describe('main.ts', () => {
     // Verify outputs were set
     //expect(core.setOutput).toHaveBeenCalled()
     expect(core.setFailed).not.toHaveBeenCalled()
-  })*/
+  })
 
-  /*
   it('should handle missing coverage file', async () => {
-    core.getInput.mockImplementation((name: string) =>
-      name === 'cobertura-file' ? 'nonexistent.xml' : '500'
-    )
+    core.getInput.mockImplementation((name: string) => (name === 'cobertura-file' ? 'nonexistent.xml' : '500'))
 
     await run()
 
-    expect(core.setFailed).toHaveBeenCalledWith(
-      expect.stringContaining('file not found')
-    )
+    expect(core.setFailed).toHaveBeenCalledWith(expect.stringContaining('file not found'))
   })
 
   it('should handle invalid input', async () => {
@@ -182,8 +159,6 @@ describe('main.ts', () => {
 
     await run()
 
-    expect(core.setFailed).toHaveBeenCalledWith(
-      expect.stringContaining('XML parsing error')
-    )
-  })*/
+    expect(core.setFailed).toHaveBeenCalledWith(expect.stringContaining('XML parsing error'))
+  })
 })

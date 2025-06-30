@@ -51,7 +51,7 @@ jobs:
         run: npm run ci-test
 
       - name: Run Cobertura Filter Action
-        id: cobertura-filter
+        id: coverage
         # only run this step if the previous step was successful
         if: ${{ always() }}
         # uses: ./
@@ -72,7 +72,19 @@ jobs:
           # of the workflow.
           recreate: true
           header: 'Cobertura Coverage Report'
-          message: '${{ steps.cobertura-filter.outputs.coverage-badge}} ${{ steps.cobertura-filter.outputs.coverage-badge}} /n ${{ steps.cobertura-filter.outputs.coverage-markdown}}/n/n ${{steps.cobertura-filter.outputs.coverage-changes-markdown }}'
+          message: |
+            ## Coverage Report
+            
+            ${{ steps.coverage.outputs.coverage-markdown }}
+            
+            ## Changed Files Coverage
+            
+            ${{ steps.coverage.outputs.coverage-changes-markdown }}
+            
+            ${{ steps.coverage.outputs.coverage-badge }}
+            ${{ steps.coverage.outputs.coverage-changes-badge }}
+            
+            
 #  test-action:
 #    name: GitHub Actions Test
 #    runs-on: ubuntu-latest

@@ -54,8 +54,8 @@ describe('main.ts', () => {
                 sha: '83219c6bb93b1dd25af0db49df2cd32fbadf5f58',
                 commit: {
                   author: {
-                    name: 'Darren Vine',
-                    email: 'darren.vine@googlemail.com',
+                    name: 'xxx',
+                    email: 'xxx@xxx',
                     date: '2025-06-23T21:58:25Z'
                   },
                   committer: {

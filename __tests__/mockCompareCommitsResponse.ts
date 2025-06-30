@@ -11,8 +11,8 @@ const mockCompareCommitsResponse = {
     node_id: 'C_kwDOPAsf-9oAKDgzMjE5YzZiYjkzYjFkZDI1YWYwZGI0OWRmMmNkMzJmYmFkZjVmNTg',
     commit: {
       author: {
-        name: 'Darren Vine',
-        email: 'darren.vine@googlemail.com',
+        name: 'xxx',
+        email: 'xxx',
         date: '2025-06-23T21:58:25Z'
       },
       committer: {
@@ -32,7 +32,7 @@ const mockCompareCommitsResponse = {
         reason: 'valid',
         signature:
           '-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJoWc4BCRC1aQ7uu5UhlAAA05wQAHTmx7MobVyazPWMPCrP0Jfm\nF57d5Nep27iUX53n+8N6yU+kfmxEuyqKXKro6PIad3wSzYNtcl4a5IympSBn982E\nVq2CcKkfhm83GXTVufN3qBrugMVbEwwEtN0VMLwWBPAmmYuDsSINqHZ6pIsS73Z3\nEHzxpVvGS/1FXdmVRnLfINTfDqRikn12EOoDXRgg7oLjj0AMyLYBqMrwF5xTYuPK\nuHeDuERBgdGBemJR5+wpIJAIuMNG3vWMm7RDn5ExF34EgeJI9Qc6otNcgO44TDXB\nJHklt/J8culNHBAkKDaI4+8IOkYbIEqDL7eHvxl89uxa3OehwQusGBrh8aIZ7+cL\n3sdnE/eCAe0rwLVhEDhed4YXODNS++XNvM7UqdPZ5TMGR1tNLFKxFp/3obsupb83\nQlj+T67lHS1d16bWv1n53SpPSYzTzUU5BZGzUERcQ75zvezyPso0oX61Lri/QxLR\nK3fpUivYVGS6BzYEREYGdkYP+VrpafpGIciK0e8OgdF67428ieQ/DaDAs7ZYNYJ3\npwxjhhWdFm930ahwDO2boTw1SoS3J9E0bZ4MjMXxCl79DAPEh6UINknGjYDxFS5U\n3ffeJjNPLYP/7uOJGv9ukd/dSau9Panogb7bKrL38+oD3XfdOTv+aU3BHJ2gGNY/\nas55ed6J0AeMWjGy6YVj\n=1A6I\n-----END PGP SIGNATURE-----\n',
-        payload: 'tree 0fed120b06c60e55bfcc98226b7ebf6f68ad6cc8\nauthor Darren Vine <darren.vine@googlemail.com> 1750715905 +0200\ncommitter GitHub <noreply@github.com> 1750715905 +0200\n\nInitial commit',
+        payload: 'tree 0fed120b06c60e55bfcc98226b7ebf6f68ad6cc8\nauthor xxx <xxx> 1750715905 +0200\ncommitter GitHub <noreply@github.com> 1750715905 +0200\n\nInitial commit',
         verified_at: '2025-06-23T21:58:26Z'
       }
     },
@@ -88,8 +88,8 @@ const mockCompareCommitsResponse = {
     node_id: 'C_kwDOPAsf-9oAKDgzMjE5YzZiYjkzYjFkZDI1YWYwZGI0OWRmMmNkMzJmYmFkZjVmNTg',
     commit: {
       author: {
-        name: 'Darren Vine',
-        email: 'darren.vine@googlemail.com',
+        name: 'xxx',
+        email: 'xxx',
         date: '2025-06-23T21:58:25Z'
       },
       committer: {
@@ -109,7 +109,7 @@ const mockCompareCommitsResponse = {
         reason: 'valid',
         signature:
           '-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJoWc4BCRC1aQ7uu5UhlAAA05wQAHTmx7MobVyazPWMPCrP0Jfm\nF57d5Nep27iUX53n+8N6yU+kfmxEuyqKXKro6PIad3wSzYNtcl4a5IympSBn982E\nVq2CcKkfhm83GXTVufN3qBrugMVbEwwEtN0VMLwWBPAmmYuDsSINqHZ6pIsS73Z3\nEHzxpVvGS/1FXdmVRnLfINTfDqRikn12EOoDXRgg7oLjj0AMyLYBqMrwF5xTYuPK\nuHeDuERBgdGBemJR5+wpIJAIuMNG3vWMm7RDn5ExF34EgeJI9Qc6otNcgO44TDXB\nJHklt/J8culNHBAkKDaI4+8IOkYbIEqDL7eHvxl89uxa3OehwQusGBrh8aIZ7+cL\n3sdnE/eCAe0rwLVhEDhed4YXODNS++XNvM7UqdPZ5TMGR1tNLFKxFp/3obsupb83\nQlj+T67lHS1d16bWv1n53SpPSYzTzUU5BZGzUERcQ75zvezyPso0oX61Lri/QxLR\nK3fpUivYVGS6BzYEREYGdkYP+VrpafpGIciK0e8OgdF67428ieQ/DaDAs7ZYNYJ3\npwxjhhWdFm930ahwDO2boTw1SoS3J9E0bZ4MjMXxCl79DAPEh6UINknGjYDxFS5U\n3ffeJjNPLYP/7uOJGv9ukd/dSau9Panogb7bKrL38+oD3XfdOTv+aU3BHJ2gGNY/\nas55ed6J0AeMWjGy6YVj\n=1A6I\n-----END PGP SIGNATURE-----\n',
-        payload: 'tree 0fed120b06c60e55bfcc98226b7ebf6f68ad6cc8\nauthor Darren Vine <darren.vine@googlemail.com> 1750715905 +0200\ncommitter GitHub <noreply@github.com> 1750715905 +0200\n\nInitial commit',
+        payload: 'tree 0fed120b06c60e55bfcc98226b7ebf6f68ad6cc8\nauthor xxx <xxx> 1750715905 +0200\ncommitter GitHub <noreply@github.com> 1750715905 +0200\n\nInitial commit',
         verified_at: '2025-06-23T21:58:26Z'
       }
     },
@@ -170,13 +170,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGNmYjkwMGNiOGIyMDQ0MWZiYWFjOTczMjBiODE1OGYyZDU1OWQyYjM',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-23T22:02:40Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-23T22:02:40Z'
         },
         message: 'Adds cross env',
@@ -212,13 +212,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDcyMWUzZTZmZmE0OWM3MmZkY2Y0YTQ3ZTU2NTgzODNjNTg1Y2ExZWE',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-26T22:14:06Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-26T22:14:06Z'
         },
         message: 'first draft',
@@ -254,13 +254,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGQ3YTM5OWY1MDBmYzFhMjQ1ZDhkNzc2Njk4M2U1ZWVmZjBiZjMyNTM',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T16:51:47Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T16:51:47Z'
         },
         message: 'More',
@@ -296,13 +296,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDUzOTkwMWZlNTI1ZDJiMDkzMjFmNWI4Y2E5ZjlkMmRmNTE0YzY0MjM',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T17:18:42Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T17:18:42Z'
         },
         message: 'More',
@@ -338,13 +338,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDIwZjE5NTBmNmUxN2UwMTJlYmU4YWNkNjMyZGE5YzljNDZkNDBkNzk',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:12:32Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:12:32Z'
         },
         message: 'More',
@@ -380,13 +380,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDU3MTFmOTE3YjM3MTkwOTY4Mzc5MWJlNjNkYzhkMjM1NmYwODY3N2E',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:29:03Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:29:03Z'
         },
         message: 'More',
@@ -422,13 +422,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDdhOTFmNTEwNGY4ZTMxNTY4Mzc4MjVjZDY4OTNiZGJjMWE4YTYxZTM',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:44:13Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:44:13Z'
         },
         message: 'More',
@@ -464,13 +464,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGJhN2VmYzlkMWEzYmY2NjRiODAxZWM3YmQ3MDRlYjM3MmY4YTE2ODQ',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:44:59Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:44:59Z'
         },
         message: 'More',
@@ -506,13 +506,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGM1NmFmOGEzYWQ4ZjFjNzViMzFiNTVlOTZhNzFmM2ZjNjczMDYzYjE',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:46:44Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:46:44Z'
         },
         message: 'More',
@@ -548,13 +548,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDY5NjMwNTEzMWRlNmJmODRmNjI0OGI2OWM0MWViMzFhN2M3MWM1ODA',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:48:14Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:48:14Z'
         },
         message: 'More',
@@ -590,13 +590,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDJjNDVlM2M3ZTQ0Njk2Zjk3ODczN2Q5YmNkMzYwNmI4MWM1YmZmMzg',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:49:37Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:49:37Z'
         },
         message: 'More',
@@ -632,13 +632,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGU1YzU5MWZlNDdlMjJmOWVhZmJhMTlkZWQyMTAxMjkzY2M4MTkyNzg',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:58:21Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:58:21Z'
         },
         message: 'More',
@@ -674,13 +674,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGI1ODUwYzUyNjJkNDVhYjA1NTM4NzZlYzAxZDExYWFmNTEzN2YzOWQ',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:59:02Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T19:59:02Z'
         },
         message: 'More',
@@ -716,13 +716,13 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKGE1MjA1NWEwZDBmY2FhMjlhYzBmNDFhYzczNWU5M2FiNTdmOTAyOGI',
       commit: {
         author: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T20:00:04Z'
         },
         committer: {
-          name: 'Darren',
-          email: 'darren.vine@goooglemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T20:00:04Z'
         },
         message: 'More',
@@ -758,8 +758,8 @@ const mockCompareCommitsResponse = {
       node_id: 'C_kwDOPAsf-9oAKDFmODE1ZTg2OTk1MzY1ZGQ2ZjFlYzI0M2QzNmJlZGVmZjJlZGIzZjI',
       commit: {
         author: {
-          name: 'Darren Vine',
-          email: 'darren.vine@googlemail.com',
+          name: 'xxx',
+          email: 'xxx',
           date: '2025-06-27T20:00:10Z'
         },
         committer: {
@@ -779,7 +779,7 @@ const mockCompareCommitsResponse = {
           reason: 'valid',
           signature:
             '-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJoXvhKCRC1aQ7uu5UhlAAA1F0QACUWB3tw4hQGxEjiEngm0vSr\noglf35NaLnaUOXLoi/1itrm3F4hEoJvMU93zBFKIGeNRpYtTHIWUiRlPHdt3SVof\nPnUe/EQThuyJXYZyrV/TEVm9lbfH8xdLVR+gASYh55CWVKe+NQYR+lKYJTuluV00\nPMR6jXoq5RMCdB7DkI+pIMhszmc25fsyRPC7S3cqnDpJ7pQty1RW/3Ifk1CVlvSq\npkhXs5AwjEM+cyRNCPpjJphyjtzGbgR0Gc8C0b78zMn+JE0id5X8NOBTY1s/wTj+\nueb2JXSOkDTYWjXmQKOFVHegs8zuTIeM8HaMZLoL9fKTfmPAX3DYqX8bumUHQyzQ\nm4umWWAVctxTc1C444DnzAKFCkWiXQVDVwffk0iVwrIHA4iH/XFd/dCekhdeO0hH\n8O6XQ/ZBUwvM+nS9meUqHXTvI1VTn/4bTulQC8IB27l9109xmaEdBfCVaCgkRvyq\n1yVYT0lKFBhOfYatdXf6K+UgUQPBi88BGZgph5SmPzX2mjVBGg61T4FrVFvdjO0s\nGf6oQ3Za1sR6DSOlqqemcyCKeoiPjmI2ZroLZy8z3/eqn4KJRqylS9VhhgXxXLRI\n0VBO/n8rQ/Do4pgbpfiswhhRPRhv6njDRf5YKw2Z2gsRl3JOIAu36iyjUAJ1iX4q\njPgQSpnz7s9jewyeEtb5\n=0pFb\n-----END PGP SIGNATURE-----\n',
-          payload: 'tree a83482885cb1a3c71e1dc4852f23d8ea41bff07a\nparent 83219c6bb93b1dd25af0db49df2cd32fbadf5f58\nparent a52055a0d0fcaa29ac0f41ac735e93ab57f9028b\nauthor Darren Vine <darren.vine@googlemail.com> 1751054410 +0000\ncommitter GitHub <noreply@github.com> 1751054410 +0000\n\nMerge a52055a0d0fcaa29ac0f41ac735e93ab57f9028b into 83219c6bb93b1dd25af0db49df2cd32fbadf5f58\n',
+          payload: 'tree a83482885cb1a3c71e1dc4852f23d8ea41bff07a\nparent 83219c6bb93b1dd25af0db49df2cd32fbadf5f58\nparent a52055a0d0fcaa29ac0f41ac735e93ab57f9028b\nauthor xxx <xxx> 1751054410 +0000\ncommitter GitHub <noreply@github.com> 1751054410 +0000\n\nMerge a52055a0d0fcaa29ac0f41ac735e93ab57f9028b into 83219c6bb93b1dd25af0db49df2cd32fbadf5f58\n',
           verified_at: '2025-06-27T20:00:10Z'
         }
       },

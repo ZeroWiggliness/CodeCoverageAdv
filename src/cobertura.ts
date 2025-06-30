@@ -153,10 +153,10 @@ export class CoberturaParser {
           meth['_branch-rate'] = methodBranchHitsCount == 0 && methodBranchCount == 0 ? 1 : methodBranchHitsCount / methodBranchCount
           meth._complexity = Number.NaN
 
-          classLinesCount += methodLinesCount
-          classHitsCount += methodHitsCount
-          classBranchCount += methodLinesCount
-          classBranchHitsCount += methodHitsCount
+         // classLinesCount += methodLinesCount
+       //   classHitsCount += methodHitsCount
+        //  classBranchCount += methodLinesCount
+        //  classBranchHitsCount += methodHitsCount
         })
 
         cls['_lineRate'] = classHitsCount / classLinesCount

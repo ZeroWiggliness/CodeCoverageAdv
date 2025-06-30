@@ -29463,19 +29463,21 @@ class CoberturaParser {
                 cls.methods.method.forEach((meth) => {
                     const methodLinesCount = meth.lines.line.length;
                     const methodHitsCount = meth.lines.line.reduce((acc, line) => acc + (line._hits > 0 ? 1 : 0), 0);
+                    let methodBranchCount = 0;
+                    let methodBranchHitsCount = 0;
                     meth.lines.line.forEach((line) => {
                         if (line._branch == 'true' && line['_condition-coverage']) {
                             const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/);
                             if (match) {
-                                classBranchHitsCount += parseInt(match[1], 10);
-                                classBranchCount += parseInt(match[2], 10);
+                                methodBranchHitsCount += parseInt(match[1], 10);
+                                methodBranchCount += parseInt(match[2], 10);
                                 coberturaBranchesCovered += parseInt(match[1], 10);
                                 coberturaBranchesValid += parseInt(match[2], 10);
                             }
                         }
                     });
                     meth['_line-rate'] = methodHitsCount / methodLinesCount;
-                    meth['_branch-rate'] = 1 ;
+                    meth['_branch-rate'] = methodBranchHitsCount == 0 && methodBranchCount == 0 ? 1 : methodBranchHitsCount / methodBranchCount;
                     meth._complexity = Number.NaN;
                     classLinesCount += methodLinesCount;
                     classHitsCount += methodHitsCount;

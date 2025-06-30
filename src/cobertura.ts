@@ -140,8 +140,8 @@ export class CoberturaParser {
             if (line._branch == 'true' && line['_condition-coverage']) {
               const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/)
               if (match) {
-                classBranchHitsCount += parseInt(match[1], 10)
-                classBranchCount += parseInt(match[2], 10)
+                methodBranchHitsCount += parseInt(match[1], 10)
+                methodBranchCount += parseInt(match[2], 10)
 
                 coberturaBranchesCovered += parseInt(match[1], 10)
                 coberturaBranchesValid += parseInt(match[2], 10)

@@ -6,23 +6,23 @@ A GitHub Action that generates code coverage results. Additionally it generates 
 
 This action generates a Cobertura code coverage file only on the PR files that have changed. Perfect for teams who want to ensure that new or modified code meets coverage standards without being penalized for legacy code coverage issues. Takes a Cobertura file generated from many test frameworks as input.
 
-![Code Coverage](https://img.shields.io/badge/Code%20Coverage-91.2%25-danger?style=flat) ![Code Changes Coverage](https://img.shields.io/badge/Code%20Changes%20Coverage-92.4%25-danger?style=flat)
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-91.0%25-danger?style=flat) ![Code Changes Coverage](https://img.shields.io/badge/Code%20Changes%20Coverage-91.1%25-danger?style=flat)
 
 ## Code Coverage Summary
 
-| Package     | Line Rate                   | Branch Rate          | Health |
-| ----------- | --------------------------- | -------------------- | ------ |
-| main        | 91.2%                       | 62.8%                | ✅     |
-| **Summary** | **91.2%** (177 / undefined) | **62.8%** (86 / 137) | **✅** |
+| Package     | Line Rate             | Branch Rate          | Health |
+| ----------- | --------------------- | -------------------- | ------ |
+| main        | 91.0%                 | 61.4%                | ✅     |
+| **Summary** | **91.0%** (173 / 190) | **61.4%** (89 / 145) | **✅** |
 
 _Minimum pass threshold is `50.0%`_
 
 ## Code Coverage Summary
 
-| Package     | Line Rate                   | Branch Rate         | Health |
-| ----------- | --------------------------- | ------------------- | ------ |
-| main        | 91.2%                       | 72.0%               | ✅     |
-| **Summary** | **92.4%** (206 / undefined) | **72.0%** (56 / 89) | **✅** |
+| Package     | Line Rate             | Branch Rate         | Health |
+| ----------- | --------------------- | ------------------- | ------ |
+| main        | 91.1%                 | 60.8%               | ✅     |
+| **Summary** | **91.1%** (173 / 190) | **60.8%** (59 / 97) | **✅** |
 
 _Minimum pass threshold is `50.0%`_
 
@@ -74,75 +74,20 @@ IMPORANT: If you find that changes are not detected, checkout the branch with a 
             ${{ steps.coverage.outputs.coverage-changes-markdown }}
 ```
 
-### Advanced Example
-
-```yaml
-name: Detailed Coverage Analysis
-
-on:
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      # Run your tests and generate coverage report
-      - name: Run tests with coverage
-        run: npm test
-
-      # Apply the Cobertura Change Only Action with custom settings
-      - name: Check coverage on changed files
-        id: coverage
-        uses: your-username/cobertura-change-only@v1
-        with:
-          cobertura-file: 'coverage/cobertura-coverage.xml'
-          output-file: 'coverage/changed-only.xml'
-          main-branch: 'develop'
-          coverage-threshold: '60 80'
-          coverage-changes-threshold: '70 90'
-          badge-style: 'for-the-badge'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          file-filters: 'src/**/*.ts,src/**/*.js,!**/*.test.ts,!**/*.spec.js'
-          fail-action: 'true'
-
-      # Use the outputs
-      - name: Add coverage comment to PR
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          header: coverage
-          message: |
-            ## Coverage Report
-
-            ${{ steps.coverage.outputs.coverage-markdown }}
-
-            ## Changed Files Coverage
-
-            ${{ steps.coverage.outputs.coverage-changes-markdown }}
-
-            ${{ steps.coverage.outputs.coverage-badge }}
-            ${{ steps.coverage.outputs.coverage-changes-badge }}
-```
-
 ## Inputs
 
-| Input                        | Description                                                      | Required | Default                           |
-| ---------------------------- | ---------------------------------------------------------------- | -------- | --------------------------------- | --- | ------------------- |
-| `cobertura-file`             | Path to the Cobertura XML input file                             | Yes      | `coverage/cobertura-coverage.xml` |
-| `output-file`                | Path to save the filtered coverage output file                   | No       | ``                                |
-| `main-branch`                | Name of the main branch to compare against                       | No       | Repository default branch         |
-| `coverage-threshold`         | Thresholds for coverage percentage health `<warning% <success%>` | No       | `50 75`                           |
-| `coverage-changes-threshold` | Thresholds for changed files coverage                            | No       | `50 75`                           |
-| `badge-style`                | GitHub badge style to use                                        | No       | `flat`                            |
-| `github-token`               | GitHub token for accessing the repository                        | Yes      | `${{ github.token }}`             |
-| `current-branch`             | Name of the current branch                                       | No       | `${{ github.head_ref              |     | github.ref_name }}` |
-| `file-filters`               | Comma-separated list of file patterns                            | No       | `**/*.*`                          |
-| `fail-action`                | Whether to fail if coverage is below threshold                   | No       | `true`                            |
+| Input                        | Description                                                            | Required | Default                                       |
+| ---------------------------- | ---------------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `cobertura-file`             | Path to the Cobertura XML input file                                   | Yes      | `coverage/cobertura-coverage.xml`             |
+| `output-file`                | Path to save the filtered coverage output file. Empty = No OutputFile. | No       |                                               |
+| `main-branch`                | Name of the main branch to compare against.                            | No       | `${{ github.repository_default_branch }}`     |
+| `coverage-threshold`         | Thresholds for coverage percentage health `<warning% <success%>`       | No       | `50 75`                                       |
+| `coverage-changes-threshold` | Thresholds for changed files coverage.                                 | No       | `50 75`                                       |
+| `badge-style`                | GitHub badge style to use.                                             | No       | `flat`                                        |
+| `github-token`               | GitHub token for accessing the repository.                             | No       | `${{ github.token }}`                         |
+| `current-branch`             | Name of the current branch.                                            | No       | `${{ github.head_ref \|\| github.ref_name }}` |
+| `file-filters`               | Comma-separated list of file patterns.                                 | No       | `**/*.*`                                      |
+| `fail-action`                | Whether to fail if coverage is below threshold.                        | No       | `true`                                        |
 
 ## Outputs
 
@@ -159,7 +104,7 @@ jobs:
 
 ## Differences
 
-The quality of the calculations depends on the Cobertura file supplied to the action. For dot-cover & reportgenerator it is identical, for jest it can be a little off because it doesnt seem to provide (or my calculations are off) the same line coverage as the ones used to calcuate a file. A good example of this is this actions very own test case. The test output the file with 158 lines but there are actually 185 defined. If you know why, let me know.
+The quality of the calculations depends on the Cobertura file supplied to the action. For some reason I cant get it with exactly the same branch results. If you have an idea why please let me know.
 
 ## Building and Bundling
 

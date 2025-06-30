@@ -118,6 +118,14 @@ describe('main.ts', () => {
     })) */
   })
 
+  it('should process coverage file successfully', async () => {
+    await run()
+
+    // Verify outputs were set
+    // expect(core.setOutput).toHaveBeenCalled()
+    expect(core.setFailed).not.toHaveBeenCalled()
+  })
+  /*
   it('should not write a file when not specified', async () => {
     core.getInput.mockImplementation((name: string) => {
       switch (name) {
@@ -147,15 +155,8 @@ describe('main.ts', () => {
     // Verify outputs were set
     //expect(core.setOutput).toHaveBeenCalled()
     expect(core.setFailed).not.toHaveBeenCalled()
-  })
-
-  /* it('should process coverage file successfully', async () => {
-    await run()
-
-    // Verify outputs were set
-    // expect(core.setOutput).toHaveBeenCalled()
-    expect(core.setFailed).not.toHaveBeenCalled()
   })*/
+
   /*
   it('should handle missing coverage file', async () => {
     core.getInput.mockImplementation((name: string) =>

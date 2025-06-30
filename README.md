@@ -15,19 +15,43 @@ Some features:
 
 ## Usage
 
+IMPORANT: If you find that changes are not detected, checkout the branch with a fetch-depth: 0.
+
 ### Basic Example
 
 ```yaml
-# Run your tests and generate coverage report
-- name: Run tests with coverage
-  run: npm test
+- uses: actions/checkout@v3
+    with:
+      fetch-depth: 0
 
 # Apply the Cobertura Change Only Action
 - name: Check coverage on changed files
   uses: ZeroWiggliness/CoberturaChangeOnly@v1
   with:
     cobertura-file: 'coverage/cobertura.xml'
-    output-file: 'coverage/cobertura-changes.xml'
+    output-file: 'coverage/changed-only.xml'
+    main-branch: 'develop'
+    coverage-threshold: '60 80'
+    coverage-changes-threshold: '70 90'
+    badge-style: 'flat'
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    file-filters: 'src/**/*.ts,src/**/*.js,!**/*.test.ts,!**/*.spec.js'
+    fail-action: 'true'
+
+- name: Add coverage comment to PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage
+          message: |
+            ${{ steps.coverage.outputs.coverage-badge }} ${{ steps.coverage.outputs.coverage-changes-badge }}
+            ## Coverage Report
+
+            ${{ steps.coverage.outputs.coverage-markdown }}
+
+            ## Changed Files Coverage
+
+            ${{ steps.coverage.outputs.coverage-changes-markdown }}
 ```
 
 ### Advanced Example
@@ -112,6 +136,10 @@ jobs:
 | `coverage-changes-badge`    | Changed files coverage badge markdown               |
 | `coverage-failed`           | `true` if overall coverage is below threshold       |
 | `coverage-changes-failed`   | `true` if changed files coverage is below threshold |
+
+## Differences
+
+The quality of the calculations depends on the Cobertura file supplied to the action. For dot-cover & reportgenerator it is identical, for jest it can be a little off because it doesnt seem to provide (or my calculations are off) the same line coverage as the ones used to calcuate a file. A good example of this is this actions very own test case. The test output the file with 158 lines but there are actually 185 defined. If you know why, let me know.
 
 ## Building and Bundling
 

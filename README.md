@@ -6,6 +6,26 @@ A GitHub Action that generates code coverage results. Additionally it generates 
 
 This action generates a Cobertura code coverage file only on the PR files that have changed. Perfect for teams who want to ensure that new or modified code meets coverage standards without being penalized for legacy code coverage issues. Takes a Cobertura file generated from many test frameworks as input.
 
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-91.2%25-danger?style=flat) ![Code Changes Coverage](https://img.shields.io/badge/Code%20Changes%20Coverage-92.4%25-danger?style=flat)
+
+## Code Coverage Summary
+
+| Package     | Line Rate                   | Branch Rate          | Health |
+| ----------- | --------------------------- | -------------------- | ------ |
+| main        | 91.2%                       | 62.8%                | ✅     |
+| **Summary** | **91.2%** (177 / undefined) | **62.8%** (86 / 137) | **✅** |
+
+_Minimum pass threshold is `50.0%`_
+
+## Code Coverage Summary
+
+| Package     | Line Rate                   | Branch Rate         | Health |
+| ----------- | --------------------------- | ------------------- | ------ |
+| main        | 91.2%                       | 72.0%               | ✅     |
+| **Summary** | **92.4%** (206 / undefined) | **72.0%** (56 / 89) | **✅** |
+
+_Minimum pass threshold is `50.0%`_
+
 Some features:
 
 - Generates a modified Cobertura file containing results for only changed files since PR branch creation. Optional.

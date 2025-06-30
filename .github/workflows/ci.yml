@@ -63,6 +63,18 @@ jobs:
           github-token: ${{ github.token }}
           file-filters: '**/*.*'
 
+      - name: Store Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-coverage
+          path: 'coverage/cobertura-coverage.xml'
+
+      - name: Store Changed Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-change-coverage
+          path: coverage/cobertura-changed-only.xml
+
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: always()

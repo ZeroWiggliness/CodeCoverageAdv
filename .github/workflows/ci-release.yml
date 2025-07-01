@@ -67,7 +67,7 @@ jobs:
           message: |
             ${{ steps.coverage.outputs.coverage-badge }} ${{ steps.coverage.outputs.coverage-changes-badge }}
             ${{ steps.coverage.outputs.coverage-markdown }}
-            ${{ steps.coverage.outputs.coverage-changes-markdown }}           
+            ${{ steps.coverage.outputs.coverage-changes-markdown }}
 
       - name: Update Coverage Badge in README
         if: always()
@@ -85,4 +85,4 @@ jobs:
           git add "$README"
           git add "dist/*.js"
           git commit -m "Update coverage badge in README" || echo "No changes to commit"
-          git push origin HEAD:${GITHUB_HEAD_REF} || echo "No changes to push"  
+          git push origin HEAD:${GITHUB_HEAD_REF} || echo "No changes to push"

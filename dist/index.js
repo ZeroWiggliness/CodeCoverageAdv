@@ -29496,7 +29496,7 @@ class CoberturaParser {
             coberturaBranchCount += pkgBranchCount;
             coberturaBranchHitsCount += pkgBranchHitsCount;
         });
-        this.coberuraCoverage['_line-rate'] = coberturaHitsCount == 0 && coberturaLinesCount == 0 ? 0 : coberturaHitsCount / coberturaLinesCount;
+        this.coberuraCoverage['_line-rate'] = coberturaHitsCount == 0 && coberturaLinesCount == 0 ? 1 : coberturaHitsCount / coberturaLinesCount;
         this.coberuraCoverage['_lines-covered'] = coberturaHitsCount;
         this.coberuraCoverage['_lines-valid'] = coberturaLinesCount;
         this.coberuraCoverage['_branch-rate'] = coberturaBranchHitsCount == 0 && coberturaBranchCount == 0 ? 1 : coberturaBranchHitsCount / coberturaBranchCount;
@@ -37841,7 +37841,7 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes) 
         const pkgLineRate = pkg['_line-rate'] ?? 0;
         const pkgBranchRate = pkg['_branch-rate'] ?? 0;
         const pkgHealthIcon = pkgLineRate * 100 >= thresholds[1] ? '✅' : pkgLineRate * 100 >= thresholds[0] ? '🔶' : '☠';
-        markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`;
+        markdown += `| ${pkg._name} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`;
     }
     // Summary row
     const healthIcon = lineRate * 100 >= thresholds[1] ? '✅' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠';

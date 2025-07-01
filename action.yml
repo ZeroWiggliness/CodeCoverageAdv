@@ -1,11 +1,9 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
-
-# Add your action's branding here. This will appear on the GitHub Marketplace.
+name: Code Coverage Advance
+description: Provide a Cobertura coverage report and generate a new report that only covers changed files in a PR, generate coverage badges, and provide a markdown report of the coverage.
+author: ZeroWiggliness <darren.vine@gmail.com>
 branding:
-  icon: heart
-  color: red
+  icon: 'check'
+  color: 'green'
 
 # Define your inputs here.
 inputs:

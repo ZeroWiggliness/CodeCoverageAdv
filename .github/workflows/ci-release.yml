@@ -3,7 +3,7 @@ name: Continuous Integration Release
 on:
   pull_request:
     branches:
-      - main
+      - release*
 
 permissions:
   contents: write

@@ -9,8 +9,9 @@ permissions:
   contents: read
   pull-requests: write
 
-env:
-  ACTIONS_STEP_DEBUG: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true  
 
 jobs:
   bundle:

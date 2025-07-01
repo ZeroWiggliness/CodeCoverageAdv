@@ -1,7 +1,7 @@
 name: Continuous Integration Release
 
 on:
-  pull_request:
+  push:
     branches:
       - release*
 

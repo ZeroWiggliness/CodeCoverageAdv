@@ -55,7 +55,7 @@ jobs:
         # only run this step if the previous step was successful
         if: ${{ always() }}
         # uses: ./
-        uses: ZeroWiggliness/CoberturaChangeOnly@feature/firstimplementation
+        uses: ZeroWiggliness/CoberturaChangeOnly@v1
         with:
           cobertura-file: coverage/cobertura-coverage.xml
           output-file: coverage/cobertura-changed-only.xml

@@ -77,11 +77,7 @@ jobs:
           BADGE="${{ steps.coverage.outputs.coverage-badge }}"
           README="README.md"
           # Replace existing badge or insert at the top if not found
-          if grep -q '!\[Coverage\]' "$README"; then
-            sed -i 's|!\[Coverage\](.*)|'"$BADGE"'|' "$README"
-          elses
-            sed -i '1s|^|'"$BADGE"'\n\n|' "$README"
-          fi
+          sed -i 's|!\[Code Coverage\](.*)|'"$BADGE"'|' "$README"
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add "$README"

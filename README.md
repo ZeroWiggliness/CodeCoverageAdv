@@ -1,6 +1,6 @@
 # Code Coverage Advance
 
-[![Build Status](https://github.com/ZeroWiggliness/CodeCoverageAdv/actions/workflows/ci-release.yml/badge.svg)](https://github.com/ZeroWiggliness/CodeCoverageAdv/actions/workflows/ci-release.yml) [![npm version](https://img.shields.io/npm/v/cobertura-change-only.svg)](https://www.npmjs.com/package/cobertura-change-only) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ZeroWiggliness/CodeCoverageAdv/pulls) [![Issues](https://img.shields.io/github/issues/ZeroWiggliness/CodeCoverageAdv.svg)](https://github.com/your-username/cobertura-change-only/issues)
+[![Build Status](https://github.com/ZeroWiggliness/CodeCoverageAdv/actions/workflows/ci.yml/badge.svg)](https://github.com/ZeroWiggliness/CodeCoverageAdv/actions/workflows/ci-release.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ZeroWiggliness/CodeCoverageAdv/pulls) [![Issues](https://img.shields.io/github/issues/ZeroWiggliness/CodeCoverageAdv.svg)](https://github.com/your-username/cobertura-change-only/issues) ![Code Coverage](https://img.shields.io/badge/Code%20Coverage-0.0%25-danger?style=flat)
 
 A GitHub Action that generates code coverage results from a commonly used coverage format. Additionally it generates code coverage for only changed files in PR. Also generates badges, passed/failed outputs.
 

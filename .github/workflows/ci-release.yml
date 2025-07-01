@@ -1,10 +1,7 @@
-name: Continuous Integration
+name: Continuous Integration Release
 
 on:
   pull_request:
-    branches:
-      - main
-  push:
     branches:
       - main
 
@@ -16,16 +13,20 @@ env:
   ACTIONS_STEP_DEBUG: true
 
 jobs:
-  test-typescript:
-    name: TypeScript Tests
+  bundle:
+    name: Bundle
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
-      #  with:
-      #      fetch-depth: 0
+
+      - name: Github setup
+        if: always()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
 
       - name: Setup Node.js
         id: setup-node
@@ -35,26 +36,19 @@ jobs:
           cache: npm
 
       - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
-
-      - name: Check Format
-        id: npm-format-check
-        run: npm run format:check
-
-      - name: Lint
-        id: npm-lint
-        run: npm run lint
+        run: npm install
 
       - name: Test
         id: npm-ci-test
         run: npm run ci-test
 
+      - name: Bundle
+        run: |
+          npm run bundle
+
       - name: Run Cobertura Filter Action
         id: coverage
-        # only run this step if the previous step was successful
         if: ${{ always() }}
-        # uses: ./
         uses: ZeroWiggliness/CodeCoverageAdv@v1
         with:
           cobertura-file: coverage/cobertura-coverage.xml
@@ -63,27 +57,31 @@ jobs:
           github-token: ${{ github.token }}
           file-filters: '**/*.*'
 
-      - name: Store Coverage Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cobertura-coverage
-          path: 'coverage/cobertura-coverage.xml'
-
-      - name: Store Changed Coverage Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cobertura-change-coverage
-          path: coverage/cobertura-changed-only.xml
-
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: always()
         with:
-          # The comment will be added to the PR, and will be updated on each run
-          # of the workflow.
           recreate: true
           header: 'Cobertura Coverage Report'
           message: |
             ${{ steps.coverage.outputs.coverage-badge }} ${{ steps.coverage.outputs.coverage-changes-badge }}
             ${{ steps.coverage.outputs.coverage-markdown }}
             ${{ steps.coverage.outputs.coverage-changes-markdown }}
+
+      - name: Update Coverage Badge in README
+        if: always()
+        run: |
+          BADGE="${{ steps.coverage.outputs.coverage-badge }}"
+          README="README.md"
+          # Replace existing badge or insert at the top if not found
+          if grep -q '!\[Coverage\]' "$README"; then
+            sed -i 's|!\[Coverage\](.*)|'"$BADGE"'|' "$README"
+          elses
+            sed -i '1s|^|'"$BADGE"'\n\n|' "$README"
+          fi
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add "$README"
+          git add "dist/*.js"
+          git commit -m "Update coverage badge in README" || echo "No changes to commit"
+          git push

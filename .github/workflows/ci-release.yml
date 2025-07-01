@@ -22,6 +22,8 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for accurate coverage comparison
 
       - name: Github setup
         if: always()

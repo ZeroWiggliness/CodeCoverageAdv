@@ -1,5 +1,5 @@
 name: Code Coverage Advance
-description: Generate Cobertura coverage, filter for changed PR files, create badges, and output markdown coverage reports.
+description: Generate Cobertura coverage results, including changed PR files, create badges, and output markdown coverage reports.
 author: ZeroWiggliness <darren.vine@gmail.com>
 branding:
   icon: 'check'

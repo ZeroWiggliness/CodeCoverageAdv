@@ -54,8 +54,8 @@ jobs:
         id: coverage
         # only run this step if the previous step was successful
         if: ${{ always() }}
-        # uses: ./
-        uses: ZeroWiggliness/CodeCoverageAdv@${{ github.head_ref || github.ref_name }}
+        uses: ./
+        # uses: ZeroWiggliness/CodeCoverageAdv@v1
         with:
           cobertura-file: coverage/cobertura-coverage.xml
           output-file: coverage/cobertura-changed-only.xml

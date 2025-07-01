@@ -1,4 +1,6 @@
-# Cobertura Change Only Action
+# Code Coverage Advance
+
+[![Build Status](https://github.com/ZeroWiggliness/CodeCoverageAdv/actions/workflows/ci-release.yml/badge.svg)](https://github.com/ZeroWiggliness/CodeCoverageAdv/actions/workflows/ci-release.yml) [![npm version](https://img.shields.io/npm/v/cobertura-change-only.svg)](https://www.npmjs.com/package/cobertura-change-only) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ZeroWiggliness/CodeCoverageAdv/pulls) [![Issues](https://img.shields.io/github/issues/ZeroWiggliness/CodeCoverageAdv.svg)](https://github.com/your-username/cobertura-change-only/issues)
 
 A GitHub Action that generates code coverage results from a commonly used coverage format. Additionally it generates code coverage for only changed files in PR. Also generates badges, passed/failed outputs.
 
@@ -46,7 +48,7 @@ IMPORANT: If you find that changes are not detected, checkout the branch with a 
 
 # Apply the Cobertura Change Only Action
 - name: Check coverage on changed files
-  uses: ZeroWiggliness/CoberturaChangeOnly@v1
+  uses: ZeroWiggliness/CodeCoverageAdv@v1
   with:
     cobertura-file: 'coverage/cobertura.xml'
     output-file: 'coverage/changed-only.xml'

@@ -174,7 +174,7 @@ export class CoberturaParser {
       coberturaBranchHitsCount += pkgBranchHitsCount
     })
 
-    this.coberuraCoverage['_line-rate'] = coberturaHitsCount == 0 && coberturaLinesCount == 0 ? 0 : coberturaHitsCount / coberturaLinesCount
+    this.coberuraCoverage['_line-rate'] = coberturaHitsCount == 0 && coberturaLinesCount == 0 ? 1 : coberturaHitsCount / coberturaLinesCount
     this.coberuraCoverage['_lines-covered'] = coberturaHitsCount
     this.coberuraCoverage['_lines-valid'] = coberturaLinesCount
     this.coberuraCoverage['_branch-rate'] = coberturaBranchHitsCount == 0 && coberturaBranchCount == 0 ? 1 : coberturaBranchHitsCount / coberturaBranchCount

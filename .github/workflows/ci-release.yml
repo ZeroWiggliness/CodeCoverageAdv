@@ -67,9 +67,7 @@ jobs:
           message: |
             ${{ steps.coverage.outputs.coverage-badge }} ${{ steps.coverage.outputs.coverage-changes-badge }}
             ${{ steps.coverage.outputs.coverage-markdown }}
-            ${{ steps.coverage.outputs.coverage-changes-markdown }}
-
-            
+            ${{ steps.coverage.outputs.coverage-changes-markdown }}           
 
       - name: Update Coverage Badge in README
         if: always()

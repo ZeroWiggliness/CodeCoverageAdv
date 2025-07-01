@@ -215,7 +215,7 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
     const pkgBranchRate = pkg['_branch-rate'] ?? 0
     const pkgHealthIcon = pkgLineRate * 100 >= thresholds[1] ? '✅' : pkgLineRate * 100 >= thresholds[0] ? '🔶' : '☠'
 
-    markdown += `| ${pkg._name || 'N/A'} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`
+    markdown += `| ${pkg._name} | ${(pkgLineRate * 100).toFixed(1)}% | ${(pkgBranchRate * 100).toFixed(1)}% | ${pkgHealthIcon} |\n`
   }
 
   // Summary row

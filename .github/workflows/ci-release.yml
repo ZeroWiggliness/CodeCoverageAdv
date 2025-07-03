@@ -52,7 +52,8 @@ jobs:
       - name: Run Cobertura Filter Action
         id: coverage
         if: ${{ always() }}
-        uses: ZeroWiggliness/CodeCoverageAdv@v1
+        uses: ./
+        #uses: ZeroWiggliness/CodeCoverageAdv@v1
         with:
           cobertura-file: coverage/cobertura-coverage.xml
           output-file: coverage/cobertura-changed-only.xml

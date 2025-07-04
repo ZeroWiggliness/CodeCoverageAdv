@@ -40,8 +40,12 @@ jobs:
         run: npm ci
 
       - name: Check Format
-        id: npm-format-check
+        if: contains(github.head_ref, 'release-please') == false
         run: npm run format:check
+
+      - name: Write Format
+        if: contains(github.head_ref, 'release-please') == true
+        run: npm run format:write  
 
       - name: Lint
         id: npm-lint

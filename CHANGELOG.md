@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.0...v1.0.1) (2025-07-04)
+
+
+### Bug Fixes
+
+* XUnit Cobertura generation errors ([#11](https://github.com/ZeroWiggliness/CodeCoverageAdv/issues/11)) ([42f511b](https://github.com/ZeroWiggliness/CodeCoverageAdv/commit/42f511bb984f7c9018fe04e092d3631e148656b2))
+
 ## [1.0.0](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.0...v1.0.0) (2025-07-03)
 
 ### Features

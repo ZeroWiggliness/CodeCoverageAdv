@@ -58,7 +58,7 @@ export interface LinesData {
 export interface LineData {
   _number: number
   _hits: number
-  _branch: string
+  _branch: boolean
   '_condition-coverage': string | undefined
 }
 
@@ -116,7 +116,7 @@ export class CoberturaParser {
         let classBranchHitsCount = 0
 
         cls.lines.line.forEach((line) => {
-          if (line._branch == 'true' && line['_condition-coverage']) {
+          if (line._branch == true && line['_condition-coverage']) {
             const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/)
             if (match) {
               classBranchHitsCount += parseInt(match[1], 10)
@@ -137,7 +137,7 @@ export class CoberturaParser {
           let methodBranchHitsCount = 0
 
           meth.lines.line.forEach((line) => {
-            if (line._branch == 'true' && line['_condition-coverage']) {
+            if (line._branch == true && line['_condition-coverage']) {
               const match = line['_condition-coverage'].match(/\((\d+)\/(\d+)\)/)
               if (match) {
                 methodBranchHitsCount += parseInt(match[1], 10)
@@ -164,7 +164,7 @@ export class CoberturaParser {
         pkgBranchHitsCount += classBranchHitsCount
       })
 
-      pkg['_line-rate'] = pkgHitsCount / pkgLinesCount
+      pkg['_line-rate'] = pkgHitsCount == 0 && pkgLinesCount == 0 ? 1 : pkgHitsCount / pkgLinesCount
       pkg['_branch-rate'] = pkgBranchHitsCount == 0 && pkgBranchCount == 0 ? 1 : pkgBranchHitsCount / pkgBranchCount
       pkg._complexity = Number.NaN
 
@@ -256,9 +256,17 @@ export class CoberturaParser {
       line: lines.map((line) => ({
         _number: parseInt(line?._number || '0', 10),
         _hits: parseInt(line?._hits || '0', 10),
-        _branch: line._branch,
+        _branch: this.branchValue(line._branch),
         '_condition-coverage': line['_condition-coverage']
       }))
     }
+  }
+
+  private branchValue(branch: any): Boolean {
+    if (branch === undefined || branch === null) {
+      return false
+    }
+    
+    return branch.toLowerCase() === 'true' ? true : false
   }
 }

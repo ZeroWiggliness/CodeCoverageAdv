@@ -262,11 +262,11 @@ export class CoberturaParser {
     }
   }
 
-  private branchValue(branch: any): Boolean {
+  private branchValue(branch: any): boolean {
     if (branch === undefined || branch === null) {
       return false
     }
-    
+
     return branch.toLowerCase() === 'true' ? true : false
   }
 }

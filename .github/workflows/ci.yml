@@ -40,11 +40,11 @@ jobs:
         run: npm ci
 
       - name: Check Format
-        if: startsWith(github.ref, 'refs/heads/release') == false
+        if: startsWith(github.head_ref, 'release-please') == false
         run: npm run format:check
 
       - name: Write Format
-        if: startsWith(github.ref, 'refs/heads/release') == true
+        if: startsWith(github.head_ref, 'release-please') == true
         run: npm run format:write  
 
       - name: Lint

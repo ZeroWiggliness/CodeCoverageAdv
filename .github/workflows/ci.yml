@@ -54,7 +54,7 @@ jobs:
       - name: Bundle
         run: npm run bundle
 
-      - name: Run Cobertura Filter Action
+      - name: Run Code Coverage Adv Action
         id: coverage
         # only run this step if the previous step was successful
         if: ${{ always() }}

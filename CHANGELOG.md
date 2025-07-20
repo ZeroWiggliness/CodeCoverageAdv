@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.1...v1.0.2) (2025-07-20)
+
+
+### Bug Fixes
+
+* Filenames not being found with full path ([#13](https://github.com/ZeroWiggliness/CodeCoverageAdv/issues/13)) ([a16dd13](https://github.com/ZeroWiggliness/CodeCoverageAdv/commit/a16dd138b3a33ef28444636c6d2c4d1656697ef3))
+
+
+### Miscellaneous Chores
+
+* release 1.0.2 ([ac6b11e](https://github.com/ZeroWiggliness/CodeCoverageAdv/commit/ac6b11eb44e42a7415a046549cc9d360b6b26ec8))
+
 ## [1.0.1](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.0...v1.0.1) (2025-07-04)
 
 ### Bug Fixes

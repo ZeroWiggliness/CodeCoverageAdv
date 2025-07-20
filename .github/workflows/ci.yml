@@ -45,7 +45,7 @@ jobs:
 
       - name: Write Format
         if: contains(github.head_ref, 'release-please') == true
-        run: npm run format:write  
+        run: npm run format:write
 
       - name: Lint
         id: npm-lint

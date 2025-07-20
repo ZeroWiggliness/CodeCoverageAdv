@@ -29425,9 +29425,9 @@ class CoberturaParser {
         this.coberuraCoverage.packages.package.forEach((pkg) => {
             pkg.classes.class = pkg.classes.class.filter((cls) => {
                 const filename = cls._filename || '';
+                const consitantFilename = filename.replace(/\\/g, '/');
                 return changedFiles.some((file) => {
-                    const consitantFilename = filename.replace(/\\/g, '/');
-                    return consitantFilename.includes(file);
+                    return file.includes(consitantFilename);
                 });
             });
         });

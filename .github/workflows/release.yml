@@ -21,7 +21,7 @@ jobs:
           release-type: node
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           skip-github-release: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Tag major and minor versions
         if: ${{ steps.release.outputs.release_created }}
         run: |

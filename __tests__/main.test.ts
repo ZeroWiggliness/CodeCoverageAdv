@@ -15,7 +15,33 @@ import mockCompareCommitsResponseDiff from './mockCompareCommitsResponseDiff.js'
 jest.unstable_mockModule('@actions/core', () => core)
 jest.unstable_mockModule('@actions/github', () => github)
 
-const { run } = await import('../src/main.js')
+const { run, compressLineNumbers } = await import('../src/main.js')
+
+describe('compressLineNumbers', () => {
+  it('should return empty string for empty array', () => {
+    expect(compressLineNumbers([])).toBe('')
+  })
+
+  it('should return single line number', () => {
+    expect(compressLineNumbers([42])).toBe('42')
+  })
+
+  it('should collapse consecutive lines into a range', () => {
+    expect(compressLineNumbers([10, 11, 12])).toBe('10-12')
+  })
+
+  it('should handle gaps between lines', () => {
+    expect(compressLineNumbers([10, 12, 14])).toBe('10,12,14')
+  })
+
+  it('should mix ranges and individual lines', () => {
+    expect(compressLineNumbers([21, 23, 26, 27, 28, 29, 30, 31, 33])).toBe('21,23,26-31,33')
+  })
+
+  it('should sort unsorted input before compressing', () => {
+    expect(compressLineNumbers([33, 21, 26, 27, 23, 28])).toBe('21,23,26-28,33')
+  })
+})
 
 describe('main.ts', () => {
   beforeEach(() => {
@@ -106,6 +132,8 @@ describe('main.ts', () => {
     // Verify outputs were set
     // expect(core.setOutput).toHaveBeenCalled()
     expect(core.setFailed).not.toHaveBeenCalled()
+    expect(core.setOutput).toHaveBeenCalledWith('coverage-missing-lines', expect.stringContaining('## Uncovered Lines'))
+    expect(core.setOutput).toHaveBeenCalledWith('coverage-changes-missing-lines', expect.stringContaining('## Uncovered Lines'))
   })
 
   it('should not write a file when not specified', async () => {

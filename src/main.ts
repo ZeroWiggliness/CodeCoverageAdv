@@ -21,6 +21,7 @@ export async function run(): Promise<void> {
     const fileFilters: string = core.getInput('file-filters')
     const coverageThresholds: string = core.getInput('coverage-threshold')
     const coverageChangeThresholds: string = core.getInput('coverage-changes-threshold')
+    const maxMissingLines: number = parseInt(core.getInput('max-missing-lines') || '100') || 100
 
     const { context } = github
     // For production code
@@ -70,7 +71,7 @@ export async function run(): Promise<void> {
 
     const modifiedCoverage = new CoberturaParser(xmlDoc)
     const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage()
-    createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false)
+    createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false, maxMissingLines)
 
     core.info(`Original coverage line rate: ${((coberuraOriginalCoverage['_line-rate'] || 0) * 100).toFixed(1)}%`)
 
@@ -146,7 +147,7 @@ export async function run(): Promise<void> {
       const reducedCoverage = modifiedCoverage.parse(changedFiles)
       core.info(`Reduced coverage line rate: ${((reducedCoverage['_line-rate'] || 0) * 100).toFixed(1)}%`)
 
-      createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true)
+      createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true, maxMissingLines)
 
       if (outputFile != null && outputFile !== '') {
         writeOutputFile(outputFile, reducedCoverage)
@@ -193,7 +194,26 @@ const writeOutputFile = (outputFile: string, reducedCoverage: any): void => {
   core.info(`Filtered Cobertura file saved to: ${outputFile}`)
 }
 
-function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, coverageThresholds: string, changes: boolean): void {
+export function compressLineNumbers(numbers: number[]): string {
+  if (numbers.length === 0) return ''
+  const sorted = [...numbers].sort((a, b) => a - b)
+  const ranges: string[] = []
+  let start = sorted[0]
+  let end = sorted[0]
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i] === end + 1) {
+      end = sorted[i]
+    } else {
+      ranges.push(start === end ? `${start}` : `${start}-${end}`)
+      start = sorted[i]
+      end = sorted[i]
+    }
+  }
+  ranges.push(start === end ? `${start}` : `${start}-${end}`)
+  return ranges.join(',')
+}
+
+function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, coverageThresholds: string, changes: boolean, maxMissingLines: number): void {
   // split thresholes by space in to 2 numbers
   const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t))
   const lineRate = coberuraCoverage['_line-rate'] || 0
@@ -226,6 +246,53 @@ function createMarkdownAndBadges(coberuraCoverage: CoberturaCoverageData, covera
   core.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown)
   core.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`)
   core.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0] * 100}`)
+
+  // Build uncovered lines table
+  const rows: { file: string; method: string; lines: number[] }[] = []
+  for (const pkg of coberuraCoverage.packages.package) {
+    for (const cls of pkg.classes.class) {
+      const filename = cls._filename || '(unknown)'
+      const uncoveredNums = cls.lines.line.filter((l) => l._hits === 0).map((l) => l._number)
+      if (uncoveredNums.length === 0) continue
+
+      // Sort methods by first line number to determine ownership ranges
+      const sortedMethods = [...cls.methods.method].filter((m) => m.lines.line.length > 0).sort((a, b) => a.lines.line[0]._number - b.lines.line[0]._number)
+
+      const methodMap = new Map<string, number[]>()
+      for (const lineNum of uncoveredNums) {
+        let methodName = '(class level)'
+        for (let i = sortedMethods.length - 1; i >= 0; i--) {
+          if (sortedMethods[i].lines.line[0]._number <= lineNum) {
+            methodName = sortedMethods[i]._name
+            break
+          }
+        }
+        if (!methodMap.has(methodName)) methodMap.set(methodName, [])
+        methodMap.get(methodName)!.push(lineNum)
+      }
+
+      for (const [methodName, lines] of methodMap.entries()) {
+        rows.push({ file: filename, method: methodName, lines })
+      }
+    }
+  }
+  rows.sort((a, b) => a.file.localeCompare(b.file) || a.method.localeCompare(b.method))
+
+  let missingLinesMarkdown = `## Uncovered Lines\n\n`
+  if (rows.length === 0) {
+    missingLinesMarkdown += `_No uncovered lines found._`
+  } else {
+    missingLinesMarkdown += `| File | Method | Lines |\n`
+    missingLinesMarkdown += `| ---- | ------ | ----- |\n`
+    const limitedRows = rows.slice(0, maxMissingLines)
+    for (const row of limitedRows) {
+      missingLinesMarkdown += `| ${row.file} | ${row.method} | ${compressLineNumbers(row.lines)} |\n`
+    }
+    if (rows.length > maxMissingLines) {
+      missingLinesMarkdown += `| … | … | _(truncated — increase max-missing-lines)_ |\n`
+    }
+  }
+  core.setOutput(`coverage${changes ? '-changes' : ''}-missing-lines`, missingLinesMarkdown)
 
   const failAction = core.getInput('fail-action') === 'true'
   if (failAction && lineRate * 100 < thresholds[0]) {

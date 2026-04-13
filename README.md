@@ -34,6 +34,7 @@ Some features:
 - Markdown formatted coverage reports
 - Coverage badges for both overall and changed files
 - Pass/fail checks based on configurable thresholds
+- Uncovered lines table grouped by file and method with compressed line ranges (e.g. `21,23,26-31,33`)
 
 ## Usage
 
@@ -59,6 +60,7 @@ IMPORANT: If you find that changes are not detected, checkout the branch with a 
     github-token: ${{ secrets.GITHUB_TOKEN }}
     file-filters: 'src/**/*.ts,src/**/*.js,!**/*.test.ts,!**/*.spec.js'
     fail-action: 'true'
+    max-missing-lines: '100'
 
 - name: Add coverage comment to PR
         if: github.event_name == 'pull_request'
@@ -74,6 +76,8 @@ IMPORANT: If you find that changes are not detected, checkout the branch with a 
             ## Changed Files Coverage
 
             ${{ steps.coverage.outputs.coverage-changes-markdown }}
+
+            ${{ steps.coverage.outputs.coverage-changes-missing-lines }}
 ```
 
 ## Inputs
@@ -90,19 +94,22 @@ IMPORANT: If you find that changes are not detected, checkout the branch with a 
 | `current-branch`             | Name of the current branch.                                            | No       | `${{ github.head_ref \|\| github.ref_name }}` |
 | `file-filters`               | Comma-separated list of file patterns.                                 | No       | `**/*.*`                                      |
 | `fail-action`                | Whether to fail if coverage is below threshold.                        | No       | `true`                                        |
+| `max-missing-lines`          | Maximum rows to show in the uncovered lines table.                     | No       | `100`                                         |
 
 ## Outputs
 
-| Output                      | Description                                         |
-| --------------------------- | --------------------------------------------------- |
-| `coverage-markdown`         | Markdown formatted overall coverage report          |
-| `coverage-changes-markdown` | Markdown formatted report for changed files only    |
-| `coverage-passrate`         | Overall coverage pass rate                          |
-| `coverage-changes-passrate` | Changed files coverage pass rate                    |
-| `coverage-badge`            | Overall coverage badge markdown                     |
-| `coverage-changes-badge`    | Changed files coverage badge markdown               |
-| `coverage-failed`           | `true` if overall coverage is below threshold       |
-| `coverage-changes-failed`   | `true` if changed files coverage is below threshold |
+| Output                           | Description                                                                 |
+| -------------------------------- | --------------------------------------------------------------------------- |
+| `coverage-markdown`              | Markdown formatted overall coverage report                                  |
+| `coverage-changes-markdown`      | Markdown formatted report for changed files only                            |
+| `coverage-passrate`              | Overall coverage pass rate                                                  |
+| `coverage-changes-passrate`      | Changed files coverage pass rate                                            |
+| `coverage-badge`                 | Overall coverage badge markdown                                             |
+| `coverage-changes-badge`         | Changed files coverage badge markdown                                       |
+| `coverage-failed`                | `true` if overall coverage is below threshold                               |
+| `coverage-changes-failed`        | `true` if changed files coverage is below threshold                         |
+| `coverage-missing-lines`         | Markdown table of uncovered lines grouped by file and method (overall)      |
+| `coverage-changes-missing-lines` | Markdown table of uncovered lines grouped by file and method (changes only) |
 
 ## Differences
 

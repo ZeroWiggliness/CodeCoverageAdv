@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.2...v1.1.0) (2026-04-13)
+
+
+### Features
+
+* add max-missing-lines input and enhance uncovered lines reporting ([#45](https://github.com/ZeroWiggliness/CodeCoverageAdv/issues/45)) ([213cbbd](https://github.com/ZeroWiggliness/CodeCoverageAdv/commit/213cbbdb7a2a59e4c49f3a7d58e10906f4197676))
+
 ## [1.0.2](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.1...v1.0.2) (2025-07-20)
 
 ### Bug Fixes

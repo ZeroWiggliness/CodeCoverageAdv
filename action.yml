@@ -75,5 +75,5 @@ outputs:
     description: Markdown table of uncovered lines (changes only) grouped by file and method
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.js

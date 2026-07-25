@@ -24,9 +24,15 @@ export async function run(): Promise<void> {
     const maxMissingLines: number = parseInt(core.getInput('max-missing-lines') || '100') || 100
     const badgeStyle: string = core.getInput('badge-style')
     const failAction: boolean = core.getInput('fail-action') === 'true'
-    const outputFn = (key: string, value: string): void => { core.setOutput(key, value) }
-    const failFn = (msg: string): void => { core.setFailed(msg) }
-    const infoFn = (msg: string): void => { core.info(msg) }
+    const outputFn = (key: string, value: string): void => {
+      core.setOutput(key, value)
+    }
+    const failFn = (msg: string): void => {
+      core.setFailed(msg)
+    }
+    const infoFn = (msg: string): void => {
+      core.info(msg)
+    }
 
     const { context } = github
     // For production code

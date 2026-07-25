@@ -39,11 +39,7 @@ async function run(): Promise<void> {
   const outputJson = (values['output-json'] as string) || ''
 
   // Auto-detect merge-request context: explicit flag, GitLab CI env vars, or differing branches
-  const isMergeRequest =
-    (values['merge-request'] as boolean) ||
-    process.env['CI_PIPELINE_SOURCE'] === 'merge_request_event' ||
-    !!process.env['CI_MERGE_REQUEST_IID'] ||
-    (currentBranch !== '' && currentBranch !== mainBranch)
+  const isMergeRequest = (values['merge-request'] as boolean) || process.env['CI_PIPELINE_SOURCE'] === 'merge_request_event' || !!process.env['CI_MERGE_REQUEST_IID'] || (currentBranch !== '' && currentBranch !== mainBranch)
 
   // Collect outputs into a plain object
   const outputs: Record<string, string> = {}

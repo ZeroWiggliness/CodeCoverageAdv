@@ -95,20 +95,20 @@ docker push registry.example.com/cca:latest
 
 All flags match the GitHub Action input names (hyphenated, prefixed with `--`).
 
-| Flag | Description | Default |
-| ---- | ----------- | ------- |
-| `--cobertura-file` | Path to the Cobertura XML input file | `coverage/cobertura-coverage.xml` |
-| `--output-file` | Path to save the filtered coverage XML (MR pipelines only). Empty = disabled. | |
-| `--main-branch` | Branch to compare against for changed-files detection | `main` |
-| `--current-branch` | Current branch name (also read from `CI_COMMIT_REF_NAME`) | |
-| `--coverage-threshold` | `<warning%> <success%>` for overall coverage | `50 75` |
-| `--coverage-changes-threshold` | `<warning%> <success%>` for changed-file coverage | `50 75` |
-| `--badge-style` | Shield.io badge style (`flat`, `flat-square`, `plastic`, `for-the-badge`, `social`) | `flat` |
-| `--file-filters` | Comma-separated glob patterns to include/exclude | `**/*.*` |
-| `--fail-action` | Exit with code 1 when coverage is below threshold | `true` |
-| `--max-missing-lines` | Maximum rows in the uncovered lines table | `100` |
-| `--merge-request` | Force merge-request mode (changed-files analysis). Auto-detected via `CI_PIPELINE_SOURCE` / `CI_MERGE_REQUEST_IID`. | `false` |
-| `--output-json` | Path to write all outputs as a JSON file. Prints to stdout if omitted. | |
+| Flag                           | Description                                                                                                         | Default                           |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| `--cobertura-file`             | Path to the Cobertura XML input file                                                                                | `coverage/cobertura-coverage.xml` |
+| `--output-file`                | Path to save the filtered coverage XML (MR pipelines only). Empty = disabled.                                       |                                   |
+| `--main-branch`                | Branch to compare against for changed-files detection                                                               | `main`                            |
+| `--current-branch`             | Current branch name (also read from `CI_COMMIT_REF_NAME`)                                                           |                                   |
+| `--coverage-threshold`         | `<warning%> <success%>` for overall coverage                                                                        | `50 75`                           |
+| `--coverage-changes-threshold` | `<warning%> <success%>` for changed-file coverage                                                                   | `50 75`                           |
+| `--badge-style`                | Shield.io badge style (`flat`, `flat-square`, `plastic`, `for-the-badge`, `social`)                                 | `flat`                            |
+| `--file-filters`               | Comma-separated glob patterns to include/exclude                                                                    | `**/*.*`                          |
+| `--fail-action`                | Exit with code 1 when coverage is below threshold                                                                   | `true`                            |
+| `--max-missing-lines`          | Maximum rows in the uncovered lines table                                                                           | `100`                             |
+| `--merge-request`              | Force merge-request mode (changed-files analysis). Auto-detected via `CI_PIPELINE_SOURCE` / `CI_MERGE_REQUEST_IID`. | `false`                           |
+| `--output-json`                | Path to write all outputs as a JSON file. Prints to stdout if omitted.                                              |                                   |
 
 ### Merge-request detection
 
@@ -130,12 +130,7 @@ coverage:
     GIT_DEPTH: 0
   script:
     - <your test command that generates a Cobertura XML>
-    - cca --cobertura-file coverage/cobertura-coverage.xml
-           --main-branch main
-           --coverage-threshold "60 80"
-           --coverage-changes-threshold "70 90"
-           --file-filters "src/**/*.ts,!**/*.test.ts"
-           --output-json cca-output.json
+    - cca --cobertura-file coverage/cobertura-coverage.xml --main-branch main --coverage-threshold "60 80" --coverage-changes-threshold "70 90" --file-filters "src/**/*.ts,!**/*.test.ts" --output-json cca-output.json
   artifacts:
     paths:
       - cca-output.json

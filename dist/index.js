@@ -40136,6 +40136,11 @@ async function run() {
         const coverageThresholds = coreExports.getInput('coverage-threshold');
         const coverageChangeThresholds = coreExports.getInput('coverage-changes-threshold');
         const maxMissingLines = parseInt(coreExports.getInput('max-missing-lines') || '100') || 100;
+        const badgeStyle = coreExports.getInput('badge-style');
+        const failAction = coreExports.getInput('fail-action') === 'true';
+        const outputFn = (key, value) => { coreExports.setOutput(key, value); };
+        const failFn = (msg) => { coreExports.setFailed(msg); };
+        const infoFn = (msg) => { coreExports.info(msg); };
         const { context } = github$1;
         // For production code
         const { owner, repo } = context.repo;
@@ -40177,7 +40182,7 @@ async function run() {
         }
         const modifiedCoverage = new CoberturaParser(xmlDoc);
         const coberuraOriginalCoverage = modifiedCoverage.getOriginalCoverage();
-        createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false, maxMissingLines);
+        createMarkdownAndBadges(coberuraOriginalCoverage, coverageThresholds, false, maxMissingLines, badgeStyle, failAction, outputFn, failFn, infoFn);
         coreExports.info(`Original coverage line rate: ${((coberuraOriginalCoverage['_line-rate'] || 0) * 100).toFixed(1)}%`);
         const myToken = coreExports.getInput('github-token', { required: true });
         const octokit = githubExports.getOctokit(myToken);
@@ -40239,7 +40244,7 @@ async function run() {
             // Parse the Cobertura XML and filter based on changed files
             const reducedCoverage = modifiedCoverage.parse(changedFiles);
             coreExports.info(`Reduced coverage line rate: ${((reducedCoverage['_line-rate'] || 0) * 100).toFixed(1)}%`);
-            createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true, maxMissingLines);
+            createMarkdownAndBadges(reducedCoverage, coverageChangeThresholds, true, maxMissingLines, badgeStyle, failAction, outputFn, failFn, infoFn);
             if (outputFile != null && outputFile !== '') {
                 writeOutputFile(outputFile, reducedCoverage);
             }
@@ -40259,7 +40264,7 @@ async function run() {
             coreExports.setFailed(error.message);
     }
 }
-const writeOutputFile = (outputFile, reducedCoverage) => {
+function writeOutputFile(outputFile, reducedCoverage) {
     const builder = new Builder({
         suppressBooleanAttributes: false,
         arrayNodeName: 'coverage',
@@ -40280,8 +40285,8 @@ const writeOutputFile = (outputFile, reducedCoverage) => {
         fs.mkdirSync(outputDir, { recursive: true });
     }
     fs.writeFileSync(outputFile, output, 'utf-8');
-    coreExports.info(`Filtered Cobertura file saved to: ${outputFile}`);
-};
+    console.log(`Filtered Cobertura file saved to: ${outputFile}`);
+}
 function compressLineNumbers(numbers) {
     if (numbers.length === 0)
         return '';
@@ -40302,14 +40307,14 @@ function compressLineNumbers(numbers) {
     ranges.push(start === end ? `${start}` : `${start}-${end}`);
     return ranges.join(',');
 }
-function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes, maxMissingLines) {
+function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes, maxMissingLines, badgeStyle, failAction, outputFn, failFn, logFn) {
     // split thresholes by space in to 2 numbers
     const thresholds = coverageThresholds.split(' ').map((t) => parseFloat(t));
     const lineRate = coberuraCoverage['_line-rate'] || 0;
     const branchRate = coberuraCoverage['_branch-rate'] || 0;
     // set health to skull and crossbones if less than thresholds[0], set to amber trafic light if less than thresholds[1], and green traffic light if greater than thresholds[1]
     const healthColor = lineRate >= thresholds[1] * 100 ? 'success' : lineRate >= thresholds[0] * 100 ? 'warning' : 'danger';
-    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage-${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${coreExports.getInput('badge-style')})`);
+    outputFn(`coverage${changes ? '-changes' : ''}-badge`, `![Code ${changes ? 'Changes ' : ''}Coverage](https://img.shields.io/badge/Code%20${changes ? 'Changes%20' : ''}Coverage-${(lineRate * 100).toFixed(1)}%25-${healthColor}?style=${badgeStyle})`);
     // Markdown table header
     let markdown = `## Code Coverage Summary\n\n`;
     markdown += `| Package | Line Rate | Branch Rate | Health |\n`;
@@ -40325,9 +40330,9 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes, 
     const healthIcon = lineRate * 100 >= thresholds[1] ? '✅' : lineRate * 100 >= thresholds[1] ? '🔶' : '☠';
     markdown += `| **Summary** | **${(lineRate * 100).toFixed(1)}%** (${coberuraCoverage['_lines-covered']} / ${coberuraCoverage['_lines-valid']}) | **${(branchRate * 100).toFixed(1)}%** (${coberuraCoverage['_branches-covered']} / ${coberuraCoverage['_branches-valid']}) | **${healthIcon}** |\n\n`;
     markdown += `_Minimum pass threshold is \`${thresholds[0].toFixed(1)}%\`_`;
-    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-markdown`, markdown);
-    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);
-    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0] * 100}`);
+    outputFn(`coverage${changes ? '-changes' : ''}-markdown`, markdown);
+    outputFn(`coverage${changes ? '-changes' : ''}-passrate`, `${(lineRate * 100).toFixed(1)}%`);
+    outputFn(`coverage${changes ? '-changes' : ''}-failed`, `${lineRate < thresholds[0] * 100}`);
     // Build uncovered lines table
     const rows = [];
     for (const pkg of coberuraCoverage.packages.package) {
@@ -40372,13 +40377,12 @@ function createMarkdownAndBadges(coberuraCoverage, coverageThresholds, changes, 
             missingLinesMarkdown += `| … | … | _(truncated — increase max-missing-lines)_ |\n`;
         }
     }
-    coreExports.setOutput(`coverage${changes ? '-changes' : ''}-missing-lines`, missingLinesMarkdown);
-    const failAction = coreExports.getInput('fail-action') === 'true';
+    outputFn(`coverage${changes ? '-changes' : ''}-missing-lines`, missingLinesMarkdown);
     if (failAction && lineRate * 100 < thresholds[0]) {
-        coreExports.setFailed(`${changes ? 'Changed ' : ''}Code coverage is below the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
+        failFn(`${changes ? 'Changed ' : ''}Code coverage is below the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
     }
     else {
-        coreExports.info(`Code coverage is above the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
+        logFn(`Code coverage is above the threshold of ${thresholds[0]}%. Current line rate is ${(lineRate * 100).toFixed(1)}%`);
     }
 }
 

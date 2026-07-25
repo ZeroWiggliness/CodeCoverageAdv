@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.1.0...v1.2.0) (2026-07-25)
+
+
+### Features
+
+* Add docker file callable version ([#48](https://github.com/ZeroWiggliness/CodeCoverageAdv/issues/48)) ([c617304](https://github.com/ZeroWiggliness/CodeCoverageAdv/commit/c617304b58aaf2226a6a3f88aa428badad9993b1))
+
 ## [1.1.0](https://github.com/ZeroWiggliness/CodeCoverageAdv/compare/v1.0.2...v1.1.0) (2026-04-13)
 
 

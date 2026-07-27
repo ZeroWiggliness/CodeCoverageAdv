@@ -22,7 +22,7 @@ jobs:
           release-type: node
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           skip-github-release: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up QEMU
         if: ${{ steps.release.outputs.release_created }}
         uses: docker/setup-qemu-action@v3
